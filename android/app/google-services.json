@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "314817439652",
+    "project_id": "uniquest-3fd74",
+    "storage_bucket": "uniquest-3fd74.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:314817439652:android:5edeab998c1dd6eae3c331",
+        "android_client_info": {
+          "package_name": "com.entermediates.uniquest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADF4xUV56lyfFuPjm1RRbN2QWTkqttrkY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

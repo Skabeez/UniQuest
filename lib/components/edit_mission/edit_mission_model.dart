@@ -1,0 +1,57 @@
+import '/backend/supabase/supabase.dart';
+import '/flutter_flow/flutter_flow_animations.dart';
+import '/flutter_flow/flutter_flow_drop_down.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/form_field_controller.dart';
+import 'dart:math';
+import 'dart:ui';
+import 'edit_mission_widget.dart' show EditMissionWidget;
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+
+class EditMissionModel extends FlutterFlowModel<EditMissionWidget> {
+  ///  State fields for stateful widgets in this component.
+
+  // State field(s) for name widget.
+  FocusNode? nameFocusNode;
+  TextEditingController? nameTextController;
+  String? Function(BuildContext, String?)? nameTextControllerValidator;
+  // State field(s) for notes widget.
+  FocusNode? notesFocusNode;
+  TextEditingController? notesTextController;
+  String? Function(BuildContext, String?)? notesTextControllerValidator;
+  // State field(s) for xp widget.
+  FocusNode? xpFocusNode;
+  TextEditingController? xpTextController;
+  String? Function(BuildContext, String?)? xpTextControllerValidator;
+  // State field(s) for targetValue widget.
+  FocusNode? targetValueFocusNode;
+  TextEditingController? targetValueTextController;
+  String? Function(BuildContext, String?)? targetValueTextControllerValidator;
+  // State field(s) for trigger widget.
+  String? triggerValue;
+  FormFieldController<String>? triggerValueController;
+
+  @override
+  void initState(BuildContext context) {}
+
+  @override
+  void dispose() {
+    nameFocusNode?.dispose();
+    nameTextController?.dispose();
+
+    notesFocusNode?.dispose();
+    notesTextController?.dispose();
+
+    xpFocusNode?.dispose();
+    xpTextController?.dispose();
+
+    targetValueFocusNode?.dispose();
+    targetValueTextController?.dispose();
+  }
+}
