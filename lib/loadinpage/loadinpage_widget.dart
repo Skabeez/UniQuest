@@ -46,6 +46,7 @@ class _LoadinpageWidgetState extends State<LoadinpageWidget>
         await ProfilesTable().insert({
           'id': currentUserUid,
           'email': currentUserEmail,
+          'onboarding_completed': false,
         });
       }
     });
@@ -177,11 +178,11 @@ class _LoadinpageWidgetState extends State<LoadinpageWidget>
               key: scaffoldKey,
               backgroundColor: const Color(0xFF0F1419),
               body: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      const Color(0xFF1A1F36),
-                      const Color(0xFF0F1419),
+                      Color(0xFF1A1F36),
+                      Color(0xFF0F1419),
                     ],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
@@ -193,10 +194,16 @@ class _LoadinpageWidgetState extends State<LoadinpageWidget>
                 hoverColor: Colors.transparent,
                 highlightColor: Colors.transparent,
                 onTap: () async {
-                  if ((loadinpageProfilesRow?.id == currentUserUid) &&
-                      loadinpageProfilesRow!.onboardingCompleted) {
+                  // Check if user is an existing user with profile data OR completed onboarding
+                  if (loadinpageProfilesRow != null &&
+                      (loadinpageProfilesRow.onboardingCompleted == true ||
+                       loadinpageProfilesRow.username != null && 
+                       loadinpageProfilesRow.username!.isNotEmpty)) {
+                    // Existing user - go to home
+                    // (Either completed onboarding OR has username from before onboarding feature)
                     context.pushNamed(HomeWidget.routeName);
                   } else {
+                    // New user without profile setup - show onboarding
                     context.pushNamed(OnboardingWidget.routeName);
                   }
                 },
@@ -214,8 +221,8 @@ class _LoadinpageWidgetState extends State<LoadinpageWidget>
                         child: Container(
                           width: 100.0,
                           height: 100.0,
-                          decoration: BoxDecoration(
-                            gradient: const LinearGradient(
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
                               colors: [Color(0x661A1F36), Color(0xCC0F1419)],
                               stops: [0.0, 1.0],
                               begin: AlignmentDirectional(0.0, -1.0),

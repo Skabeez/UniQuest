@@ -55,8 +55,11 @@ class _NotifWidgetState extends State<NotifWidget>
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: const Color(0xFF1E1E1E),
-        body: Stack(
-          children: [
+        body: SafeArea(
+          top: true,
+          bottom: false,
+          child: Stack(
+            children: [
             Padding(
               padding: const EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
               child: Row(
@@ -409,6 +412,7 @@ class _NotifWidgetState extends State<NotifWidget>
               ),
             ),
           ],
+          ),
         ),
       ),
     );

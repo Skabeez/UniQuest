@@ -42,9 +42,12 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: const Color(0xFF1E1E1E),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF1E1E1E),
-        automaticallyImplyLeading: false,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: SafeArea(
+          child: AppBar(
+            backgroundColor: const Color(0xFF1E1E1E),
+            automaticallyImplyLeading: false,
         actions: const [],
         flexibleSpace: FlexibleSpaceBar(
           title: Padding(
@@ -65,6 +68,8 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
           titlePadding: const EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 0.0, 0.0),
         ),
         elevation: 0.0,
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),

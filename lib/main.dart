@@ -1,5 +1,6 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
+import 'dart:ui';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
@@ -13,8 +14,6 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'flutter_flow/nav/nav.dart';
 import 'index.dart';
 
 void main() async {
@@ -161,64 +160,151 @@ class _NavBarPageState extends State<NavBarPage> {
     return Scaffold(
       resizeToAvoidBottomInset: !widget.disableResizeToAvoidBottomInset,
       body: _currentPage ?? tabs[_currentPageName],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        onTap: (i) => safeSetState(() {
-          _currentPage = null;
-          _currentPageName = tabs.keys.toList()[i];
-        }),
-        backgroundColor: const Color(0xB3131518),
-        selectedItemColor: const Color(0xFFFFBD59),
-        unselectedItemColor: FlutterFlowTheme.of(context).secondaryText,
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        type: BottomNavigationBarType.fixed,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person,
-              size: 20.0,
+      bottomNavigationBar: ClipRect(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  const Color(0xFF1A1D23).withOpacity(0.85),
+                  const Color(0xFF1A1D23).withOpacity(0.95),
+                ],
+              ),
+              boxShadow: const [
+                BoxShadow(
+                  color: Color(0x4D000000),
+                  blurRadius: 20,
+                  offset: Offset(0, -5),
+                ),
+                BoxShadow(
+                  color: Color(0x1AFFBD59),
+                  blurRadius: 30,
+                  offset: Offset(0, -10),
+                ),
+              ],
             ),
-            label: 'Profile',
-            tooltip: '',
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
+                child: BottomNavigationBar(
+              currentIndex: currentIndex,
+              onTap: (i) => safeSetState(() {
+                _currentPage = null;
+                _currentPageName = tabs.keys.toList()[i];
+              }),
+              backgroundColor: Colors.transparent,
+              selectedItemColor: const Color(0xFFFFBD59),
+              unselectedItemColor: const Color(0xFF5A5D66),
+              selectedFontSize: 12.0,
+              unselectedFontSize: 11.0,
+              showSelectedLabels: true,
+              showUnselectedLabels: false,
+              type: BottomNavigationBarType.fixed,
+              elevation: 0,
+              selectedLabelStyle: const TextStyle(
+                fontWeight: FontWeight.w600,
+                letterSpacing: 0.5,
+              ),
+              items: const <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Padding(
+                    padding: EdgeInsets.only(bottom: 4.0),
+                    child: Icon(
+                      Icons.person_outline_rounded,
+                      size: 26.0,
+                    ),
+                  ),
+                  activeIcon: Padding(
+                    padding: EdgeInsets.only(bottom: 4.0),
+                    child: Icon(
+                      Icons.person_rounded,
+                      size: 28.0,
+                    ),
+                  ),
+                  label: 'Profile',
+                  tooltip: '',
+                ),
+                BottomNavigationBarItem(
+                  icon: Padding(
+                    padding: EdgeInsets.only(bottom: 4.0),
+                    child: Icon(
+                      Icons.notifications_outlined,
+                      size: 26.0,
+                    ),
+                  ),
+                  activeIcon: Padding(
+                    padding: EdgeInsets.only(bottom: 4.0),
+                    child: Icon(
+                      Icons.notifications_rounded,
+                      size: 28.0,
+                    ),
+                  ),
+                  label: 'Inbox',
+                  tooltip: '',
+                ),
+                BottomNavigationBarItem(
+                  icon: Padding(
+                    padding: EdgeInsets.only(bottom: 4.0),
+                    child: Icon(
+                      Icons.home_outlined,
+                      size: 28.0,
+                    ),
+                  ),
+                  activeIcon: Padding(
+                    padding: EdgeInsets.only(bottom: 4.0),
+                    child: Icon(
+                      Icons.home_rounded,
+                      size: 30.0,
+                    ),
+                  ),
+                  label: 'Home',
+                  tooltip: '',
+                ),
+                BottomNavigationBarItem(
+                  icon: Padding(
+                    padding: EdgeInsets.only(bottom: 4.0),
+                    child: Icon(
+                      Icons.check_box_outlined,
+                      size: 26.0,
+                    ),
+                  ),
+                  activeIcon: Padding(
+                    padding: EdgeInsets.only(bottom: 4.0),
+                    child: Icon(
+                      Icons.check_box_rounded,
+                      size: 28.0,
+                    ),
+                  ),
+                  label: 'Tasks',
+                  tooltip: '',
+                ),
+                BottomNavigationBarItem(
+                  icon: Padding(
+                    padding: EdgeInsets.only(bottom: 4.0),
+                    child: Icon(
+                      Icons.settings_outlined,
+                      size: 26.0,
+                    ),
+                  ),
+                  activeIcon: Padding(
+                    padding: EdgeInsets.only(bottom: 4.0),
+                    child: Icon(
+                      Icons.settings_rounded,
+                      size: 28.0,
+                    ),
+                  ),
+                  label: 'Settings',
+                  tooltip: '',
+                )
+              ],
+                ),
+              ),
+            ),
           ),
-          BottomNavigationBarItem(
-            icon: FaIcon(
-              FontAwesomeIcons.solidBell,
-              size: 20.0,
-            ),
-            activeIcon: Icon(
-              Icons.notifications_rounded,
-              size: 22.0,
-            ),
-            label: 'Inbox',
-            tooltip: '',
-          ),
-          BottomNavigationBarItem(
-            icon: FaIcon(
-              FontAwesomeIcons.home,
-              size: 20.0,
-            ),
-            label: 'Home',
-            tooltip: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.featured_play_list_sharp,
-              size: 20.0,
-            ),
-            label: 'To-Do List',
-            tooltip: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.settings_sharp,
-              size: 20.0,
-            ),
-            label: 'Settings',
-            tooltip: '',
-          )
-        ],
+        ),
       ),
     );
   }

@@ -4,6 +4,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:lottie/lottie.dart';
 import 'view_profile_model.dart';
 export 'view_profile_model.dart';
 
@@ -82,9 +83,12 @@ class _ViewProfileWidgetState extends State<ViewProfileWidget>
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: const Color(0xFF1E1E1E),
-            body: Align(
-              alignment: const AlignmentDirectional(0.0, 0.0),
-              child: Stack(
+            body: SafeArea(
+              top: true,
+              bottom: false,
+              child: Align(
+                alignment: const AlignmentDirectional(0.0, 0.0),
+                child: Stack(
                 children: [
                   ListView(
                     padding: EdgeInsets.zero,
@@ -447,12 +451,20 @@ class _ViewProfileWidgetState extends State<ViewProfileWidget>
                                                           MainAxisAlignment
                                                               .center,
                                                       children: [
-                                                        const FaIcon(
-                                                          FontAwesomeIcons.fire,
-                                                          color:
-                                                              Color(0xFFC75C2D),
-                                                          size: 44.0,
-                                                        ),
+                                                        if (streakProfilesRow!.taskStreak! >= 1)
+                                                          Lottie.asset(
+                                                            'assets/jsons/fire.lottie',
+                                                            width: 44.0,
+                                                            height: 44.0,
+                                                            fit: BoxFit.contain,
+                                                          )
+                                                        else
+                                                          const FaIcon(
+                                                            FontAwesomeIcons.fire,
+                                                            color:
+                                                                Color(0xFFC75C2D),
+                                                            size: 44.0,
+                                                          ),
                                                         Padding(
                                                           padding:
                                                               const EdgeInsetsDirectional
@@ -463,7 +475,7 @@ class _ViewProfileWidgetState extends State<ViewProfileWidget>
                                                                       4.0),
                                                           child: Text(
                                                             formatNumber(
-                                                              streakProfilesRow!
+                                                              streakProfilesRow
                                                                   .taskStreak!,
                                                               formatType:
                                                                   FormatType
@@ -1478,6 +1490,7 @@ class _ViewProfileWidgetState extends State<ViewProfileWidget>
                     ],
                   ),
                 ],
+                ),
               ),
             ),
           ),

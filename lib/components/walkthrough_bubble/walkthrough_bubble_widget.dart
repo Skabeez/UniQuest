@@ -45,8 +45,8 @@ class _WalkthroughBubbleWidgetState extends State<WalkthroughBubbleWidget> {
       padding: const EdgeInsets.all(24.0),
       child: Container(
         constraints: const BoxConstraints(
-          maxWidth: 320.0,
-          minHeight: 120.0,
+          maxWidth: 360.0,
+          minHeight: 100.0,
         ),
         decoration: BoxDecoration(
           gradient: const LinearGradient(
@@ -59,16 +59,23 @@ class _WalkthroughBubbleWidgetState extends State<WalkthroughBubbleWidget> {
           ),
           boxShadow: const [
             BoxShadow(
-              blurRadius: 100.0,
-              color: Color(0x33000000),
-              offset: Offset(
-                0.0,
-                2.0,
-              ),
-              spreadRadius: 100.0,
-            )
+              blurRadius: 24.0,
+              color: Color(0x66000000),
+              offset: Offset(0.0, 8.0),
+              spreadRadius: 0.0,
+            ),
+            BoxShadow(
+              blurRadius: 40.0,
+              color: Color(0x33FFBD59),
+              offset: Offset(0.0, 0.0),
+              spreadRadius: -8.0,
+            ),
           ],
           borderRadius: BorderRadius.circular(20.0),
+          border: Border.all(
+            color: const Color(0x40FFBD59),
+            width: 1.5,
+          ),
         ),
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -82,11 +89,11 @@ class _WalkthroughBubbleWidgetState extends State<WalkthroughBubbleWidget> {
                   Container(
                     padding: const EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
-                      color: FlutterFlowTheme.of(context).primary.withValues(alpha: 0.2),
+                      color: FlutterFlowTheme.of(context).primary.withOpacity(0.15),
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                     child: Icon(
-                      Icons.lightbulb_outline,
+                      Icons.auto_awesome,
                       color: FlutterFlowTheme.of(context).primary,
                       size: 20.0,
                     ),
@@ -112,10 +119,10 @@ class _WalkthroughBubbleWidgetState extends State<WalkthroughBubbleWidget> {
                 ),
                 style: FlutterFlowTheme.of(context).bodyMedium.override(
                       fontFamily: 'Feather',
-                      color: const Color(0xFFFFFFFF).withValues(alpha: 0.95),
+                      color: const Color(0xFFFFFFFF).withOpacity(0.92),
                       fontSize: 15.0,
-                      letterSpacing: 0.0,
-                      fontWeight: FontWeight.w400,
+                      letterSpacing: 0.2,
+                      fontWeight: FontWeight.w500,
                     ),
               ),
             ],

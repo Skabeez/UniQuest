@@ -1419,11 +1419,59 @@ class _HomeCopyWidgetState extends State<HomeCopyWidget>
   TutorialCoachMark createPageWalkthrough(BuildContext context) =>
       TutorialCoachMark(
         targets: createWalkthroughTargets(context),
+        colorShadow: Colors.black,
+        paddingFocus: 10,
+        opacityShadow: 0.8,
+        hideSkip: true,
+        useSafeArea: true,
         onFinish: () async {
           safeSetState(() => _model.homeviewController = null);
         },
         onSkip: () {
           return true;
         },
+        onClickTarget: (target) {},
+        onClickTargetWithTapPosition: (target, tapDetails) {},
+        onClickOverlay: (target) {},
+        skipWidget: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+                decoration: BoxDecoration(
+                  color: const Color(0x33FF5252),
+                  borderRadius: BorderRadius.circular(20.0),
+                  border: Border.all(
+                    color: const Color(0x66FF5252),
+                    width: 1.5,
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
+                      Icons.close_rounded,
+                      color: Color(0xFFFF5252),
+                      size: 18.0,
+                    ),
+                    const SizedBox(width: 6.0),
+                    Text(
+                      'Skip All',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                        fontFamily: 'Feather',
+                        color: const Color(0xFFFF5252),
+                        fontSize: 14.0,
+                        letterSpacing: 0.3,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       );
 }

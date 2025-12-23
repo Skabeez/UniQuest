@@ -55,9 +55,12 @@ class _CustomizeProfileWidgetState extends State<CustomizeProfileWidget>
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: const Color(0xFF1E1E1E),
-        body: Align(
-          alignment: const AlignmentDirectional(0.0, 0.0),
-          child: Stack(
+        body: SafeArea(
+          top: true,
+          bottom: false,
+          child: Align(
+            alignment: const AlignmentDirectional(0.0, 0.0),
+            child: Stack(
             alignment: const AlignmentDirectional(0.0, 0.0),
             children: [
               ListView(
@@ -789,6 +792,7 @@ class _CustomizeProfileWidgetState extends State<CustomizeProfileWidget>
                 ],
               ),
             ],
+            ),
           ),
         ),
       ),

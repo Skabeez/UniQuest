@@ -74,13 +74,16 @@ class _TodoListWidgetState extends State<TodoListWidget>
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: const Color(0xFF1E1E1E),
-        body: Stack(
-          children: [
+        body: SafeArea(
+          top: true,
+          bottom: false,
+          child: Stack(
+            children: [
             Column(
               mainAxisSize: MainAxisSize.max,
               children: [
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     children: [
@@ -823,6 +826,7 @@ class _TodoListWidgetState extends State<TodoListWidget>
               ),
             ),
           ],
+          ),
         ),
       ),
     );

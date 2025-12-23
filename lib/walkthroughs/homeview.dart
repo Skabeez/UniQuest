@@ -21,7 +21,7 @@ List<TargetFocus> createWalkthroughTargets(BuildContext context) => [
           TargetContent(
             align: ContentAlign.bottom,
             builder: (context, __) => const WalkthroughBubbleWidget(
-              text: 'This is Container will bring you to the to do list page',
+              text: 'This container will bring you to the to-do list page',
             ),
           ),
         ],

@@ -54,8 +54,11 @@ class _AchievementsWidgetState extends State<AchievementsWidget>
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
-        body: Stack(
-          children: [
+        body: SafeArea(
+          top: true,
+          bottom: false,
+          child: Stack(
+            children: [
             Row(
               mainAxisSize: MainAxisSize.max,
               children: [
@@ -352,6 +355,7 @@ class _AchievementsWidgetState extends State<AchievementsWidget>
               ),
             ),
           ],
+          ),
         ),
       ),
     );

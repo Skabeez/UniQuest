@@ -77,7 +77,7 @@ class _WelcomeviewWidgetState extends State<WelcomeviewWidget> {
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: Text(
-                            'Hello Welcome to our onboarding walthrough on how to create a task using our app UNI-QUEST.\n\nThis walkthrough will help you navigate and understand the concept of task creation in this app.\n\nHAPPY QUESTING!',
+                            'Hello! Welcome to our onboarding walkthrough on how to create a task using our app, UNI-QUEST.\n\nThis walkthrough will help you navigate and understand the concept of task creation in this app.\n\nHAPPY QUESTING!',
                             textAlign: TextAlign.center,
                             style:
                                 FlutterFlowTheme.of(context).bodyLarge.override(

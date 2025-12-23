@@ -1,4 +1,5 @@
 import '/backend/supabase/supabase.dart';
+import '/components/lottie_burst_overlay/lottie_burst_overlay_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -262,6 +263,16 @@ class _MenuTaskWidgetState extends State<MenuTaskWidget> {
                         widget.tasksid,
                       ),
                     );
+                    
+                    // 🎉 Trigger confetti burst!
+                    if (context.mounted) {
+                      LottieBurstOverlay.showCentered(
+                        context: context,
+                        lottieAsset: 'assets/jsons/confetti.lottie',
+                        size: 400.0,
+                      );
+                    }
+                    
                     await showDialog(
                       context: context,
                       builder: (alertDialogContext) {

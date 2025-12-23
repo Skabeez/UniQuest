@@ -1,5 +1,6 @@
 import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
+import '/components/lottie_burst_overlay/lottie_burst_overlay_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
@@ -79,6 +80,12 @@ class _AvatarWidgetState extends State<AvatarWidget> {
               currentUserUid,
             ),
           );
+          if (context.mounted) {
+            LottieBurstOverlay.showCentered(
+              context: context,
+              lottieAsset: 'assets/jsons/black_rainbow_cat.lottie',
+            );
+          }
           await showDialog(
             context: context,
             builder: (alertDialogContext) {

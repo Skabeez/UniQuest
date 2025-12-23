@@ -163,11 +163,14 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
         child: Scaffold(
           key: scaffoldKey,
           backgroundColor: const Color(0xFF1E1E1E),
-          body: ListView(
-            padding: EdgeInsets.zero,
-            shrinkWrap: true,
-            scrollDirection: Axis.vertical,
-            children: [
+          body: SafeArea(
+            top: true,
+            bottom: false,
+            child: ListView(
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              children: [
               Stack(
                 children: [
                   Padding(
@@ -1282,6 +1285,7 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                 ],
               ),
             ],
+            ),
           ),
         ),
       ),

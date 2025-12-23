@@ -6,6 +6,7 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:lottie/lottie.dart';
 import 'profile_page_model.dart';
 export 'profile_page_model.dart';
 
@@ -79,10 +80,13 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget>
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: const Color(0xFF1E1E1E),
-            body: Align(
-              alignment: const AlignmentDirectional(0.0, 0.0),
-              child: Stack(
-                children: [
+            body: SafeArea(
+              top: true,
+              bottom: false,
+              child: Align(
+                alignment: const AlignmentDirectional(0.0, 0.0),
+                child: Stack(
+                  children: [
                   ListView(
                     padding: EdgeInsets.zero,
                     shrinkWrap: true,
@@ -538,12 +542,23 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget>
                                                           MainAxisAlignment
                                                               .center,
                                                       children: [
-                                                        const FaIcon(
-                                                          FontAwesomeIcons.fire,
-                                                          color:
-                                                              Color(0xFFC75C2D),
-                                                          size: 44.0,
-                                                        ),
+                                                        if (streakProfilesRow?.taskStreak != null &&
+                                                            streakProfilesRow!.taskStreak! >= 1)
+                                                          SizedBox(
+                                                            width: 44.0,
+                                                            height: 44.0,
+                                                            child: Lottie.asset(
+                                                              'assets/jsons/fire.lottie',
+                                                              fit: BoxFit.contain,
+                                                            ),
+                                                          )
+                                                        else
+                                                          const FaIcon(
+                                                            FontAwesomeIcons.fire,
+                                                            color:
+                                                                Color(0xFFC75C2D),
+                                                            size: 44.0,
+                                                          ),
                                                         Padding(
                                                           padding:
                                                               const EdgeInsetsDirectional
@@ -1712,6 +1727,7 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget>
                     ],
                   ),
                 ],
+                ),
               ),
             ),
           ),

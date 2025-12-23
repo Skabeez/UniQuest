@@ -1,5 +1,6 @@
 import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
+import '/components/lottie_burst_overlay/lottie_burst_overlay_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -439,7 +440,19 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                           ),
                         );
 
-                        context.pushNamed(WelcomeviewWidget.routeName);
+                        if (context.mounted) {
+                          LottieBurstOverlay.showCentered(
+                            context: context,
+                            lottieAsset: 'assets/jsons/businessman_rocket.lottie',
+                          );
+                          
+                          // Wait for animation to be visible before navigating
+                          await Future.delayed(const Duration(milliseconds: 1200));
+                        }
+
+                        if (context.mounted) {
+                          context.pushNamed(WelcomeviewWidget.routeName);
+                        }
                       },
                       text: 'Continue',
                       options: FFButtonOptions(
