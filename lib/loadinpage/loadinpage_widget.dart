@@ -299,9 +299,27 @@ class _LoadinpageWidgetState extends State<LoadinpageWidget>
                                 alignment: const AlignmentDirectional(0.0, 0.0),
                                 child: FFButtonWidget(
                                   onPressed: () async {
-                                    context.goNamed('home');
+                                    // Check if user has a profile AND has completed onboarding
+                                    if (loadinpageProfilesRow != null &&
+                                        loadinpageProfilesRow
+                                                .onboardingCompleted ==
+                                            true) {
+                                      // Existing user who completed onboarding - go to main home
+                                      context.pushNamed(HomeWidget.routeName);
+                                    } else if (loadinpageProfilesRow != null &&
+                                        loadinpageProfilesRow.username !=
+                                            null &&
+                                        loadinpageProfilesRow
+                                            .username!.isNotEmpty) {
+                                      // Legacy user with username but no onboarding_completed flag - go to main home
+                                      context.pushNamed(HomeWidget.routeName);
+                                    } else {
+                                      // New user OR user who hasn't completed onboarding - show onboarding
+                                      context.pushNamed(
+                                          OnboardingWidget.routeName);
+                                    }
                                   },
-                                  text: 'Continue to Home',
+                                  text: 'Continue',
                                   options: FFButtonOptions(
                                     height: 48.0,
                                     padding:
