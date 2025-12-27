@@ -291,7 +291,7 @@ class _TaskDivWidgetState extends State<TaskDivWidget> {
                           print('Button pressed ...');
                         },
                         text:
-                            dateTimeFormat("MMM, dd", widget.tasks!.dueDate!),
+                            dateTimeFormat("MMM, dd", widget.tasks!.dueDate),
                         icon: const Icon(
                           Icons.calendar_today_outlined,
                           size: 15.0,
