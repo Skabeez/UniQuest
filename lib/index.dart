@@ -31,3 +31,4 @@ export '/login_redirect/login_redirect_widget.dart' show LoginRedirectWidget;
 export '/signup/signup_widget.dart' show SignupWidget;
 export '/welcome/welcome_widget.dart' show WelcomeWidget;
 export '/view_profile/view_profile_widget.dart' show ViewProfileWidget;
+export '/email_confirm/email_confirm_widget.dart' show EmailConfirmWidget;

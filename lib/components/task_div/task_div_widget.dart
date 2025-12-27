@@ -135,18 +135,22 @@ class _TaskDivWidgetState extends State<TaskDivWidget> {
                         padding:
                             const EdgeInsetsDirectional.fromSTEB(0.0, 30.0, 0.0, 0.0),
                         child: Text(
-                          valueOrDefault<String>(
-                            widget.tasks?.title,
-                            'title',
-                          ),
+                          (widget.tasks == null || widget.tasks!.title.trim().isEmpty)
+                              ? '(Untitled Task)'
+                              : widget.tasks!.title,
                           style: FlutterFlowTheme.of(context)
                               .bodyMedium
                               .override(
                                 fontFamily: 'Feather',
-                                color: FlutterFlowTheme.of(context).primaryText,
+                                color: (widget.tasks == null || widget.tasks!.title.trim().isEmpty)
+                                    ? FlutterFlowTheme.of(context).secondaryText
+                                    : FlutterFlowTheme.of(context).primaryText,
                                 fontSize: 20.0,
                                 letterSpacing: 0.0,
                                 fontWeight: FontWeight.bold,
+                                fontStyle: (widget.tasks == null || widget.tasks!.title.trim().isEmpty)
+                                    ? FontStyle.italic
+                                    : FontStyle.normal,
                               ),
                         ),
                       ),

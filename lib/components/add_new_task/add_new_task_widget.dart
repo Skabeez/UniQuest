@@ -586,10 +586,6 @@ class _AddNewTaskWidgetState extends State<AddNewTaskWidget>
                                     datePickedDate.day,
                                   );
                                 });
-                              } else if (_model.datePicked != null) {
-                                safeSetState(() {
-                                  _model.datePicked = getCurrentTimestamp;
-                                });
                               }
                             },
                             child: Stack(
@@ -691,16 +687,70 @@ class _AddNewTaskWidgetState extends State<AddNewTaskWidget>
                           alignment: const AlignmentDirectional(0.0, 0.05),
                           child: FFButtonWidget(
                             onPressed: () async {
+                              // Validate that task name is not empty
+                              if (_model.tasknameTextController.text.trim().isEmpty) {
+                                await showDialog(
+                                  context: context,
+                                  builder: (alertDialogContext) {
+                                    return AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(16.0),
+                                      ),
+                                      title: const Text('Task Name Required'),
+                                      content: const Text(
+                                        'Please enter a name for your task before saving.',
+                                        style: TextStyle(fontSize: 14.0),
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(alertDialogContext),
+                                          style: TextButton.styleFrom(
+                                            foregroundColor: FlutterFlowTheme.of(context).primary,
+                                          ),
+                                          child: const Text('Got it'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                                return;
+                              }
+                              
+                              // Validate that tags are not empty
+                              if (_model.tagsTextController.text.trim().isEmpty) {
+                                await showDialog(
+                                  context: context,
+                                  builder: (alertDialogContext) {
+                                    return AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(16.0),
+                                      ),
+                                      title: const Text('Tags Required'),
+                                      content: const Text(
+                                        'Please add at least one tag for your task.',
+                                        style: TextStyle(fontSize: 14.0),
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(alertDialogContext),
+                                          style: TextButton.styleFrom(
+                                            foregroundColor: FlutterFlowTheme.of(context).primary,
+                                          ),
+                                          child: const Text('Got it'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                                return;
+                              }
+                              
                               await TasksTable().insert({
-                                'title': valueOrDefault<String>(
-                                  _model.tasknameTextController.text,
-                                  '\"Test Task\"',
-                                ),
-                                'description': valueOrDefault<String>(
-                                  _model.notesTextController.text,
-                                  '\"Test Task\"',
-                                ),
-                                'tags': _model.tagsTextController.text,
+                                'title': _model.tasknameTextController.text.trim(),
+                                'description': _model.notesTextController.text.trim(),
+                                'tags': _model.tagsTextController.text.trim(),
                                 'id': currentUserUid,
                                 'priority': _model.priorityValue,
                                 'status': 'To-Do',
@@ -712,13 +762,22 @@ class _AddNewTaskWidgetState extends State<AddNewTaskWidget>
                                 context: context,
                                 builder: (alertDialogContext) {
                                   return AlertDialog(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16.0),
+                                    ),
                                     title: const Text('Success!'),
-                                    content: const Text('New Task Created!'),
+                                    content: const Text(
+                                      'Your new task has been created.',
+                                      style: TextStyle(fontSize: 14.0),
+                                    ),
                                     actions: [
                                       TextButton(
                                         onPressed: () =>
                                             Navigator.pop(alertDialogContext),
-                                        child: const Text('Ok'),
+                                        style: TextButton.styleFrom(
+                                          foregroundColor: FlutterFlowTheme.of(context).primary,
+                                        ),
+                                        child: const Text('Got it'),
                                       ),
                                     ],
                                   );

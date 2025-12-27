@@ -13,10 +13,13 @@ Future<User?> emailCreateAccountFunc(
   String email,
   String password,
 ) async {
+  // Use deep link for email confirmation redirect
+  const String redirectUrl = 'uniquest://uniquest.com/email-confirm';
+  
   final AuthResponse res = await SupaFlow.client.auth.signUp(
     email: email,
     password: password,
-    // No emailRedirectTo - let Supabase use the default site URL configured in dashboard
+    emailRedirectTo: redirectUrl,
   );
 
   // Return the user even if email is not confirmed yet

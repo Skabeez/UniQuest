@@ -1506,6 +1506,7 @@ class _OnboardingContainerWidgetState extends State<OnboardingContainerWidget>
                                         weekStartsMonday: true,
                                         twoRowHeader: true,
                                         rowHeight: 48.0,
+                                        initialDate: getCurrentTimestamp,
                                         onChange:
                                             (DateTimeRange? newSelectedDate) {
                                           safeSetState(() =>
@@ -2362,19 +2363,13 @@ class _OnboardingContainerWidgetState extends State<OnboardingContainerWidget>
                                           child: FFButtonWidget(
                                             onPressed: () async {
                                               await TasksTable().insert({
-                                                'title': valueOrDefault<String>(
-                                                  _model.tasknameTextController
-                                                      .text,
-                                                  '\"Test Task\"',
-                                                ),
-                                                'description':
-                                                    valueOrDefault<String>(
-                                                  _model
-                                                      .notesTextController.text,
-                                                  '\"Test Task\"',
-                                                ),
-                                                'tags': _model
-                                                    .tagsTextController.text,
+                                                'title': _model.tasknameTextController.text.trim().isEmpty 
+                                                    ? 'Sample Task' 
+                                                    : _model.tasknameTextController.text.trim(),
+                                                'description': _model.notesTextController.text.trim(),
+                                                'tags': _model.tagsTextController.text.trim().isEmpty
+                                                    ? 'Demo'
+                                                    : _model.tagsTextController.text.trim(),
                                                 'priority': '',
                                                 'status': '',
                                                 'id': currentUserUid,
@@ -2384,15 +2379,23 @@ class _OnboardingContainerWidgetState extends State<OnboardingContainerWidget>
                                                 context: context,
                                                 builder: (alertDialogContext) {
                                                   return AlertDialog(
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(16.0),
+                                                    ),
                                                     title: const Text('Success!'),
                                                     content: const Text(
-                                                        'New Task Created!'),
+                                                        'Your new task has been created.',
+                                                        style: TextStyle(fontSize: 14.0),
+                                                    ),
                                                     actions: [
                                                       TextButton(
                                                         onPressed: () =>
                                                             Navigator.pop(
                                                                 alertDialogContext),
-                                                        child: const Text('Ok'),
+                                                        style: TextButton.styleFrom(
+                                                          foregroundColor: FlutterFlowTheme.of(context).primary,
+                                                        ),
+                                                        child: const Text('Got it'),
                                                       ),
                                                     ],
                                                   );
@@ -2505,14 +2508,14 @@ class _OnboardingContainerWidgetState extends State<OnboardingContainerWidget>
                                     },
                                   );
                                 },
-                                text: 'GET STARTED!!',
+                                text: 'Get Started',
                                 options: FFButtonOptions(
                                   height: 40.0,
                                   padding: const EdgeInsetsDirectional.fromSTEB(
                                       16.0, 0.0, 16.0, 0.0),
                                   iconPadding: const EdgeInsetsDirectional.fromSTEB(
                                       0.0, 0.0, 0.0, 0.0),
-                                  color: const Color(0xFF1A9C0E),
+                                  color: const Color(0xFFFFBD59),
                                   textStyle: FlutterFlowTheme.of(context)
                                       .titleSmall
                                       .override(
