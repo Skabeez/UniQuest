@@ -214,7 +214,7 @@ class _TaskDivWidgetState extends State<TaskDivWidget> {
                         },
                         text: valueOrDefault<String>(
                           widget.tasks?.priority,
-                          'no priority',
+                          'no prio',
                         ),
                         options: FFButtonOptions(
                           height: 23.0,
