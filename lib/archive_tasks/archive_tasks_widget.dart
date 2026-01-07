@@ -239,10 +239,24 @@ class _ArchiveTasksWidgetState extends State<ArchiveTasksWidget>
                                                   builder:
                                                       (alertDialogContext) {
                                                     return AlertDialog(
-                                                      title:
-                                                          const Text('Clear Archive'),
+                                                      shape: RoundedRectangleBorder(
+                                                        borderRadius: BorderRadius.circular(16.0),
+                                                      ),
+                                                      title: const Text(
+                                                        'Clear Archive?',
+                                                        style: TextStyle(
+                                                          fontSize: 18.0,
+                                                          fontWeight: FontWeight.w600,
+                                                          color: Color(0xFF1E1E1E),
+                                                        ),
+                                                      ),
                                                       content: const Text(
-                                                          'Are you certain? This cannot be undone.'),
+                                                        'Are you certain? This action cannot be undone.',
+                                                        style: TextStyle(
+                                                          fontSize: 14.0,
+                                                          color: Color(0xFF6B7280),
+                                                        ),
+                                                      ),
                                                       actions: [
                                                         TextButton(
                                                           onPressed: () =>
@@ -280,7 +294,24 @@ class _ArchiveTasksWidgetState extends State<ArchiveTasksWidget>
                                             context: context,
                                             builder: (alertDialogContext) {
                                               return AlertDialog(
-                                                title: const Text('Archive Cleared'),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(16.0),
+                                                ),
+                                                title: const Text(
+                                                  'Archive Cleared',
+                                                  style: TextStyle(
+                                                    fontSize: 18.0,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Color(0xFF1E1E1E),
+                                                  ),
+                                                ),
+                                                content: const Text(
+                                                  'All archived tasks have been deleted.',
+                                                  style: TextStyle(
+                                                    fontSize: 14.0,
+                                                    color: Color(0xFF6B7280),
+                                                  ),
+                                                ),
                                                 actions: [
                                                   TextButton(
                                                     onPressed: () =>
@@ -297,7 +328,24 @@ class _ArchiveTasksWidgetState extends State<ArchiveTasksWidget>
                                             context: context,
                                             builder: (alertDialogContext) {
                                               return AlertDialog(
-                                                title: const Text('Cancelled'),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(16.0),
+                                                ),
+                                                title: const Text(
+                                                  'Cancelled',
+                                                  style: TextStyle(
+                                                    fontSize: 18.0,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Color(0xFF1E1E1E),
+                                                  ),
+                                                ),
+                                                content: const Text(
+                                                  'The action has been cancelled.',
+                                                  style: TextStyle(
+                                                    fontSize: 14.0,
+                                                    color: Color(0xFF6B7280),
+                                                  ),
+                                                ),
                                                 actions: [
                                                   TextButton(
                                                     onPressed: () =>

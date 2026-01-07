@@ -91,7 +91,24 @@ class _NotifWidgetState extends State<NotifWidget>
                           context: context,
                           builder: (alertDialogContext) {
                             return AlertDialog(
-                              title: const Text('Marked all as Read'),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16.0),
+                              ),
+                              title: Text(
+                                'All Marked as Read',
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xFF1E1E1E),
+                                ),
+                              ),
+                              content: Text(
+                                'All notifications have been marked as read.',
+                                style: TextStyle(
+                                  fontSize: 14.0,
+                                  color: Color(0xFF6B7280),
+                                ),
+                              ),
                               actions: [
                                 TextButton(
                                   onPressed: () =>

@@ -3,6 +3,8 @@ import '/components/lottie_burst_overlay/lottie_burst_overlay_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/services/audio_manager.dart';
+import '/services/sound_effects.dart';
 import 'package:flutter/material.dart';
 import 'menu_task_model.dart';
 export 'menu_task_model.dart';
@@ -34,6 +36,9 @@ class _MenuTaskWidgetState extends State<MenuTaskWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => MenuTaskModel());
+    
+    // Play popup sound
+    AudioManager().playSfx(SoundEffects.popUp);
   }
 
   @override
@@ -118,8 +123,24 @@ class _MenuTaskWidgetState extends State<MenuTaskWidget> {
                       context: context,
                       builder: (alertDialogContext) {
                         return AlertDialog(
-                          title: const Text('Success!'),
-                          content: const Text('The task has been deleted.'),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16.0),
+                          ),
+                          title: const Text(
+                            'Success!',
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFF1E1E1E),
+                            ),
+                          ),
+                          content: const Text(
+                            'The task has been deleted successfully.',
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              color: Color(0xFF6B7280),
+                            ),
+                          ),
                           actions: [
                             TextButton(
                               onPressed: () =>
@@ -136,8 +157,24 @@ class _MenuTaskWidgetState extends State<MenuTaskWidget> {
                       context: context,
                       builder: (alertDialogContext) {
                         return AlertDialog(
-                          title: const Text('Cancelled.'),
-                          content: const Text('You\'ve cancelled this action.'),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16.0),
+                          ),
+                          title: const Text(
+                            'Cancelled',
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFF1E1E1E),
+                            ),
+                          ),
+                          content: const Text(
+                            'The action has been cancelled.',
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              color: Color(0xFF6B7280),
+                            ),
+                          ),
                           actions: [
                             TextButton(
                               onPressed: () =>
@@ -191,7 +228,24 @@ class _MenuTaskWidgetState extends State<MenuTaskWidget> {
                     context: context,
                     builder: (alertDialogContext) {
                       return AlertDialog(
-                        content: const Text('Success!'),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16.0),
+                        ),
+                        title: const Text(
+                          'Success!',
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF1E1E1E),
+                          ),
+                        ),
+                        content: const Text(
+                          'Task marked as ongoing.',
+                          style: TextStyle(
+                            fontSize: 14.0,
+                            color: Color(0xFF6B7280),
+                          ),
+                        ),
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.pop(alertDialogContext),
@@ -234,8 +288,24 @@ class _MenuTaskWidgetState extends State<MenuTaskWidget> {
                         context: context,
                         builder: (alertDialogContext) {
                           return AlertDialog(
-                            title: const Text('Confirmation'),
-                            content: const Text('This action cannot be undone.'),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16.0),
+                            ),
+                            title: const Text(
+                              'Complete Task?',
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xFF1E1E1E),
+                              ),
+                            ),
+                            content: const Text(
+                              'This action cannot be undone.',
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                color: Color(0xFF6B7280),
+                              ),
+                            ),
                             actions: [
                               TextButton(
                                 onPressed: () =>
@@ -285,8 +355,24 @@ class _MenuTaskWidgetState extends State<MenuTaskWidget> {
                       context: context,
                       builder: (alertDialogContext) {
                         return AlertDialog(
-                          title: const Text('Success!'),
-                          content: const Text('Congrats on completing a task.'),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16.0),
+                          ),
+                          title: const Text(
+                            'Success!',
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFF1E1E1E),
+                            ),
+                          ),
+                          content: const Text(
+                            'Congrats on completing a task! 🎉',
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              color: Color(0xFF6B7280),
+                            ),
+                          ),
                           actions: [
                             TextButton(
                               onPressed: () =>

@@ -5,6 +5,8 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
+import '/services/audio_manager.dart';
+import '/services/sound_effects.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -34,6 +36,9 @@ class _AddMissionWidgetState extends State<AddMissionWidget>
   void initState() {
     super.initState();
     _model = createModel(context, () => AddMissionModel());
+
+    // Play popup sound
+    AudioManager().playSfx(SoundEffects.popUp);
 
     _model.nameTextController ??= TextEditingController();
     _model.nameFocusNode ??= FocusNode();
@@ -117,10 +122,11 @@ class _AddMissionWidgetState extends State<AddMissionWidget>
                 ],
                 borderRadius: BorderRadius.circular(16.0),
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                   Padding(
                     padding:
                         const EdgeInsetsDirectional.fromSTEB(24.0, 16.0, 0.0, 0.0),
@@ -158,30 +164,33 @@ class _AddMissionWidgetState extends State<AddMissionWidget>
                       Padding(
                         padding: const EdgeInsetsDirectional.fromSTEB(
                             16.0, 16.0, 16.0, 0.0),
-                        child: TextFormField(
-                          controller: _model.nameTextController,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  4.0, 0.0, 0.0, 6.0),
+                              child: Text(
+                                'Mission Name',
+                                style: FlutterFlowTheme.of(context)
+                                    .bodySmall
+                                    .override(
+                                      fontFamily: 'Feather',
+                                      color: const Color(0xFF9CA3AF),
+                                      fontSize: 12.0,
+                                      letterSpacing: 0.5,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                              ),
+                            ),
+                            TextFormField(
+                              controller: _model.nameTextController,
                           focusNode: _model.nameFocusNode,
                           autofocus: true,
                           obscureText: false,
                           decoration: InputDecoration(
-                            labelText: ' Mission Name',
-                            labelStyle: FlutterFlowTheme.of(context)
-                                .labelMedium
-                                .override(
-                                  font: GoogleFonts.plusJakartaSans(
-                                    fontWeight: FontWeight.w500,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .fontStyle,
-                                  ),
-                                  color: const Color(0xFF606A85),
-                                  fontSize: 14.0,
-                                  letterSpacing: 0.0,
-                                  fontWeight: FontWeight.w500,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontStyle,
-                                ),
+                            hintText: 'Mission Name',
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
                             hintStyle: FlutterFlowTheme.of(context)
                                 .labelMedium
                                 .override(
@@ -251,35 +260,40 @@ class _AddMissionWidgetState extends State<AddMissionWidget>
                           cursorColor: const Color(0xFF6F61EF),
                           validator: _model.nameTextControllerValidator
                               .asValidator(context),
+                            ),
+                          ],
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsetsDirectional.fromSTEB(
-                            16.0, 16.0, 16.0, 0.0),
-                        child: TextFormField(
-                          controller: _model.notesTextController,
+                            16.0, 12.0, 16.0, 0.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  4.0, 0.0, 0.0, 6.0),
+                              child: Text(
+                                'Description',
+                                style: FlutterFlowTheme.of(context)
+                                    .bodySmall
+                                    .override(
+                                      fontFamily: 'Feather',
+                                      color: const Color(0xFF9CA3AF),
+                                      fontSize: 12.0,
+                                      letterSpacing: 0.5,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                              ),
+                            ),
+                            TextFormField(
+                              controller: _model.notesTextController,
                           focusNode: _model.notesFocusNode,
                           autofocus: true,
                           obscureText: false,
                           decoration: InputDecoration(
-                            labelText: 'Description',
-                            labelStyle: FlutterFlowTheme.of(context)
-                                .labelMedium
-                                .override(
-                                  font: GoogleFonts.plusJakartaSans(
-                                    fontWeight: FontWeight.w500,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .fontStyle,
-                                  ),
-                                  color: const Color(0xFF606A85),
-                                  fontSize: 14.0,
-                                  letterSpacing: 0.0,
-                                  fontWeight: FontWeight.w500,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontStyle,
-                                ),
+                            hintText: 'Description',
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
                             hintStyle: FlutterFlowTheme.of(context)
                                 .labelMedium
                                 .override(
@@ -349,35 +363,40 @@ class _AddMissionWidgetState extends State<AddMissionWidget>
                           cursorColor: const Color(0xFF6F61EF),
                           validator: _model.notesTextControllerValidator
                               .asValidator(context),
+                            ),
+                          ],
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsetsDirectional.fromSTEB(
-                            16.0, 16.0, 16.0, 0.0),
-                        child: TextFormField(
-                          controller: _model.xpTextController,
+                            16.0, 12.0, 16.0, 0.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  4.0, 0.0, 0.0, 6.0),
+                              child: Text(
+                                'Amount of XP',
+                                style: FlutterFlowTheme.of(context)
+                                    .bodySmall
+                                    .override(
+                                      fontFamily: 'Feather',
+                                      color: const Color(0xFF9CA3AF),
+                                      fontSize: 12.0,
+                                      letterSpacing: 0.5,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                              ),
+                            ),
+                            TextFormField(
+                              controller: _model.xpTextController,
                           focusNode: _model.xpFocusNode,
                           autofocus: true,
                           obscureText: false,
                           decoration: InputDecoration(
-                            labelText: 'Amount of XP ',
-                            labelStyle: FlutterFlowTheme.of(context)
-                                .labelMedium
-                                .override(
-                                  font: GoogleFonts.plusJakartaSans(
-                                    fontWeight: FontWeight.w500,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .fontStyle,
-                                  ),
-                                  color: const Color(0xFF606A85),
-                                  fontSize: 14.0,
-                                  letterSpacing: 0.0,
-                                  fontWeight: FontWeight.w500,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontStyle,
-                                ),
+                            hintText: 'Amount of XP',
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
                             hintStyle: FlutterFlowTheme.of(context)
                                 .labelMedium
                                 .override(
@@ -447,36 +466,40 @@ class _AddMissionWidgetState extends State<AddMissionWidget>
                           cursorColor: const Color(0xFF6F61EF),
                           validator: _model.xpTextControllerValidator
                               .asValidator(context),
+                            ),
+                          ],
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsetsDirectional.fromSTEB(
-                            16.0, 16.0, 16.0, 0.0),
-                        child: TextFormField(
-                          controller: _model.targetValueTextController,
+                            16.0, 12.0, 16.0, 0.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  4.0, 0.0, 0.0, 6.0),
+                              child: Text(
+                                'Target Value',
+                                style: FlutterFlowTheme.of(context)
+                                    .bodySmall
+                                    .override(
+                                      fontFamily: 'Feather',
+                                      color: const Color(0xFF9CA3AF),
+                                      fontSize: 12.0,
+                                      letterSpacing: 0.5,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                              ),
+                            ),
+                            TextFormField(
+                              controller: _model.targetValueTextController,
                           focusNode: _model.targetValueFocusNode,
                           autofocus: true,
                           obscureText: false,
                           decoration: InputDecoration(
-                            labelText:
-                                'Target Value (number of action must be done to complete the mission)',
-                            labelStyle: FlutterFlowTheme.of(context)
-                                .labelMedium
-                                .override(
-                                  font: GoogleFonts.plusJakartaSans(
-                                    fontWeight: FontWeight.w500,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .fontStyle,
-                                  ),
-                                  color: const Color(0xFF606A85),
-                                  fontSize: 14.0,
-                                  letterSpacing: 0.0,
-                                  fontWeight: FontWeight.w500,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontStyle,
-                                ),
+                            hintText: 'Target Value',
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
                             hintStyle: FlutterFlowTheme.of(context)
                                 .labelMedium
                                 .override(
@@ -546,6 +569,8 @@ class _AddMissionWidgetState extends State<AddMissionWidget>
                           cursorColor: const Color(0xFF6F61EF),
                           validator: _model.targetValueTextControllerValidator
                               .asValidator(context),
+                            ),
+                          ],
                         ),
                       ),
                       Align(
@@ -662,8 +687,24 @@ class _AddMissionWidgetState extends State<AddMissionWidget>
                                 context: context,
                                 builder: (alertDialogContext) {
                                   return AlertDialog(
-                                    title: const Text('Success!'),
-                                    content: const Text('Mission has been Created.'),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16.0),
+                                    ),
+                                    title: const Text(
+                                      'Success!',
+                                      style: TextStyle(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.w600,
+                                        color: Color(0xFF1E1E1E),
+                                      ),
+                                    ),
+                                    content: const Text(
+                                      'Mission has been created successfully.',
+                                      style: TextStyle(
+                                        fontSize: 14.0,
+                                        color: Color(0xFF6B7280),
+                                      ),
+                                    ),
                                     actions: [
                                       TextButton(
                                         onPressed: () =>
@@ -713,6 +754,7 @@ class _AddMissionWidgetState extends State<AddMissionWidget>
                     ),
                   ),
                 ],
+                ),
               ),
             ).animateOnPageLoad(animationsMap['containerOnPageLoadAnimation']!),
           ),

@@ -4,6 +4,7 @@ import '/components/achievements_div/achievements_div_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/index.dart';
+import '/services/audio_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'achievements_model.dart';
@@ -29,6 +30,8 @@ class _AchievementsWidgetState extends State<AchievementsWidget>
   void initState() {
     super.initState();
     _model = createModel(context, () => AchievementsModel());
+
+    AudioManager().playMainBgm();
 
     _model.tabBarController = TabController(
       vsync: this,

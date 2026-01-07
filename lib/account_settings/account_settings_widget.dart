@@ -243,30 +243,8 @@ class _AccountSettingsWidgetState extends State<AccountSettingsWidget> {
                                   focusNode: _model.textFieldFocusNode1,
                                   obscureText: false,
                                   decoration: InputDecoration(
-                                    labelText: 'Change your usernme',
-                                    labelStyle: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .override(
-                                          font: GoogleFonts.manrope(
-                                            fontWeight:
-                                                FlutterFlowTheme.of(context)
-                                                    .labelMedium
-                                                    .fontWeight,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .labelMedium
-                                                    .fontStyle,
-                                          ),
-                                          letterSpacing: 0.0,
-                                          fontWeight:
-                                              FlutterFlowTheme.of(context)
-                                                  .labelMedium
-                                                  .fontWeight,
-                                          fontStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .labelMedium
-                                                  .fontStyle,
-                                        ),
+                                    hintText: 'Change your usernme',
+                                    floatingLabelBehavior: FloatingLabelBehavior.never,
                                     hintStyle: FlutterFlowTheme.of(context)
                                         .labelMedium
                                         .override(
@@ -370,30 +348,8 @@ class _AccountSettingsWidgetState extends State<AccountSettingsWidget> {
                                   focusNode: _model.textFieldFocusNode2,
                                   obscureText: false,
                                   decoration: InputDecoration(
-                                    labelText: 'Change your bio',
-                                    labelStyle: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .override(
-                                          font: GoogleFonts.manrope(
-                                            fontWeight:
-                                                FlutterFlowTheme.of(context)
-                                                    .labelMedium
-                                                    .fontWeight,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .labelMedium
-                                                    .fontStyle,
-                                          ),
-                                          letterSpacing: 0.0,
-                                          fontWeight:
-                                              FlutterFlowTheme.of(context)
-                                                  .labelMedium
-                                                  .fontWeight,
-                                          fontStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .labelMedium
-                                                  .fontStyle,
-                                        ),
+                                    hintText: 'Change your bio',
+                                    floatingLabelBehavior: FloatingLabelBehavior.never,
                                     hintStyle: FlutterFlowTheme.of(context)
                                         .labelMedium
                                         .override(
@@ -581,30 +537,8 @@ class _AccountSettingsWidgetState extends State<AccountSettingsWidget> {
                                   focusNode: _model.textFieldFocusNode3,
                                   obscureText: false,
                                   decoration: InputDecoration(
-                                    labelText: 'New Password',
-                                    labelStyle: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .override(
-                                          font: GoogleFonts.manrope(
-                                            fontWeight:
-                                                FlutterFlowTheme.of(context)
-                                                    .labelMedium
-                                                    .fontWeight,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .labelMedium
-                                                    .fontStyle,
-                                          ),
-                                          letterSpacing: 0.0,
-                                          fontWeight:
-                                              FlutterFlowTheme.of(context)
-                                                  .labelMedium
-                                                  .fontWeight,
-                                          fontStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .labelMedium
-                                                  .fontStyle,
-                                        ),
+                                    hintText: 'New Password',
+                                    floatingLabelBehavior: FloatingLabelBehavior.never,
                                     hintStyle: FlutterFlowTheme.of(context)
                                         .labelMedium
                                         .override(
@@ -706,30 +640,8 @@ class _AccountSettingsWidgetState extends State<AccountSettingsWidget> {
                                   focusNode: _model.textFieldFocusNode4,
                                   obscureText: false,
                                   decoration: InputDecoration(
-                                    labelText: 'Confirm New Password',
-                                    labelStyle: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .override(
-                                          font: GoogleFonts.manrope(
-                                            fontWeight:
-                                                FlutterFlowTheme.of(context)
-                                                    .labelMedium
-                                                    .fontWeight,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .labelMedium
-                                                    .fontStyle,
-                                          ),
-                                          letterSpacing: 0.0,
-                                          fontWeight:
-                                              FlutterFlowTheme.of(context)
-                                                  .labelMedium
-                                                  .fontWeight,
-                                          fontStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .labelMedium
-                                                  .fontStyle,
-                                        ),
+                                    hintText: 'Confirm New Password',
+                                    floatingLabelBehavior: FloatingLabelBehavior.never,
                                     hintStyle: FlutterFlowTheme.of(context)
                                         .labelMedium
                                         .override(

@@ -4,6 +4,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/index.dart';
+import '/services/audio_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
@@ -30,6 +31,8 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget>
   void initState() {
     super.initState();
     _model = createModel(context, () => ProfilePageModel());
+    
+    AudioManager().playMainBgm();
   }
 
   @override
@@ -521,7 +524,7 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget>
                                                       MediaQuery.sizeOf(context)
                                                               .width *
                                                           0.43,
-                                                  height: 173.8,
+                                                  height: 170.0,
                                                   decoration: BoxDecoration(
                                                     color: const Color(0xFF1E1E1E),
                                                     borderRadius:
@@ -628,10 +631,7 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget>
                                                 );
                                               },
                                             ),
-                                            Padding(
-                                              padding: const EdgeInsetsDirectional
-                                                  .fromSTEB(3.0, 0.0, 0.0, 0.0),
-                                              child: FutureBuilder<
+                                            FutureBuilder<
                                                   List<ProfilesRow>>(
                                                 future: ProfilesTable()
                                                     .querySingleRow(
@@ -775,7 +775,6 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget>
                                                     ),
                                                   );
                                                 },
-                                              ),
                                             ),
                                             FutureBuilder<List<ProfilesRow>>(
                                               future: ProfilesTable()
@@ -923,11 +922,8 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget>
                                                 );
                                               },
                                             ),
-                                            Padding(
-                                              padding: const EdgeInsetsDirectional
-                                                  .fromSTEB(3.0, 0.0, 0.0, 0.0),
-                                              child: FutureBuilder<
-                                                  List<UserAchievementsRow>>(
+                                            FutureBuilder<
+                                                List<UserAchievementsRow>>(
                                                 future: UserAchievementsTable()
                                                     .queryRows(
                                                   queryFn: (q) => q
@@ -1067,7 +1063,6 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget>
                                                     ),
                                                   );
                                                 },
-                                              ),
                                             ),
                                           ],
                                         ),

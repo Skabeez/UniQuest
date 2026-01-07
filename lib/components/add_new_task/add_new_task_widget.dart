@@ -6,6 +6,8 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
+import '/services/audio_manager.dart';
+import '/services/sound_effects.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -36,6 +38,9 @@ class _AddNewTaskWidgetState extends State<AddNewTaskWidget>
   void initState() {
     super.initState();
     _model = createModel(context, () => AddNewTaskModel());
+
+    // Play popup sound
+    AudioManager().playSfx(SoundEffects.popUp);
 
     _model.tasknameTextController ??= TextEditingController();
     _model.tasknameFocusNode ??= FocusNode();
@@ -163,24 +168,8 @@ class _AddNewTaskWidgetState extends State<AddNewTaskWidget>
                           autofocus: true,
                           obscureText: false,
                           decoration: InputDecoration(
-                            labelText: ' Task Name',
-                            labelStyle: FlutterFlowTheme.of(context)
-                                .labelMedium
-                                .override(
-                                  font: GoogleFonts.plusJakartaSans(
-                                    fontWeight: FontWeight.w500,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .fontStyle,
-                                  ),
-                                  color: const Color(0xFF606A85),
-                                  fontSize: 14.0,
-                                  letterSpacing: 0.0,
-                                  fontWeight: FontWeight.w500,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontStyle,
-                                ),
+                            hintText: ' Task Name',
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
                             hintStyle: FlutterFlowTheme.of(context)
                                 .labelMedium
                                 .override(
@@ -262,24 +251,8 @@ class _AddNewTaskWidgetState extends State<AddNewTaskWidget>
                           textCapitalization: TextCapitalization.none,
                           obscureText: false,
                           decoration: InputDecoration(
-                            labelText: 'Tag',
-                            labelStyle: FlutterFlowTheme.of(context)
-                                .labelMedium
-                                .override(
-                                  font: GoogleFonts.plusJakartaSans(
-                                    fontWeight: FontWeight.w500,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .fontStyle,
-                                  ),
-                                  color: const Color(0xFF606A85),
-                                  fontSize: 14.0,
-                                  letterSpacing: 0.0,
-                                  fontWeight: FontWeight.w500,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontStyle,
-                                ),
+                            hintText: 'Tag',
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
                             hintStyle: FlutterFlowTheme.of(context)
                                 .labelMedium
                                 .override(
@@ -421,24 +394,8 @@ class _AddNewTaskWidgetState extends State<AddNewTaskWidget>
                           autofocus: true,
                           obscureText: false,
                           decoration: InputDecoration(
-                            labelText: 'Notes',
-                            labelStyle: FlutterFlowTheme.of(context)
-                                .labelMedium
-                                .override(
-                                  font: GoogleFonts.plusJakartaSans(
-                                    fontWeight: FontWeight.w500,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .labelMedium
-                                        .fontStyle,
-                                  ),
-                                  color: const Color(0xFF606A85),
-                                  fontSize: 14.0,
-                                  letterSpacing: 0.0,
-                                  fontWeight: FontWeight.w500,
-                                  fontStyle: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .fontStyle,
-                                ),
+                            hintText: 'Notes',
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
                             hintStyle: FlutterFlowTheme.of(context)
                                 .labelMedium
                                 .override(

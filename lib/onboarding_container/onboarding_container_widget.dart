@@ -1867,30 +1867,8 @@ class _OnboardingContainerWidgetState extends State<OnboardingContainerWidget>
                                           autofocus: true,
                                           obscureText: false,
                                           decoration: InputDecoration(
-                                            labelText: ' Task Name',
-                                            labelStyle: FlutterFlowTheme.of(
-                                                    context)
-                                                .labelMedium
-                                                .override(
-                                                  font: GoogleFonts
-                                                      .plusJakartaSans(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontStyle:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .labelMedium
-                                                            .fontStyle,
-                                                  ),
-                                                  color: const Color(0xFF606A85),
-                                                  fontSize: 14.0,
-                                                  letterSpacing: 0.0,
-                                                  fontWeight: FontWeight.w500,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .labelMedium
-                                                          .fontStyle,
-                                                ),
+                                            hintText: ' Task Name',
+                                            floatingLabelBehavior: FloatingLabelBehavior.never,
                                             hintStyle: FlutterFlowTheme.of(
                                                     context)
                                                 .labelMedium
@@ -1992,30 +1970,8 @@ class _OnboardingContainerWidgetState extends State<OnboardingContainerWidget>
                                           autofocus: true,
                                           obscureText: false,
                                           decoration: InputDecoration(
-                                            labelText: 'Tags',
-                                            labelStyle: FlutterFlowTheme.of(
-                                                    context)
-                                                .labelMedium
-                                                .override(
-                                                  font: GoogleFonts
-                                                      .plusJakartaSans(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontStyle:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .labelMedium
-                                                            .fontStyle,
-                                                  ),
-                                                  color: const Color(0xFF606A85),
-                                                  fontSize: 14.0,
-                                                  letterSpacing: 0.0,
-                                                  fontWeight: FontWeight.w500,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .labelMedium
-                                                          .fontStyle,
-                                                ),
+                                            hintText: 'Tags',
+                                            floatingLabelBehavior: FloatingLabelBehavior.never,
                                             hintStyle: FlutterFlowTheme.of(
                                                     context)
                                                 .labelMedium
@@ -2185,30 +2141,8 @@ class _OnboardingContainerWidgetState extends State<OnboardingContainerWidget>
                                           autofocus: true,
                                           obscureText: false,
                                           decoration: InputDecoration(
-                                            labelText: 'Notes',
-                                            labelStyle: FlutterFlowTheme.of(
-                                                    context)
-                                                .labelMedium
-                                                .override(
-                                                  font: GoogleFonts
-                                                      .plusJakartaSans(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontStyle:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .labelMedium
-                                                            .fontStyle,
-                                                  ),
-                                                  color: const Color(0xFF606A85),
-                                                  fontSize: 14.0,
-                                                  letterSpacing: 0.0,
-                                                  fontWeight: FontWeight.w500,
-                                                  fontStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .labelMedium
-                                                          .fontStyle,
-                                                ),
+                                            hintText: 'Notes',
+                                            floatingLabelBehavior: FloatingLabelBehavior.never,
                                             hintStyle: FlutterFlowTheme.of(
                                                     context)
                                                 .labelMedium

@@ -2,6 +2,8 @@ import '/backend/supabase/supabase.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/services/audio_manager.dart';
+import '/services/sound_effects.dart';
 import 'package:flutter/material.dart';
 import 'menu_mission_model.dart';
 export 'menu_mission_model.dart';
@@ -31,6 +33,9 @@ class _MenuMissionWidgetState extends State<MenuMissionWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => MenuMissionModel());
+    
+    // Play popup sound
+    AudioManager().playSfx(SoundEffects.popUp);
   }
 
   @override
@@ -87,9 +92,24 @@ class _MenuMissionWidgetState extends State<MenuMissionWidget> {
                           context: context,
                           builder: (alertDialogContext) {
                             return AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16.0),
+                              ),
                               title: const Text(
-                                  'Are you certain you want to delete this?'),
-                              content: const Text('Confirm'),
+                                'Delete Mission?',
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xFF1E1E1E),
+                                ),
+                              ),
+                              content: const Text(
+                                'Are you sure you want to delete this mission? This action cannot be undone.',
+                                style: TextStyle(
+                                  fontSize: 14.0,
+                                  color: Color(0xFF6B7280),
+                                ),
+                              ),
                               actions: [
                                 TextButton(
                                   onPressed: () =>
@@ -117,8 +137,24 @@ class _MenuMissionWidgetState extends State<MenuMissionWidget> {
                         context: context,
                         builder: (alertDialogContext) {
                           return AlertDialog(
-                            title: const Text('Success!'),
-                            content: const Text('The mission has been deleted.'),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16.0),
+                            ),
+                            title: const Text(
+                              'Success!',
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xFF1E1E1E),
+                              ),
+                            ),
+                            content: const Text(
+                              'The mission has been deleted successfully.',
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                color: Color(0xFF6B7280),
+                              ),
+                            ),
                             actions: [
                               TextButton(
                                 onPressed: () =>
@@ -135,8 +171,24 @@ class _MenuMissionWidgetState extends State<MenuMissionWidget> {
                         context: context,
                         builder: (alertDialogContext) {
                           return AlertDialog(
-                            title: const Text('Cancelled'),
-                            content: const Text('You\'ve cancelled this action.'),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16.0),
+                            ),
+                            title: const Text(
+                              'Cancelled',
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xFF1E1E1E),
+                              ),
+                            ),
+                            content: const Text(
+                              'The action has been cancelled.',
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                color: Color(0xFF6B7280),
+                              ),
+                            ),
                             actions: [
                               TextButton(
                                 onPressed: () =>
@@ -157,60 +209,6 @@ class _MenuMissionWidgetState extends State<MenuMissionWidget> {
                     iconPadding:
                         const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                     color: FlutterFlowTheme.of(context).error,
-                    textStyle: FlutterFlowTheme.of(context).bodyLarge.override(
-                          fontFamily: 'Feather',
-                          color: const Color(0xFF14181B),
-                          fontSize: 16.0,
-                          letterSpacing: 0.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                    elevation: 2.0,
-                    borderSide: const BorderSide(
-                      color: Colors.transparent,
-                      width: 1.0,
-                    ),
-                    borderRadius: BorderRadius.circular(14.0),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
-                child: FFButtonWidget(
-                  onPressed: () async {
-                    await MissionsTable().update(
-                      data: {
-                        'archived': true,
-                      },
-                      matchingRows: (rows) => rows.eqOrNull(
-                        'mission_id',
-                        widget.missions?.missionId,
-                      ),
-                    );
-                    await showDialog(
-                      context: context,
-                      builder: (alertDialogContext) {
-                        return AlertDialog(
-                          title: const Text('Success!'),
-                          content: const Text('Congrats on completing a task.'),
-                          actions: [
-                            TextButton(
-                              onPressed: () =>
-                                  Navigator.pop(alertDialogContext),
-                              child: const Text('Ok'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  },
-                  text: 'Send to Archive',
-                  options: FFButtonOptions(
-                    width: double.infinity,
-                    height: 60.0,
-                    padding: const EdgeInsets.all(14.0),
-                    iconPadding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                    color: FlutterFlowTheme.of(context).accent1,
                     textStyle: FlutterFlowTheme.of(context).bodyLarge.override(
                           fontFamily: 'Feather',
                           color: const Color(0xFF14181B),

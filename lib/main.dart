@@ -1,6 +1,5 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'dart:ui';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
@@ -14,6 +13,8 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'services/audio_manager.dart';
+import 'services/sound_effects.dart';
 import 'index.dart';
 
 void main() async {
@@ -26,6 +27,9 @@ void main() async {
   await SupaFlow.initialize();
 
   await FlutterFlowTheme.initialize();
+  
+  // Initialize audio manager
+  await AudioManager().initialize();
 
   final appState = FFAppState(); // Initialize FFAppState
   await appState.initializePersistedState();
@@ -135,15 +139,52 @@ class NavBarPage extends StatefulWidget {
 }
 
 /// This is the private State class that goes with NavBarPage.
-class _NavBarPageState extends State<NavBarPage> {
+class _NavBarPageState extends State<NavBarPage> with SingleTickerProviderStateMixin {
   String _currentPageName = 'home';
   late Widget? _currentPage;
+  bool _isNavBarVisible = true;
+  late AnimationController _animationController;
+  late Animation<Offset> _offsetAnimation;
+  double _lastScrollPosition = 0;
 
   @override
   void initState() {
     super.initState();
     _currentPageName = widget.initialPage ?? _currentPageName;
     _currentPage = widget.page;
+    
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+    
+    _offsetAnimation = Tween<Offset>(
+      begin: Offset.zero,
+      end: const Offset(0.0, 1.0),
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    ));
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  void _hideNavBar() {
+    if (_isNavBarVisible) {
+      setState(() => _isNavBarVisible = false);
+      _animationController.forward();
+    }
+  }
+
+  void _showNavBar() {
+    if (!_isNavBarVisible) {
+      setState(() => _isNavBarVisible = true);
+      _animationController.reverse();
+    }
   }
 
   @override
@@ -156,153 +197,128 @@ class _NavBarPageState extends State<NavBarPage> {
       'settingsPage': const SettingsPageWidget(),
     };
     final currentIndex = tabs.keys.toList().indexOf(_currentPageName);
+    final currentPage = _currentPage ?? tabs[_currentPageName]!;
 
     return Scaffold(
       resizeToAvoidBottomInset: !widget.disableResizeToAvoidBottomInset,
-      body: _currentPage ?? tabs[_currentPageName],
-      bottomNavigationBar: ClipRect(
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  const Color(0xFF1A1D23).withOpacity(0.85),
-                  const Color(0xFF1A1D23).withOpacity(0.95),
+      body: NotificationListener<ScrollNotification>(
+        onNotification: (notification) {
+          if (notification is ScrollUpdateNotification) {
+            final currentPosition = notification.metrics.pixels;
+            if (currentPosition > _lastScrollPosition && currentPosition > 50) {
+              // Scrolling down
+              _hideNavBar();
+            } else if (currentPosition < _lastScrollPosition) {
+              // Scrolling up
+              _showNavBar();
+            }
+            _lastScrollPosition = currentPosition;
+          }
+          return true;
+        },
+        child: currentPage,
+      ),
+      bottomNavigationBar: SlideTransition(
+        position: _offsetAnimation,
+        child: Container(
+          decoration: BoxDecoration(
+            color: const Color(0xFF0F1419),
+            border: Border(
+              top: BorderSide(
+                color: const Color(0xFFFFBD59).withOpacity(0.1),
+                width: 1.0,
+              ),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.3),
+                blurRadius: 20,
+                offset: const Offset(0, -5),
+              ),
+            ],
+          ),
+          child: SafeArea(
+            child: Container(
+              height: 65,
+              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _buildNavItem(
+                    icon: Icons.person_outline_rounded,
+                    activeIcon: Icons.person_rounded,
+                    label: 'Profile',
+                    index: 0,
+                    currentIndex: currentIndex,
+                  ),
+                  _buildNavItem(
+                    icon: Icons.notifications_outlined,
+                    activeIcon: Icons.notifications_rounded,
+                    label: 'Inbox',
+                    index: 1,
+                    currentIndex: currentIndex,
+                  ),
+                  _buildNavItem(
+                    icon: Icons.home_outlined,
+                    activeIcon: Icons.home_rounded,
+                    label: 'Home',
+                    index: 2,
+                    currentIndex: currentIndex,
+                    isCenter: true,
+                  ),
+                  _buildNavItem(
+                    icon: Icons.check_box_outlined,
+                    activeIcon: Icons.check_box_rounded,
+                    label: 'Tasks',
+                    index: 3,
+                    currentIndex: currentIndex,
+                  ),
+                  _buildNavItem(
+                    icon: Icons.settings_outlined,
+                    activeIcon: Icons.settings_rounded,
+                    label: 'Settings',
+                    index: 4,
+                    currentIndex: currentIndex,
+                  ),
                 ],
               ),
-              boxShadow: const [
-                BoxShadow(
-                  color: Color(0x4D000000),
-                  blurRadius: 20,
-                  offset: Offset(0, -5),
-                ),
-                BoxShadow(
-                  color: Color(0x1AFFBD59),
-                  blurRadius: 30,
-                  offset: Offset(0, -10),
-                ),
-              ],
             ),
-            child: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
-                child: BottomNavigationBar(
-              currentIndex: currentIndex,
-              onTap: (i) => safeSetState(() {
-                _currentPage = null;
-                _currentPageName = tabs.keys.toList()[i];
-              }),
-              backgroundColor: Colors.transparent,
-              selectedItemColor: const Color(0xFFFFBD59),
-              unselectedItemColor: const Color(0xFF5A5D66),
-              selectedFontSize: 12.0,
-              unselectedFontSize: 11.0,
-              showSelectedLabels: true,
-              showUnselectedLabels: false,
-              type: BottomNavigationBarType.fixed,
-              elevation: 0,
-              selectedLabelStyle: const TextStyle(
-                fontWeight: FontWeight.w600,
-                letterSpacing: 0.5,
-              ),
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Padding(
-                    padding: EdgeInsets.only(bottom: 4.0),
-                    child: Icon(
-                      Icons.person_outline_rounded,
-                      size: 26.0,
-                    ),
-                  ),
-                  activeIcon: Padding(
-                    padding: EdgeInsets.only(bottom: 4.0),
-                    child: Icon(
-                      Icons.person_rounded,
-                      size: 28.0,
-                    ),
-                  ),
-                  label: 'Profile',
-                  tooltip: '',
-                ),
-                BottomNavigationBarItem(
-                  icon: Padding(
-                    padding: EdgeInsets.only(bottom: 4.0),
-                    child: Icon(
-                      Icons.notifications_outlined,
-                      size: 26.0,
-                    ),
-                  ),
-                  activeIcon: Padding(
-                    padding: EdgeInsets.only(bottom: 4.0),
-                    child: Icon(
-                      Icons.notifications_rounded,
-                      size: 28.0,
-                    ),
-                  ),
-                  label: 'Inbox',
-                  tooltip: '',
-                ),
-                BottomNavigationBarItem(
-                  icon: Padding(
-                    padding: EdgeInsets.only(bottom: 4.0),
-                    child: Icon(
-                      Icons.home_outlined,
-                      size: 28.0,
-                    ),
-                  ),
-                  activeIcon: Padding(
-                    padding: EdgeInsets.only(bottom: 4.0),
-                    child: Icon(
-                      Icons.home_rounded,
-                      size: 30.0,
-                    ),
-                  ),
-                  label: 'Home',
-                  tooltip: '',
-                ),
-                BottomNavigationBarItem(
-                  icon: Padding(
-                    padding: EdgeInsets.only(bottom: 4.0),
-                    child: Icon(
-                      Icons.check_box_outlined,
-                      size: 26.0,
-                    ),
-                  ),
-                  activeIcon: Padding(
-                    padding: EdgeInsets.only(bottom: 4.0),
-                    child: Icon(
-                      Icons.check_box_rounded,
-                      size: 28.0,
-                    ),
-                  ),
-                  label: 'Tasks',
-                  tooltip: '',
-                ),
-                BottomNavigationBarItem(
-                  icon: Padding(
-                    padding: EdgeInsets.only(bottom: 4.0),
-                    child: Icon(
-                      Icons.settings_outlined,
-                      size: 26.0,
-                    ),
-                  ),
-                  activeIcon: Padding(
-                    padding: EdgeInsets.only(bottom: 4.0),
-                    child: Icon(
-                      Icons.settings_rounded,
-                      size: 28.0,
-                    ),
-                  ),
-                  label: 'Settings',
-                  tooltip: '',
-                )
-              ],
-                ),
-              ),
-            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNavItem({
+    required IconData icon,
+    required IconData activeIcon,
+    required String label,
+    required int index,
+    required int currentIndex,
+    bool isCenter = false,
+  }) {
+    final isActive = currentIndex == index;
+    final tabs = ['profilePage', 'notif', 'home', 'todoList', 'settingsPage'];
+    
+    return Expanded(
+      child: GestureDetector(
+        onTap: () {
+          AudioManager().playSfx(SoundEffects.buttonSoft);
+          safeSetState(() {
+            _currentPage = null;
+            _currentPageName = tabs[index];
+          });
+        },
+        behavior: HitTestBehavior.opaque,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeInOut,
+          child: Icon(
+            isActive ? activeIcon : icon,
+            color: isActive 
+              ? const Color(0xFFFFBD59)
+              : const Color(0xFF6B7280),
+            size: isActive ? 28.0 : 24.0,
           ),
         ),
       ),
