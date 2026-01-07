@@ -52,7 +52,40 @@ class AudioManager with WidgetsBindingObserver {
   // Initialize audio manager
   Future<void> initialize() async {
     await _loadSettings();
-    
+
+    // Set audio context for better mobile playback
+    await _bgmPlayer.setAudioContext(AudioContext(
+      iOS: AudioContextIOS(
+        category: AVAudioSessionCategory.playback,
+        options: {
+          AVAudioSessionOptions.mixWithOthers,
+        },
+      ),
+      android: AudioContextAndroid(
+        isSpeakerphoneOn: false,
+        stayAwake: false,
+        contentType: AndroidContentType.music,
+        usageType: AndroidUsageType.media,
+        audioFocus: AndroidAudioFocus.gain,
+      ),
+    ));
+
+    await _sfxPlayer.setAudioContext(AudioContext(
+      iOS: AudioContextIOS(
+        category: AVAudioSessionCategory.playback,
+        options: {
+          AVAudioSessionOptions.mixWithOthers,
+        },
+      ),
+      android: AudioContextAndroid(
+        isSpeakerphoneOn: false,
+        stayAwake: false,
+        contentType: AndroidContentType.sonification,
+        usageType: AndroidUsageType.media,
+        audioFocus: AndroidAudioFocus.gainTransientMayDuck,
+      ),
+    ));
+
     // Set volumes
     await _bgmPlayer.setVolume(_bgmVolume);
     await _sfxPlayer.setVolume(_sfxVolume);
@@ -65,7 +98,7 @@ class AudioManager with WidgetsBindingObserver {
     // Set release mode
     await _bgmPlayer.setReleaseMode(ReleaseMode.stop);
     await _sfxPlayer.setReleaseMode(ReleaseMode.stop);
-    
+
     // Register lifecycle observer
     WidgetsBinding.instance.addObserver(this);
   }
@@ -118,38 +151,39 @@ class AudioManager with WidgetsBindingObserver {
   // Play login/walkthrough BGM
   Future<void> playLoginBgm() async {
     if (!_isBgmEnabled) return;
-    
+
     // If already in login mode and playing, don't restart
     if (_isLoginMode && _bgmPlayer.state == PlayerState.playing) {
       return;
     }
-    
+
     _isLoginMode = true;
-    
+
     // Fade out current track if playing
     if (_bgmPlayer.state == PlayerState.playing) {
       await _fadeOut();
     }
-    
+
     await _bgmPlayer.stop();
     await _bgmPlayer.play(AssetSource(_loginBgm));
-    
+
     // Apply volume adjustment and fade in
-    final adjustedVolume = _bgmVolume * (_trackVolumeAdjustments[_loginBgm] ?? 1.0);
+    final adjustedVolume =
+        _bgmVolume * (_trackVolumeAdjustments[_loginBgm] ?? 1.0);
     await _fadeIn(adjustedVolume);
   }
 
   // Play main app BGM (shuffled playlist)
   Future<void> playMainBgm() async {
     if (!_isBgmEnabled) return;
-    
+
     // If already in main app mode and playing, don't restart
     if (!_isLoginMode && _bgmPlayer.state == PlayerState.playing) {
       return;
     }
-    
+
     _isLoginMode = false;
-    
+
     // Shuffle playlist on first play
     if (_shuffledPlaylist.isEmpty) {
       _shuffledPlaylist = List.from(_mainAppBgm);
@@ -172,7 +206,7 @@ class AudioManager with WidgetsBindingObserver {
 
     final track = _shuffledPlaylist[_currentTrackIndex];
     await _bgmPlayer.play(AssetSource(track));
-    
+
     // Apply volume adjustment and fade in
     final adjustedVolume = _bgmVolume * (_trackVolumeAdjustments[track] ?? 1.0);
     await _fadeIn(adjustedVolume);
@@ -182,18 +216,18 @@ class AudioManager with WidgetsBindingObserver {
   Future<void> _fadeIn(double targetVolume) async {
     if (_isFading) return;
     _isFading = true;
-    
+
     const steps = 30;
     const stepDuration = Duration(milliseconds: 50);
-    
+
     for (int i = 0; i <= steps; i++) {
       if (!_isBgmEnabled || _bgmPlayer.state != PlayerState.playing) break;
-      
+
       final volume = (i / steps) * targetVolume;
       await _bgmPlayer.setVolume(volume);
       await Future.delayed(stepDuration);
     }
-    
+
     _currentPlayingVolume = targetVolume;
     _isFading = false;
   }
@@ -202,19 +236,19 @@ class AudioManager with WidgetsBindingObserver {
   Future<void> _fadeOut() async {
     if (_isFading) return;
     _isFading = true;
-    
+
     final currentVolume = _currentPlayingVolume;
     const steps = 20;
     const stepDuration = Duration(milliseconds: 50);
-    
+
     for (int i = steps; i >= 0; i--) {
       if (_bgmPlayer.state != PlayerState.playing) break;
-      
+
       final volume = (i / steps) * currentVolume;
       await _bgmPlayer.setVolume(volume);
       await Future.delayed(stepDuration);
     }
-    
+
     _currentPlayingVolume = 0.0;
     _isFading = false;
   }
@@ -227,13 +261,13 @@ class AudioManager with WidgetsBindingObserver {
     } else {
       // Main app: advance to next track with crossfade
       _currentTrackIndex++;
-      
+
       // Reshuffle when playlist ends
       if (_currentTrackIndex >= _shuffledPlaylist.length) {
         _shuffledPlaylist.shuffle(Random());
         _currentTrackIndex = 0;
       }
-      
+
       // No fade out needed since track naturally ended
       _playCurrentTrack();
     }
@@ -257,17 +291,17 @@ class AudioManager with WidgetsBindingObserver {
   // Play SFX
   Future<void> playSfx(String sfxName) async {
     if (!_isSfxEnabled) return;
-    
+
     await _sfxPlayer.stop();
-    await _sfxPlayer.play(AssetSource('audios/sfx/$sfxName'));
     await _sfxPlayer.setVolume(_sfxVolume);
+    await _sfxPlayer.play(AssetSource('audios/sfx/$sfxName'));
   }
 
   // Toggle BGM on/off
   Future<void> toggleBgm(bool enabled) async {
     _isBgmEnabled = enabled;
     await _saveSettings();
-    
+
     if (!enabled) {
       await stopBgm();
     } else {
@@ -290,7 +324,7 @@ class AudioManager with WidgetsBindingObserver {
   Future<void> setBgmVolume(double volume) async {
     _bgmVolume = volume.clamp(0.0, 1.0);
     await _saveSettings();
-    
+
     // Reapply volume with normalization to current track
     if (_bgmPlayer.state == PlayerState.playing) {
       String? currentTrack;
@@ -299,9 +333,10 @@ class AudioManager with WidgetsBindingObserver {
       } else if (_shuffledPlaylist.isNotEmpty) {
         currentTrack = _shuffledPlaylist[_currentTrackIndex];
       }
-      
+
       if (currentTrack != null) {
-        final adjustedVolume = _bgmVolume * (_trackVolumeAdjustments[currentTrack] ?? 1.0);
+        final adjustedVolume =
+            _bgmVolume * (_trackVolumeAdjustments[currentTrack] ?? 1.0);
         await _bgmPlayer.setVolume(adjustedVolume);
       }
     }

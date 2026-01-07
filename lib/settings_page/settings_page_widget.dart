@@ -5,6 +5,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/services/audio_manager.dart';
+import '/components/modern_alert_dialog.dart';
 import '/index.dart';
 import 'package:flutter/material.dart';
 import 'settings_page_model.dart';
@@ -93,7 +94,8 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
               children: [
                 // Audio Settings Section
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 8.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                      16.0, 16.0, 16.0, 8.0),
                   child: Text(
                     'Audio',
                     style: FlutterFlowTheme.of(context).labelMedium.override(
@@ -107,7 +109,8 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                 ),
                 // BGM Toggle
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(16.0, 8.0, 16.0, 8.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                      16.0, 8.0, 16.0, 8.0),
                   child: Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
@@ -138,7 +141,9 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                               const SizedBox(width: 12.0),
                               Text(
                                 'Background Music',
-                                style: FlutterFlowTheme.of(context).bodyLarge.override(
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyLarge
+                                    .override(
                                       fontFamily: 'Feather',
                                       color: Colors.white,
                                       fontSize: 16.0,
@@ -148,16 +153,27 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                               ),
                             ],
                           ),
-                          Switch.adaptive(
-                            value: AudioManager().isBgmEnabled,
-                            onChanged: (value) async {
-                              await AudioManager().toggleBgm(value);
-                              setState(() {});
+                          GestureDetector(
+                            onTap: () {
+                              final newValue = !_model.isBgmEnabled;
+                              setState(() {
+                                _model.isBgmEnabled = newValue;
+                              });
+                              AudioManager().toggleBgm(newValue);
                             },
-                            activeColor: const Color(0xFFFFBD59),
-                            activeTrackColor: const Color(0x80FFBD59),
-                            inactiveThumbColor: const Color(0xFF6B7280),
-                            inactiveTrackColor: const Color(0xFF3A3A3A),
+                            child: Switch.adaptive(
+                              value: _model.isBgmEnabled,
+                              onChanged: (value) {
+                                setState(() {
+                                  _model.isBgmEnabled = value;
+                                });
+                                AudioManager().toggleBgm(value);
+                              },
+                              activeColor: const Color(0xFFFFBD59),
+                              activeTrackColor: const Color(0x80FFBD59),
+                              inactiveThumbColor: const Color(0xFF6B7280),
+                              inactiveTrackColor: const Color(0xFF3A3A3A),
+                            ),
                           ),
                         ],
                       ),
@@ -167,7 +183,8 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                 // BGM Volume Slider
                 if (AudioManager().isBgmEnabled)
                   Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 16.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        16.0, 0.0, 16.0, 16.0),
                     child: Container(
                       decoration: BoxDecoration(
                         color: const Color(0xFF2A2A2A),
@@ -182,15 +199,19 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                             children: [
                               Text(
                                 'Music Volume',
-                                style: FlutterFlowTheme.of(context).labelMedium.override(
+                                style: FlutterFlowTheme.of(context)
+                                    .labelMedium
+                                    .override(
                                       fontFamily: 'Feather',
                                       color: const Color(0xFFB0B0B0),
                                       letterSpacing: 0.0,
                                     ),
                               ),
                               Text(
-                                '${(AudioManager().bgmVolume * 100).round()}%',
-                                style: FlutterFlowTheme.of(context).labelMedium.override(
+                                '${(_model.bgmVolume * 100).round()}%',
+                                style: FlutterFlowTheme.of(context)
+                                    .labelMedium
+                                    .override(
                                       fontFamily: 'Feather',
                                       color: const Color(0xFFFFBD59),
                                       letterSpacing: 0.0,
@@ -200,16 +221,20 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                             ],
                           ),
                           SliderTheme(
-                            data: SliderThemeData(
+                            data: const SliderThemeData(
                               trackHeight: 4.0,
-                              thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8.0),
-                              overlayShape: const RoundSliderOverlayShape(overlayRadius: 16.0),
+                              thumbShape: RoundSliderThumbShape(
+                                  enabledThumbRadius: 8.0),
+                              overlayShape:
+                                  RoundSliderOverlayShape(overlayRadius: 16.0),
                             ),
                             child: Slider(
-                              value: AudioManager().bgmVolume,
-                              onChanged: (value) async {
-                                await AudioManager().setBgmVolume(value);
-                                setState(() {});
+                              value: _model.bgmVolume,
+                              onChanged: (value) {
+                                setState(() {
+                                  _model.bgmVolume = value;
+                                });
+                                AudioManager().setBgmVolume(value);
                               },
                               min: 0.0,
                               max: 1.0,
@@ -223,7 +248,8 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                   ),
                 // SFX Toggle
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(16.0, 8.0, 16.0, 8.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                      16.0, 8.0, 16.0, 8.0),
                   child: Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
@@ -254,7 +280,9 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                               const SizedBox(width: 12.0),
                               Text(
                                 'Sound Effects',
-                                style: FlutterFlowTheme.of(context).bodyLarge.override(
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyLarge
+                                    .override(
                                       fontFamily: 'Feather',
                                       color: Colors.white,
                                       fontSize: 16.0,
@@ -264,16 +292,27 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                               ),
                             ],
                           ),
-                          Switch.adaptive(
-                            value: AudioManager().isSfxEnabled,
-                            onChanged: (value) async {
-                              await AudioManager().toggleSfx(value);
-                              setState(() {});
+                          GestureDetector(
+                            onTap: () {
+                              final newValue = !_model.isSfxEnabled;
+                              setState(() {
+                                _model.isSfxEnabled = newValue;
+                              });
+                              AudioManager().toggleSfx(newValue);
                             },
-                            activeColor: const Color(0xFFFFBD59),
-                            activeTrackColor: const Color(0x80FFBD59),
-                            inactiveThumbColor: const Color(0xFF6B7280),
-                            inactiveTrackColor: const Color(0xFF3A3A3A),
+                            child: Switch.adaptive(
+                              value: _model.isSfxEnabled,
+                              onChanged: (value) {
+                                setState(() {
+                                  _model.isSfxEnabled = value;
+                                });
+                                AudioManager().toggleSfx(value);
+                              },
+                              activeColor: const Color(0xFFFFBD59),
+                              activeTrackColor: const Color(0x80FFBD59),
+                              inactiveThumbColor: const Color(0xFF6B7280),
+                              inactiveTrackColor: const Color(0xFF3A3A3A),
+                            ),
                           ),
                         ],
                       ),
@@ -283,7 +322,8 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                 // SFX Volume Slider
                 if (AudioManager().isSfxEnabled)
                   Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 16.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        16.0, 0.0, 16.0, 16.0),
                     child: Container(
                       decoration: BoxDecoration(
                         color: const Color(0xFF2A2A2A),
@@ -298,15 +338,19 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                             children: [
                               Text(
                                 'SFX Volume',
-                                style: FlutterFlowTheme.of(context).labelMedium.override(
+                                style: FlutterFlowTheme.of(context)
+                                    .labelMedium
+                                    .override(
                                       fontFamily: 'Feather',
                                       color: const Color(0xFFB0B0B0),
                                       letterSpacing: 0.0,
                                     ),
                               ),
                               Text(
-                                '${(AudioManager().sfxVolume * 100).round()}%',
-                                style: FlutterFlowTheme.of(context).labelMedium.override(
+                                '${(_model.sfxVolume * 100).round()}%',
+                                style: FlutterFlowTheme.of(context)
+                                    .labelMedium
+                                    .override(
                                       fontFamily: 'Feather',
                                       color: const Color(0xFFFFBD59),
                                       letterSpacing: 0.0,
@@ -316,16 +360,20 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                             ],
                           ),
                           SliderTheme(
-                            data: SliderThemeData(
+                            data: const SliderThemeData(
                               trackHeight: 4.0,
-                              thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8.0),
-                              overlayShape: const RoundSliderOverlayShape(overlayRadius: 16.0),
+                              thumbShape: RoundSliderThumbShape(
+                                  enabledThumbRadius: 8.0),
+                              overlayShape:
+                                  RoundSliderOverlayShape(overlayRadius: 16.0),
                             ),
                             child: Slider(
-                              value: AudioManager().sfxVolume,
-                              onChanged: (value) async {
-                                await AudioManager().setSfxVolume(value);
-                                setState(() {});
+                              value: _model.sfxVolume,
+                              onChanged: (value) {
+                                setState(() {
+                                  _model.sfxVolume = value;
+                                });
+                                AudioManager().setSfxVolume(value);
                               },
                               min: 0.0,
                               max: 1.0,
@@ -532,33 +580,13 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                           } else {
                             await showDialog(
                               context: context,
+                              barrierColor: Colors.black87,
                               builder: (alertDialogContext) {
-                                return AlertDialog(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16.0),
-                                  ),
-                                  title: const Text(
-                                    'Restricted',
-                                    style: TextStyle(
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.w600,
-                                      color: Color(0xFF1E1E1E),
-                                    ),
-                                  ),
-                                  content: const Text(
-                                    'This function is not meant for users.',
-                                    style: TextStyle(
-                                      fontSize: 14.0,
-                                      color: Color(0xFF6B7280),
-                                    ),
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.pop(alertDialogContext),
-                                      child: const Text('Ok'),
-                                    ),
-                                  ],
+                                return const ModernAlertDialog(
+                                  title: 'Restricted',
+                                  description:
+                                      'This function is not meant for users. Admin access required.',
+                                  primaryButtonText: 'Got It',
                                 );
                               },
                             );

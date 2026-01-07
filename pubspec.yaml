@@ -140,7 +140,8 @@ flutter:
     - assets/fonts/
     - assets/images/
     - assets/videos/
-    - assets/audios/
+    - assets/audios/bgm/
+    - assets/audios/sfx/
     - assets/rive_animations/
     - assets/pdfs/
     - assets/jsons/

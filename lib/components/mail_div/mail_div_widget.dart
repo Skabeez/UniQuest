@@ -1,5 +1,6 @@
 import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
+import '/components/modern_alert_dialog.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
@@ -74,15 +75,12 @@ class _MailDivWidgetState extends State<MailDivWidget> {
                 );
                 await showDialog(
                   context: context,
+                  barrierColor: Colors.black87,
                   builder: (alertDialogContext) {
-                    return AlertDialog(
-                      title: const Text('Marked as read.'),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(alertDialogContext),
-                          child: const Text('Ok'),
-                        ),
-                      ],
+                    return const ModernAlertDialog(
+                      title: 'Marked as Read',
+                      description: 'This notification has been marked as read.',
+                      primaryButtonText: 'OK',
                     );
                   },
                 );
@@ -107,8 +105,8 @@ class _MailDivWidgetState extends State<MailDivWidget> {
                   children: [
                     Expanded(
                       child: Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(12.0, 0.0, 4.0, 0.0),
+                        padding: const EdgeInsetsDirectional.fromSTEB(
+                            12.0, 0.0, 4.0, 0.0),
                         child: Column(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.center,

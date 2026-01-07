@@ -1,7 +1,7 @@
 import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
 import '/components/lottie_burst_overlay/lottie_burst_overlay_widget.dart';
-import '/flutter_flow/flutter_flow_theme.dart';
+import '/components/modern_alert_dialog.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
 import 'background_model.dart';
@@ -55,21 +55,18 @@ class _BackgroundWidgetState extends State<BackgroundWidget> {
         onTap: () async {
           var confirmDialogResponse = await showDialog<bool>(
                 context: context,
+                barrierColor: Colors.black87,
                 builder: (alertDialogContext) {
-                  return AlertDialog(
-                    title: const Text('Do you want to equip this?'),
-                    actions: [
-                      TextButton(
-                        onPressed: () =>
-                            Navigator.pop(alertDialogContext, false),
-                        child: const Text('Cancel'),
-                      ),
-                      TextButton(
-                        onPressed: () =>
-                            Navigator.pop(alertDialogContext, true),
-                        child: const Text('Confirm'),
-                      ),
-                    ],
+                  return ModernAlertDialog(
+                    title: 'Equip Background?',
+                    description:
+                        'Do you want to equip this background to your profile?',
+                    secondaryButtonText: 'Cancel',
+                    primaryButtonText: 'Equip',
+                    onSecondaryPressed: () =>
+                        Navigator.pop(alertDialogContext, false),
+                    onPrimaryPressed: () =>
+                        Navigator.pop(alertDialogContext, true),
                   );
                 },
               ) ??
@@ -95,25 +92,13 @@ class _BackgroundWidgetState extends State<BackgroundWidget> {
             }
             await showDialog(
               context: context,
+              barrierColor: Colors.black87,
               builder: (alertDialogContext) {
-                return AlertDialog(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16.0),
-                  ),
-                  title: const Text('Equipped!'),
-                  content: const Text(
-                    'Your new background has been equipped successfully.',
-                    style: TextStyle(fontSize: 14.0),
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(alertDialogContext),
-                      style: TextButton.styleFrom(
-                        foregroundColor: FlutterFlowTheme.of(context).primary,
-                      ),
-                      child: const Text('Got it'),
-                    ),
-                  ],
+                return const ModernAlertDialog(
+                  title: 'Equipped!',
+                  description:
+                      'Your new background has been equipped successfully.',
+                  primaryButtonText: 'Done',
                 );
               },
             );

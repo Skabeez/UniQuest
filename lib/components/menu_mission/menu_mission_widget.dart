@@ -1,4 +1,5 @@
 import '/backend/supabase/supabase.dart';
+import '/components/modern_alert_dialog.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -33,7 +34,7 @@ class _MenuMissionWidgetState extends State<MenuMissionWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => MenuMissionModel());
-    
+
     // Play popup sound
     AudioManager().playSfx(SoundEffects.popUp);
   }
@@ -85,43 +86,24 @@ class _MenuMissionWidgetState extends State<MenuMissionWidget> {
             mainAxisSize: MainAxisSize.max,
             children: [
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
                 child: FFButtonWidget(
                   onPressed: () async {
                     var confirmDialogResponse = await showDialog<bool>(
                           context: context,
+                          barrierColor: Colors.black87,
                           builder: (alertDialogContext) {
-                            return AlertDialog(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16.0),
-                              ),
-                              title: const Text(
-                                'Delete Mission?',
-                                style: TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xFF1E1E1E),
-                                ),
-                              ),
-                              content: const Text(
-                                'Are you sure you want to delete this mission? This action cannot be undone.',
-                                style: TextStyle(
-                                  fontSize: 14.0,
-                                  color: Color(0xFF6B7280),
-                                ),
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(alertDialogContext, false),
-                                  child: const Text('Cancel'),
-                                ),
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(alertDialogContext, true),
-                                  child: const Text('Confirm'),
-                                ),
-                              ],
+                            return ModernAlertDialog(
+                              title: 'Delete Mission?',
+                              description:
+                                  'Are you sure you want to delete this mission? This action cannot be undone.',
+                              secondaryButtonText: 'DELETE',
+                              primaryButtonText: 'Cancel',
+                              onSecondaryPressed: () =>
+                                  Navigator.pop(alertDialogContext, true),
+                              onPrimaryPressed: () =>
+                                  Navigator.pop(alertDialogContext, false),
                             );
                           },
                         ) ??
@@ -135,33 +117,13 @@ class _MenuMissionWidgetState extends State<MenuMissionWidget> {
                       );
                       await showDialog(
                         context: context,
+                        barrierColor: Colors.black87,
                         builder: (alertDialogContext) {
-                          return AlertDialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16.0),
-                            ),
-                            title: const Text(
-                              'Success!',
-                              style: TextStyle(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xFF1E1E1E),
-                              ),
-                            ),
-                            content: const Text(
-                              'The mission has been deleted successfully.',
-                              style: TextStyle(
-                                fontSize: 14.0,
-                                color: Color(0xFF6B7280),
-                              ),
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () =>
-                                    Navigator.pop(alertDialogContext),
-                                child: const Text('Ok'),
-                              ),
-                            ],
+                          return const ModernAlertDialog(
+                            title: 'Deleted!',
+                            description:
+                                'The mission has been deleted successfully.',
+                            primaryButtonText: 'Done',
                           );
                         },
                       );
@@ -169,33 +131,13 @@ class _MenuMissionWidgetState extends State<MenuMissionWidget> {
                     } else {
                       await showDialog(
                         context: context,
+                        barrierColor: Colors.black87,
                         builder: (alertDialogContext) {
-                          return AlertDialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16.0),
-                            ),
-                            title: const Text(
-                              'Cancelled',
-                              style: TextStyle(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xFF1E1E1E),
-                              ),
-                            ),
-                            content: const Text(
-                              'The action has been cancelled.',
-                              style: TextStyle(
-                                fontSize: 14.0,
-                                color: Color(0xFF6B7280),
-                              ),
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () =>
-                                    Navigator.pop(alertDialogContext),
-                                child: const Text('Ok'),
-                              ),
-                            ],
+                          return const ModernAlertDialog(
+                            title: 'Cancelled',
+                            description:
+                                'The delete action has been cancelled.',
+                            primaryButtonText: 'OK',
                           );
                         },
                       );
@@ -206,8 +148,8 @@ class _MenuMissionWidgetState extends State<MenuMissionWidget> {
                     width: double.infinity,
                     height: 60.0,
                     padding: const EdgeInsets.all(14.0),
-                    iconPadding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                    iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                        0.0, 0.0, 0.0, 0.0),
                     color: FlutterFlowTheme.of(context).error,
                     textStyle: FlutterFlowTheme.of(context).bodyLarge.override(
                           fontFamily: 'Feather',
@@ -226,7 +168,8 @@ class _MenuMissionWidgetState extends State<MenuMissionWidget> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
                 child: FFButtonWidget(
                   onPressed: () async {
                     context.pop();
@@ -236,8 +179,8 @@ class _MenuMissionWidgetState extends State<MenuMissionWidget> {
                     width: double.infinity,
                     height: 60.0,
                     padding: const EdgeInsets.all(14.0),
-                    iconPadding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                    iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                        0.0, 0.0, 0.0, 0.0),
                     color: FlutterFlowTheme.of(context).secondaryText,
                     textStyle: FlutterFlowTheme.of(context).titleSmall.override(
                           fontFamily: 'Feather',

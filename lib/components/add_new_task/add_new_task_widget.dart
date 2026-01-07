@@ -1,5 +1,6 @@
 import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
+import '/components/modern_alert_dialog.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -101,7 +102,8 @@ class _AddNewTaskWidgetState extends State<AddNewTaskWidget>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(16.0, 2.0, 16.0, 16.0),
+            padding:
+                const EdgeInsetsDirectional.fromSTEB(16.0, 2.0, 16.0, 16.0),
             child: Container(
               width: double.infinity,
               constraints: const BoxConstraints(
@@ -126,8 +128,8 @@ class _AddNewTaskWidgetState extends State<AddNewTaskWidget>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(24.0, 16.0, 0.0, 0.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        24.0, 16.0, 0.0, 0.0),
                     child: Text(
                       'Create New Task',
                       style:
@@ -141,8 +143,8 @@ class _AddNewTaskWidgetState extends State<AddNewTaskWidget>
                     ),
                   ),
                   Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(24.0, 4.0, 0.0, 0.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        24.0, 4.0, 0.0, 0.0),
                     child: Text(
                       'Below are your task details',
                       style: FlutterFlowTheme.of(context).labelMedium.override(
@@ -217,8 +219,9 @@ class _AddNewTaskWidgetState extends State<AddNewTaskWidget>
                             ),
                             filled: true,
                             fillColor: Colors.white,
-                            contentPadding: const EdgeInsetsDirectional.fromSTEB(
-                                20.0, 24.0, 20.0, 24.0),
+                            contentPadding:
+                                const EdgeInsetsDirectional.fromSTEB(
+                                    20.0, 24.0, 20.0, 24.0),
                           ),
                           style:
                               FlutterFlowTheme.of(context).bodyMedium.override(
@@ -300,8 +303,9 @@ class _AddNewTaskWidgetState extends State<AddNewTaskWidget>
                             ),
                             filled: true,
                             fillColor: Colors.white,
-                            contentPadding: const EdgeInsetsDirectional.fromSTEB(
-                                20.0, 24.0, 20.0, 24.0),
+                            contentPadding:
+                                const EdgeInsetsDirectional.fromSTEB(
+                                    20.0, 24.0, 20.0, 24.0),
                           ),
                           style:
                               FlutterFlowTheme.of(context).bodyMedium.override(
@@ -443,8 +447,9 @@ class _AddNewTaskWidgetState extends State<AddNewTaskWidget>
                             ),
                             filled: true,
                             fillColor: Colors.white,
-                            contentPadding: const EdgeInsetsDirectional.fromSTEB(
-                                20.0, 24.0, 20.0, 24.0),
+                            contentPadding:
+                                const EdgeInsetsDirectional.fromSTEB(
+                                    20.0, 24.0, 20.0, 24.0),
                           ),
                           style:
                               FlutterFlowTheme.of(context).bodyMedium.override(
@@ -556,10 +561,12 @@ class _AddNewTaskWidgetState extends State<AddNewTaskWidget>
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(-1.0, 0.03),
+                                  alignment:
+                                      const AlignmentDirectional(-1.0, 0.03),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        17.0, 0.0, 0.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            17.0, 0.0, 0.0, 0.0),
                                     child: Text(
                                       valueOrDefault<String>(
                                         dateTimeFormat(
@@ -595,8 +602,8 @@ class _AddNewTaskWidgetState extends State<AddNewTaskWidget>
                     ],
                   ),
                   Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(24.0, 12.0, 24.0, 24.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        24.0, 12.0, 24.0, 24.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -645,68 +652,48 @@ class _AddNewTaskWidgetState extends State<AddNewTaskWidget>
                           child: FFButtonWidget(
                             onPressed: () async {
                               // Validate that task name is not empty
-                              if (_model.tasknameTextController.text.trim().isEmpty) {
+                              if (_model.tasknameTextController.text
+                                  .trim()
+                                  .isEmpty) {
                                 await showDialog(
                                   context: context,
+                                  barrierColor: Colors.black87,
                                   builder: (alertDialogContext) {
-                                    return AlertDialog(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(16.0),
-                                      ),
-                                      title: const Text('Task Name Required'),
-                                      content: const Text(
-                                        'Please enter a name for your task before saving.',
-                                        style: TextStyle(fontSize: 14.0),
-                                      ),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(alertDialogContext),
-                                          style: TextButton.styleFrom(
-                                            foregroundColor: FlutterFlowTheme.of(context).primary,
-                                          ),
-                                          child: const Text('Got it'),
-                                        ),
-                                      ],
+                                    return const ModernAlertDialog(
+                                      title: 'Task Name Required',
+                                      description:
+                                          'Please enter a name for your task before saving.',
+                                      primaryButtonText: 'Got It',
                                     );
                                   },
                                 );
                                 return;
                               }
-                              
+
                               // Validate that tags are not empty
-                              if (_model.tagsTextController.text.trim().isEmpty) {
+                              if (_model.tagsTextController.text
+                                  .trim()
+                                  .isEmpty) {
                                 await showDialog(
                                   context: context,
+                                  barrierColor: Colors.black87,
                                   builder: (alertDialogContext) {
-                                    return AlertDialog(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(16.0),
-                                      ),
-                                      title: const Text('Tags Required'),
-                                      content: const Text(
-                                        'Please add at least one tag for your task.',
-                                        style: TextStyle(fontSize: 14.0),
-                                      ),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(alertDialogContext),
-                                          style: TextButton.styleFrom(
-                                            foregroundColor: FlutterFlowTheme.of(context).primary,
-                                          ),
-                                          child: const Text('Got it'),
-                                        ),
-                                      ],
+                                    return const ModernAlertDialog(
+                                      title: 'Tags Required',
+                                      description:
+                                          'Please add at least one tag for your task.',
+                                      primaryButtonText: 'Got It',
                                     );
                                   },
                                 );
                                 return;
                               }
-                              
+
                               await TasksTable().insert({
-                                'title': _model.tasknameTextController.text.trim(),
-                                'description': _model.notesTextController.text.trim(),
+                                'title':
+                                    _model.tasknameTextController.text.trim(),
+                                'description':
+                                    _model.notesTextController.text.trim(),
                                 'tags': _model.tagsTextController.text.trim(),
                                 'id': currentUserUid,
                                 'priority': _model.priorityValue,
@@ -717,26 +704,13 @@ class _AddNewTaskWidgetState extends State<AddNewTaskWidget>
                               });
                               await showDialog(
                                 context: context,
+                                barrierColor: Colors.black87,
                                 builder: (alertDialogContext) {
-                                  return AlertDialog(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16.0),
-                                    ),
-                                    title: const Text('Success!'),
-                                    content: const Text(
-                                      'Your new task has been created.',
-                                      style: TextStyle(fontSize: 14.0),
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.pop(alertDialogContext),
-                                        style: TextButton.styleFrom(
-                                          foregroundColor: FlutterFlowTheme.of(context).primary,
-                                        ),
-                                        child: const Text('Got it'),
-                                      ),
-                                    ],
+                                  return const ModernAlertDialog(
+                                    title: 'Success!',
+                                    description:
+                                        'Your new task has been created successfully.',
+                                    primaryButtonText: 'Done',
                                   );
                                 },
                               );
