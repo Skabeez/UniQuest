@@ -57,11 +57,11 @@ class AudioManager with WidgetsBindingObserver {
     await _bgmPlayer.setAudioContext(AudioContext(
       iOS: AudioContextIOS(
         category: AVAudioSessionCategory.playback,
-        options: {
+        options: const {
           AVAudioSessionOptions.mixWithOthers,
         },
       ),
-      android: AudioContextAndroid(
+      android: const AudioContextAndroid(
         isSpeakerphoneOn: false,
         stayAwake: false,
         contentType: AndroidContentType.music,
@@ -73,11 +73,11 @@ class AudioManager with WidgetsBindingObserver {
     await _sfxPlayer.setAudioContext(AudioContext(
       iOS: AudioContextIOS(
         category: AVAudioSessionCategory.playback,
-        options: {
+        options: const {
           AVAudioSessionOptions.mixWithOthers,
         },
       ),
-      android: AudioContextAndroid(
+      android: const AudioContextAndroid(
         isSpeakerphoneOn: false,
         stayAwake: false,
         contentType: AndroidContentType.sonification,
@@ -137,6 +137,14 @@ class AudioManager with WidgetsBindingObserver {
     _isSfxEnabled = prefs.getBool('sfx_enabled') ?? true;
     _bgmVolume = prefs.getDouble('bgm_volume') ?? 0.7;
     _sfxVolume = prefs.getDouble('sfx_volume') ?? 0.8;
+
+    // Restore playlist state
+    _currentTrackIndex = prefs.getInt('current_track_index') ?? 0;
+    _isLoginMode = prefs.getBool('is_login_mode') ?? true;
+    final savedPlaylist = prefs.getStringList('shuffled_playlist');
+    if (savedPlaylist != null && savedPlaylist.isNotEmpty) {
+      _shuffledPlaylist = savedPlaylist;
+    }
   }
 
   // Save settings to SharedPreferences
@@ -146,6 +154,13 @@ class AudioManager with WidgetsBindingObserver {
     await prefs.setBool('sfx_enabled', _isSfxEnabled);
     await prefs.setDouble('bgm_volume', _bgmVolume);
     await prefs.setDouble('sfx_volume', _sfxVolume);
+
+    // Save playlist state
+    await prefs.setInt('current_track_index', _currentTrackIndex);
+    await prefs.setBool('is_login_mode', _isLoginMode);
+    if (_shuffledPlaylist.isNotEmpty) {
+      await prefs.setStringList('shuffled_playlist', _shuffledPlaylist);
+    }
   }
 
   // Play login/walkthrough BGM
@@ -268,6 +283,9 @@ class AudioManager with WidgetsBindingObserver {
         _currentTrackIndex = 0;
       }
 
+      // Save current track position
+      _saveSettings();
+
       // No fade out needed since track naturally ended
       _playCurrentTrack();
     }
@@ -303,13 +321,19 @@ class AudioManager with WidgetsBindingObserver {
     await _saveSettings();
 
     if (!enabled) {
-      await stopBgm();
+      await pauseBgm(); // Use pause instead of stop to remember position
     } else {
-      // Resume based on mode
-      if (_isLoginMode) {
-        await playLoginBgm();
-      } else {
-        await playMainBgm();
+      // Resume current track from where it was paused
+      if (_bgmPlayer.state == PlayerState.paused) {
+        await resumeBgm();
+      } else if (_bgmPlayer.state == PlayerState.stopped) {
+        // Only restart if completely stopped
+        if (_isLoginMode) {
+          await playLoginBgm();
+        } else {
+          // Continue from current track in playlist
+          await _playCurrentTrack();
+        }
       }
     }
   }

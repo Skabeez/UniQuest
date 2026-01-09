@@ -8,7 +8,6 @@ import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'loadinpage_model.dart';
 export 'loadinpage_model.dart';
@@ -152,7 +151,8 @@ class _LoadinpageWidgetState extends State<LoadinpageWidget>
       await AssetLottie('assets/jsons/Rocket_in_space.json').load();
       await AssetLottie('assets/jsons/Fire.json').load();
       await AssetLottie('assets/jsons/Confetti.json').load();
-      await AssetLottie('assets/jsons/Businessman flies up with rocket.json').load();
+      await AssetLottie('assets/jsons/Businessman flies up with rocket.json')
+          .load();
       await AssetLottie('assets/jsons/black rainbow cat.json').load();
 
       debugPrint('✅ All Lottie animations preloaded successfully');
@@ -301,6 +301,7 @@ class _LoadinpageWidgetState extends State<LoadinpageWidget>
                                           .displaySmall
                                           .override(
                                             fontFamily: 'Feather',
+                                            color: Colors.white,
                                             letterSpacing: 0.0,
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -350,44 +351,29 @@ class _LoadinpageWidgetState extends State<LoadinpageWidget>
                                   },
                                   text: 'Continue',
                                   options: FFButtonOptions(
-                                    height: 48.0,
+                                    height: 54.0,
                                     padding:
                                         const EdgeInsetsDirectional.fromSTEB(
-                                            24.0, 0.0, 24.0, 0.0),
+                                            32.0, 0.0, 32.0, 0.0),
                                     iconPadding:
                                         const EdgeInsetsDirectional.fromSTEB(
                                             0.0, 0.0, 0.0, 0.0),
                                     color: const Color(0xFFFFBD59),
                                     textStyle: FlutterFlowTheme.of(context)
-                                        .titleSmall
+                                        .titleMedium
                                         .override(
-                                          font: GoogleFonts.manrope(
-                                            fontWeight:
-                                                FlutterFlowTheme.of(context)
-                                                    .titleSmall
-                                                    .fontWeight,
-                                            fontStyle:
-                                                FlutterFlowTheme.of(context)
-                                                    .titleSmall
-                                                    .fontStyle,
-                                          ),
-                                          color: Colors.black,
+                                          fontFamily: 'Feather',
+                                          color: const Color(0xFF2D2D2D),
+                                          fontSize: 16.0,
                                           letterSpacing: 0.0,
-                                          fontWeight:
-                                              FlutterFlowTheme.of(context)
-                                                  .titleSmall
-                                                  .fontWeight,
-                                          fontStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .titleSmall
-                                                  .fontStyle,
+                                          fontWeight: FontWeight.bold,
                                         ),
-                                    elevation: 1.0,
+                                    elevation: 8.0,
                                     borderSide: const BorderSide(
                                       color: Colors.transparent,
                                       width: 0.0,
                                     ),
-                                    borderRadius: BorderRadius.circular(24.0),
+                                    borderRadius: BorderRadius.circular(27.0),
                                   ),
                                 ),
                               ),

@@ -60,6 +60,8 @@ class LottieBurstOverlay extends StatefulWidget {
     final overlay = Overlay.of(context);
     late OverlayEntry overlayEntry;
 
+    final animDuration = duration ?? const Duration(milliseconds: 2000);
+
     overlayEntry = OverlayEntry(
       builder: (context) => Center(
         child: IgnorePointer(
@@ -67,7 +69,7 @@ class LottieBurstOverlay extends StatefulWidget {
             lottieAsset: lottieAsset,
             size: size,
             repeat: repeat,
-            duration: duration ?? const Duration(milliseconds: 2000),
+            duration: animDuration,
           ),
         ),
       ),
@@ -76,7 +78,7 @@ class LottieBurstOverlay extends StatefulWidget {
     overlay.insert(overlayEntry);
 
     // Auto-remove after animation completes
-    Future.delayed(const Duration(milliseconds: 3000), () {
+    Future.delayed(animDuration + const Duration(milliseconds: 100), () {
       overlayEntry.remove();
     });
   }

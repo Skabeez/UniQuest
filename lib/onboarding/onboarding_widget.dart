@@ -42,7 +42,6 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
 // Keep login BGM playing during onboarding
     AudioManager().playLoginBgm();
 
-    
     _model.unameInputTextController1 ??= TextEditingController();
     _model.unameInputFocusNode1 ??= FocusNode();
 
@@ -103,6 +102,16 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                               child: Image.network(
                                 FFAppState().draftAvatarUrl,
                                 fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Container(
+                                    color: const Color(0xFF2D2D2D),
+                                    child: const Icon(
+                                      Icons.person,
+                                      color: Color(0xFFFFBD59),
+                                      size: 80,
+                                    ),
+                                  );
+                                },
                               ),
                             ),
                           ),

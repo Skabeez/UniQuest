@@ -171,7 +171,8 @@ class _LeaderDivWidgetState extends State<LeaderDivWidget>
                             child: Stack(
                               children: [
                                 Align(
-                                  alignment: const AlignmentDirectional(0.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(0.0, 0.0),
                                   child: Container(
                                     width: 70.0,
                                     height: 70.0,
@@ -182,11 +183,23 @@ class _LeaderDivWidgetState extends State<LeaderDivWidget>
                                     child: Image.network(
                                       widget.profile!,
                                       fit: BoxFit.cover,
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return Container(
+                                          color: const Color(0xFF2D2D2D),
+                                          child: const Icon(
+                                            Icons.person,
+                                            color: Color(0xFFFFBD59),
+                                            size: 40,
+                                          ),
+                                        );
+                                      },
                                     ),
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(0.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(0.0, 0.0),
                                   child: Container(
                                     width: 100.0,
                                     height: 100.0,
@@ -198,6 +211,18 @@ class _LeaderDivWidgetState extends State<LeaderDivWidget>
                                       avatarContainerProfilesRow!
                                           .equippedBorder,
                                       fit: BoxFit.cover,
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return Container(
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                              color: const Color(0xFF424242),
+                                              width: 3,
+                                            ),
+                                          ),
+                                        );
+                                      },
                                     ),
                                   ),
                                 ),

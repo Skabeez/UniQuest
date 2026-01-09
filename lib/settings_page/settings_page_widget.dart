@@ -374,6 +374,8 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                                   _model.sfxVolume = value;
                                 });
                                 AudioManager().setSfxVolume(value);
+                                // Play sample SFX to demonstrate volume level
+                                AudioManager().playSfx('button_soft.mp3');
                               },
                               min: 0.0,
                               max: 1.0,
@@ -418,6 +420,7 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                                   .titleLarge
                                   .override(
                                     fontFamily: 'Feather',
+                                    color: Colors.white,
                                     letterSpacing: 0.0,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -459,6 +462,7 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                                   .titleLarge
                                   .override(
                                     fontFamily: 'Feather',
+                                    color: Colors.white,
                                     letterSpacing: 0.0,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -500,6 +504,7 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                                   .titleLarge
                                   .override(
                                     fontFamily: 'Feather',
+                                    color: Colors.white,
                                     letterSpacing: 0.0,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -528,6 +533,7 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                     'App Versions',
                     style: FlutterFlowTheme.of(context).titleLarge.override(
                           fontFamily: 'Feather',
+                          color: Colors.white,
                           letterSpacing: 0.0,
                           fontWeight: FontWeight.bold,
                         ),

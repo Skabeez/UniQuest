@@ -5,6 +5,7 @@ import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/services/audio_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -132,12 +133,13 @@ class _CosmeticsListWidgetState extends State<CosmeticsListWidget>
             borderRadius: 30.0,
             borderWidth: 1.0,
             buttonSize: 60.0,
-            icon: Icon(
+            icon: const Icon(
               Icons.arrow_back_rounded,
-              color: FlutterFlowTheme.of(context).primaryText,
+              color: Color(0xFFFFBD59),
               size: 30.0,
             ),
             onPressed: () async {
+              AudioManager().playSfx('button_soft.mp3');
               context.safePop();
             },
           ),
@@ -210,8 +212,8 @@ class _CosmeticsListWidgetState extends State<CosmeticsListWidget>
                   controller: _model.tabBarController,
                   children: [
                     Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 12.0, 0.0, 0.0),
                       child: FutureBuilder<List<CosmeticsRow>>(
                         future: CosmeticsTable().queryRows(
                           queryFn: (q) => q.eqOrNull(
@@ -270,8 +272,8 @@ class _CosmeticsListWidgetState extends State<CosmeticsListWidget>
                       ),
                     ),
                     Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 12.0, 0.0, 0.0),
                       child: FutureBuilder<List<CosmeticsRow>>(
                         future: CosmeticsTable().queryRows(
                           queryFn: (q) => q.eqOrNull(
@@ -326,8 +328,8 @@ class _CosmeticsListWidgetState extends State<CosmeticsListWidget>
                       ),
                     ),
                     Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 12.0, 0.0, 0.0),
                       child: FutureBuilder<List<CosmeticsRow>>(
                         future: CosmeticsTable().queryRows(
                           queryFn: (q) => q.eqOrNull(

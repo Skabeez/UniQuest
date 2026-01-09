@@ -86,6 +86,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    // Set output APK name
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            outputFileName = "UniQuest-${variant.versionName}.apk"
+        }
+    }
 }
 
 flutter {

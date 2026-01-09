@@ -76,6 +76,7 @@ class _NotifWidgetState extends State<NotifWidget>
                             .headlineMedium
                             .override(
                               fontFamily: 'Feather',
+                              color: Colors.white,
                               letterSpacing: 0.0,
                               fontWeight: FontWeight.bold,
                             ),

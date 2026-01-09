@@ -27,7 +27,7 @@ void main() async {
   await SupaFlow.initialize();
 
   await FlutterFlowTheme.initialize();
-  
+
   // Initialize audio manager
   await AudioManager().initialize();
 
@@ -139,7 +139,8 @@ class NavBarPage extends StatefulWidget {
 }
 
 /// This is the private State class that goes with NavBarPage.
-class _NavBarPageState extends State<NavBarPage> with SingleTickerProviderStateMixin {
+class _NavBarPageState extends State<NavBarPage>
+    with SingleTickerProviderStateMixin {
   String _currentPageName = 'home';
   late Widget? _currentPage;
   bool _isNavBarVisible = true;
@@ -152,12 +153,12 @@ class _NavBarPageState extends State<NavBarPage> with SingleTickerProviderStateM
     super.initState();
     _currentPageName = widget.initialPage ?? _currentPageName;
     _currentPage = widget.page;
-    
+
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 300),
       vsync: this,
     );
-    
+
     _offsetAnimation = Tween<Offset>(
       begin: Offset.zero,
       end: const Offset(0.0, 1.0),
@@ -220,68 +221,105 @@ class _NavBarPageState extends State<NavBarPage> with SingleTickerProviderStateM
       ),
       bottomNavigationBar: SlideTransition(
         position: _offsetAnimation,
-        child: Container(
-          decoration: BoxDecoration(
-            color: const Color(0xFF0F1419),
-            border: Border(
-              top: BorderSide(
-                color: const Color(0xFFFFBD59).withOpacity(0.1),
-                width: 1.0,
+        child: SafeArea(
+          child: Container(
+            decoration: BoxDecoration(
+              color: const Color(0xFF0F1419),
+              border: Border(
+                top: BorderSide(
+                  color: const Color(0xFFFFBD59).withOpacity(0.1),
+                  width: 1.0,
+                ),
               ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.3),
+                  blurRadius: 20,
+                  offset: const Offset(0, -5),
+                ),
+              ],
             ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.3),
-                blurRadius: 20,
-                offset: const Offset(0, -5),
-              ),
-            ],
-          ),
-          child: SafeArea(
-            child: Container(
-              height: 65,
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  _buildNavItem(
-                    icon: Icons.person_outline_rounded,
-                    activeIcon: Icons.person_rounded,
-                    label: 'Profile',
-                    index: 0,
-                    currentIndex: currentIndex,
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+            height: 65,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _buildNavItem(
+                  icon: Icons.person_outline_rounded,
+                  activeIcon: Icons.person_rounded,
+                  label: 'Profile',
+                  index: 0,
+                  currentIndex: currentIndex,
+                ),
+                FutureBuilder<List<NotificationsRow>>(
+                  future: NotificationsTable().queryRows(
+                    queryFn: (q) => q
+                        .eqOrNull('user_id', currentUserUid)
+                        .eqOrNull('is_read', false),
                   ),
-                  _buildNavItem(
-                    icon: Icons.notifications_outlined,
-                    activeIcon: Icons.notifications_rounded,
-                    label: 'Inbox',
-                    index: 1,
-                    currentIndex: currentIndex,
-                  ),
-                  _buildNavItem(
-                    icon: Icons.home_outlined,
-                    activeIcon: Icons.home_rounded,
-                    label: 'Home',
-                    index: 2,
-                    currentIndex: currentIndex,
-                    isCenter: true,
-                  ),
-                  _buildNavItem(
-                    icon: Icons.check_box_outlined,
-                    activeIcon: Icons.check_box_rounded,
-                    label: 'Tasks',
-                    index: 3,
-                    currentIndex: currentIndex,
-                  ),
-                  _buildNavItem(
-                    icon: Icons.settings_outlined,
-                    activeIcon: Icons.settings_rounded,
-                    label: 'Settings',
-                    index: 4,
-                    currentIndex: currentIndex,
-                  ),
-                ],
-              ),
+                  builder: (context, snapshot) {
+                    final unreadCount = snapshot.data?.length ?? 0;
+                    return _buildNavItem(
+                      icon: Icons.notifications_outlined,
+                      activeIcon: Icons.notifications_rounded,
+                      label: 'Inbox',
+                      index: 1,
+                      currentIndex: currentIndex,
+                      badge: unreadCount > 0
+                          ? Container(
+                              padding: const EdgeInsets.all(4),
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: const Color(0xFF0F1419),
+                                  width: 2,
+                                ),
+                              ),
+                              constraints: const BoxConstraints(
+                                minWidth: 18,
+                                minHeight: 18,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  unreadCount > 99 ? '99+' : '$unreadCount',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                    height: 1.0,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            )
+                          : null,
+                    );
+                  },
+                ),
+                _buildNavItem(
+                  icon: Icons.home_outlined,
+                  activeIcon: Icons.home_rounded,
+                  label: 'Home',
+                  index: 2,
+                  currentIndex: currentIndex,
+                  isCenter: true,
+                ),
+                _buildNavItem(
+                  icon: Icons.check_box_outlined,
+                  activeIcon: Icons.check_box_rounded,
+                  label: 'Tasks',
+                  index: 3,
+                  currentIndex: currentIndex,
+                ),
+                _buildNavItem(
+                  icon: Icons.settings_outlined,
+                  activeIcon: Icons.settings_rounded,
+                  label: 'Settings',
+                  index: 4,
+                  currentIndex: currentIndex,
+                ),
+              ],
             ),
           ),
         ),
@@ -296,10 +334,11 @@ class _NavBarPageState extends State<NavBarPage> with SingleTickerProviderStateM
     required int index,
     required int currentIndex,
     bool isCenter = false,
+    Widget? badge,
   }) {
     final isActive = currentIndex == index;
     final tabs = ['profilePage', 'notif', 'home', 'todoList', 'settingsPage'];
-    
+
     return Expanded(
       child: GestureDetector(
         onTap: () {
@@ -313,12 +352,23 @@ class _NavBarPageState extends State<NavBarPage> with SingleTickerProviderStateM
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           curve: Curves.easeInOut,
-          child: Icon(
-            isActive ? activeIcon : icon,
-            color: isActive 
-              ? const Color(0xFFFFBD59)
-              : const Color(0xFF6B7280),
-            size: isActive ? 28.0 : 24.0,
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Icon(
+                isActive ? activeIcon : icon,
+                color: isActive
+                    ? const Color(0xFFFFBD59)
+                    : const Color(0xFF6B7280),
+                size: isActive ? 28.0 : 24.0,
+              ),
+              if (badge != null)
+                Positioned(
+                  right: -8,
+                  top: -4,
+                  child: badge,
+                ),
+            ],
           ),
         ),
       ),
