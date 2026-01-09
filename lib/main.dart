@@ -206,14 +206,21 @@ class _NavBarPageState extends State<NavBarPage>
         onNotification: (notification) {
           if (notification is ScrollUpdateNotification) {
             final currentPosition = notification.metrics.pixels;
-            if (currentPosition > _lastScrollPosition && currentPosition > 50) {
-              // Scrolling down
-              _hideNavBar();
-            } else if (currentPosition < _lastScrollPosition) {
-              // Scrolling up
+            final isScrollable = notification.metrics.maxScrollExtent > 0;
+            if (isScrollable) {
+              if (currentPosition > _lastScrollPosition &&
+                  currentPosition > 50) {
+                // Scrolling down
+                _hideNavBar();
+              } else if (currentPosition < _lastScrollPosition) {
+                // Scrolling up
+                _showNavBar();
+              }
+              _lastScrollPosition = currentPosition;
+            } else {
+              // Content not scrollable, always show navbar
               _showNavBar();
             }
-            _lastScrollPosition = currentPosition;
           }
           return true;
         },
@@ -239,10 +246,11 @@ class _NavBarPageState extends State<NavBarPage>
                 ),
               ],
             ),
-            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-            height: 65,
+            padding:
+                const EdgeInsets.symmetric(horizontal: 14.0, vertical: 10.0),
+            height: 72,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _buildNavItem(
                   icon: Icons.person_outline_rounded,
@@ -343,6 +351,7 @@ class _NavBarPageState extends State<NavBarPage>
       child: GestureDetector(
         onTap: () {
           AudioManager().playSfx(SoundEffects.buttonSoft);
+          _showNavBar(); // Ensure navbar is visible when tapping
           safeSetState(() {
             _currentPage = null;
             _currentPageName = tabs[index];
@@ -353,6 +362,7 @@ class _NavBarPageState extends State<NavBarPage>
           duration: const Duration(milliseconds: 200),
           curve: Curves.easeInOut,
           child: Stack(
+            alignment: Alignment.center,
             clipBehavior: Clip.none,
             children: [
               Icon(

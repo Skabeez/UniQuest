@@ -106,7 +106,7 @@ class _MapWidgetState extends State<MapWidget> {
                                     AudioManager().playSfx('button_soft.mp3');
                                     context.pushNamed(HomeWidget.routeName);
                                   },
-                                  child: Icon(
+                                  child: const Icon(
                                     Icons.arrow_back_rounded,
                                     color: Colors.white,
                                     size: 40.0,
@@ -753,291 +753,300 @@ class _MapWidgetState extends State<MapWidget> {
                                           opacity: FFAppState().showInfoCard
                                               ? 1.0
                                               : 0.0,
-                                          child: Container(
-                                            width: 340.0,
-                                            constraints: const BoxConstraints(
-                                              maxHeight: 620.0,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(32.0),
-                                              boxShadow: const [
-                                                BoxShadow(
-                                                  blurRadius: 35.0,
-                                                  color: Color(0x50000000),
-                                                  offset: Offset(0, 12),
-                                                  spreadRadius: -5,
+                                          child: SafeArea(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                horizontal: 16.0,
+                                                vertical: 24.0,
+                                              ),
+                                              child: Container(
+                                                width: 340.0,
+                                                constraints:
+                                                    const BoxConstraints(
+                                                  maxHeight: 620.0,
                                                 ),
-                                                BoxShadow(
-                                                  blurRadius: 15.0,
-                                                  color: Color(0x20000000),
-                                                  offset: Offset(0, 4),
-                                                  spreadRadius: 0,
-                                                ),
-                                              ],
-                                            ),
-                                            child: Stack(
-                                              children: [
-                                                Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    // Image at the top
-                                                    ClipRRect(
-                                                      borderRadius:
-                                                          const BorderRadius
-                                                              .only(
-                                                        topLeft:
-                                                            Radius.circular(
-                                                                32.0),
-                                                        topRight:
-                                                            Radius.circular(
-                                                                32.0),
-                                                      ),
-                                                      child: AspectRatio(
-                                                        aspectRatio: 1.3,
-                                                        child: Image.asset(
-                                                          FFAppState()
-                                                              .selectedPinImage,
-                                                          fit: BoxFit.cover,
-                                                          errorBuilder: (context,
-                                                                  error,
-                                                                  stackTrace) =>
-                                                              Image.asset(
-                                                            'assets/images/error_image.png',
-                                                            fit: BoxFit.cover,
-                                                          ),
-                                                        ),
-                                                      ),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          32.0),
+                                                  boxShadow: const [
+                                                    BoxShadow(
+                                                      blurRadius: 35.0,
+                                                      color: Color(0x50000000),
+                                                      offset: Offset(0, 12),
+                                                      spreadRadius: -5,
                                                     ),
-                                                    // Title with context
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsetsDirectional
-                                                              .fromSTEB(24.0,
-                                                              24.0, 60.0, 8.0),
-                                                      child: Column(
+                                                    BoxShadow(
+                                                      blurRadius: 15.0,
+                                                      color: Color(0x20000000),
+                                                      offset: Offset(0, 4),
+                                                      spreadRadius: 0,
+                                                    ),
+                                                  ],
+                                                ),
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          32.0),
+                                                  child: Stack(
+                                                    children: [
+                                                      Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
                                                         crossAxisAlignment:
                                                             CrossAxisAlignment
                                                                 .start,
                                                         children: [
-                                                          Text(
-                                                            FFAppState()
-                                                                .selectedPinName,
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodyMedium
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Feather',
-                                                                  color: const Color(
-                                                                      0xFF1A1A1A),
-                                                                  fontSize:
-                                                                      26.0,
-                                                                  letterSpacing:
-                                                                      -0.5,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w700,
+                                                          ClipRRect(
+                                                            borderRadius:
+                                                                const BorderRadius
+                                                                    .only(
+                                                              topLeft: Radius
+                                                                  .circular(
+                                                                      32.0),
+                                                              topRight: Radius
+                                                                  .circular(
+                                                                      32.0),
+                                                            ),
+                                                            child: AspectRatio(
+                                                              aspectRatio: 1.3,
+                                                              child:
+                                                                  Image.asset(
+                                                                FFAppState()
+                                                                    .selectedPinImage,
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                                errorBuilder: (context,
+                                                                        error,
+                                                                        stackTrace) =>
+                                                                    Image.asset(
+                                                                  'assets/images/error_image.png',
+                                                                  fit: BoxFit
+                                                                      .cover,
                                                                 ),
+                                                              ),
+                                                            ),
                                                           ),
-                                                          const SizedBox(
-                                                              height: 12.0),
-                                                          Row(
-                                                            children: [
-                                                              Container(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .symmetric(
-                                                                  horizontal:
-                                                                      12.0,
-                                                                  vertical: 6.0,
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsetsDirectional
+                                                                    .fromSTEB(
+                                                                    24.0,
+                                                                    24.0,
+                                                                    60.0,
+                                                                    8.0),
+                                                            child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Text(
+                                                                  FFAppState()
+                                                                      .selectedPinName,
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyMedium
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Feather',
+                                                                        color: const Color(
+                                                                            0xFF1A1A1A),
+                                                                        fontSize:
+                                                                            26.0,
+                                                                        letterSpacing:
+                                                                            -0.5,
+                                                                        fontWeight:
+                                                                            FontWeight.w700,
+                                                                      ),
                                                                 ),
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: const Color(
-                                                                          0xFFFFBD59)
-                                                                      .withOpacity(
-                                                                          0.15),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              20.0),
-                                                                  border: Border
-                                                                      .all(
-                                                                    color: const Color(
-                                                                            0xFFFFBD59)
-                                                                        .withOpacity(
-                                                                            0.3),
-                                                                    width: 1.0,
-                                                                  ),
-                                                                ),
-                                                                child: Row(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .min,
+                                                                const SizedBox(
+                                                                    height:
+                                                                        12.0),
+                                                                Row(
                                                                   children: [
-                                                                    const Icon(
-                                                                      Icons
-                                                                          .location_on,
-                                                                      size:
-                                                                          14.0,
-                                                                      color: Color(
-                                                                          0xFFD89E3D),
+                                                                    Container(
+                                                                      padding:
+                                                                          const EdgeInsets
+                                                                              .symmetric(
+                                                                        horizontal:
+                                                                            12.0,
+                                                                        vertical:
+                                                                            6.0,
+                                                                      ),
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        color: const Color(0xFFFFBD59)
+                                                                            .withOpacity(0.15),
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(20.0),
+                                                                        border:
+                                                                            Border.all(
+                                                                          color:
+                                                                              const Color(0xFFFFBD59).withOpacity(0.3),
+                                                                          width:
+                                                                              1.0,
+                                                                        ),
+                                                                      ),
+                                                                      child:
+                                                                          Row(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.min,
+                                                                        children: [
+                                                                          const Icon(
+                                                                            Icons.location_on,
+                                                                            size:
+                                                                                14.0,
+                                                                            color:
+                                                                                Color(0xFFD89E3D),
+                                                                          ),
+                                                                          const SizedBox(
+                                                                              width: 4.0),
+                                                                          Text(
+                                                                            'Campus Location',
+                                                                            style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                                  fontFamily: 'Feather',
+                                                                                  color: const Color(0xFFD89E3D),
+                                                                                  fontSize: 12.0,
+                                                                                  letterSpacing: 0.0,
+                                                                                  fontWeight: FontWeight.w600,
+                                                                                ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
                                                                     ),
-                                                                    const SizedBox(
-                                                                        width:
-                                                                            4.0),
-                                                                    Text(
-                                                                      'Campus Location',
+                                                                  ],
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          Flexible(
+                                                            child: Stack(
+                                                              children: [
+                                                                Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .fromLTRB(
+                                                                          24.0,
+                                                                          0,
+                                                                          24.0,
+                                                                          28.0),
+                                                                  child:
+                                                                      SingleChildScrollView(
+                                                                    physics:
+                                                                        const BouncingScrollPhysics(),
+                                                                    child: Text(
+                                                                      FFAppState()
+                                                                          .selectedPinDescription,
                                                                       style: FlutterFlowTheme.of(
                                                                               context)
                                                                           .bodyMedium
                                                                           .override(
-                                                                            fontFamily:
-                                                                                'Feather',
                                                                             color:
-                                                                                const Color(0xFFD89E3D),
+                                                                                const Color(0xFF4A4A4A),
+                                                                            font:
+                                                                                GoogleFonts.openSans(
+                                                                              fontWeight: FontWeight.w400,
+                                                                              height: 1.65,
+                                                                            ),
                                                                             fontSize:
-                                                                                12.0,
+                                                                                15.5,
                                                                             letterSpacing:
-                                                                                0.0,
-                                                                            fontWeight:
-                                                                                FontWeight.w600,
+                                                                                0.2,
                                                                           ),
                                                                     ),
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    // Description with scroll indicator
-                                                    Flexible(
-                                                      child: Stack(
-                                                        children: [
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .fromLTRB(
-                                                                    24.0,
-                                                                    0,
-                                                                    24.0,
-                                                                    28.0),
-                                                            child:
-                                                                SingleChildScrollView(
-                                                              physics:
-                                                                  const BouncingScrollPhysics(),
-                                                              child: Text(
-                                                                FFAppState()
-                                                                    .selectedPinDescription,
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .override(
-                                                                      color: const Color(
-                                                                          0xFF4A4A4A),
-                                                                      font: GoogleFonts
-                                                                          .openSans(
-                                                                        fontWeight:
-                                                                            FontWeight.w400,
-                                                                        height:
-                                                                            1.65,
-                                                                      ),
-                                                                      fontSize:
-                                                                          15.5,
-                                                                      letterSpacing:
-                                                                          0.2,
-                                                                    ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          // Scroll fade indicator at bottom
-                                                          Positioned(
-                                                            bottom: 0,
-                                                            left: 0,
-                                                            right: 0,
-                                                            height: 40.0,
-                                                            child:
-                                                                IgnorePointer(
-                                                              child: Container(
-                                                                decoration:
-                                                                    const BoxDecoration(
-                                                                  gradient:
-                                                                      LinearGradient(
-                                                                    begin: Alignment
-                                                                        .topCenter,
-                                                                    end: Alignment
-                                                                        .bottomCenter,
-                                                                    colors: [
-                                                                      Color(
-                                                                          0x00FFFFFF),
-                                                                      Color(
-                                                                          0xFFFFFFFF),
-                                                                    ],
                                                                   ),
                                                                 ),
-                                                              ),
+                                                                Positioned(
+                                                                  bottom: 0,
+                                                                  left: 0,
+                                                                  right: 0,
+                                                                  height: 40.0,
+                                                                  child:
+                                                                      IgnorePointer(
+                                                                    child:
+                                                                        Container(
+                                                                      decoration:
+                                                                          const BoxDecoration(
+                                                                        gradient:
+                                                                            LinearGradient(
+                                                                          begin:
+                                                                              Alignment.topCenter,
+                                                                          end: Alignment
+                                                                              .bottomCenter,
+                                                                          colors: [
+                                                                            Color(0x00FFFFFF),
+                                                                            Color(0xFFFFFFFF),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ],
                                                             ),
                                                           ),
                                                         ],
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                // Close button with better touch target
-                                                Positioned(
-                                                  top: 12.0,
-                                                  right: 12.0,
-                                                  child: Material(
-                                                    color: Colors.transparent,
-                                                    child: InkWell(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              24.0),
-                                                      onTap: () async {
-                                                        AudioManager().playSfx(
-                                                            'button_soft.mp3');
-                                                        FFAppState()
-                                                                .showInfoCard =
-                                                            false;
-                                                        safeSetState(() {});
-                                                      },
-                                                      child: Container(
-                                                        width: 44.0,
-                                                        height: 44.0,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: const Color(
-                                                              0xF5FFFFFF),
-                                                          shape:
-                                                              BoxShape.circle,
-                                                          boxShadow: const [
-                                                            BoxShadow(
-                                                              blurRadius: 10.0,
-                                                              color: Color(
-                                                                  0x30000000),
-                                                              offset:
-                                                                  Offset(0, 3),
+                                                      Positioned(
+                                                        top: 12.0,
+                                                        right: 12.0,
+                                                        child: Material(
+                                                          color: Colors
+                                                              .transparent,
+                                                          child: InkWell(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        24.0),
+                                                            onTap: () async {
+                                                              AudioManager()
+                                                                  .playSfx(
+                                                                      'button_soft.mp3');
+                                                              FFAppState()
+                                                                      .showInfoCard =
+                                                                  false;
+                                                              safeSetState(
+                                                                  () {});
+                                                            },
+                                                            child: Container(
+                                                              width: 44.0,
+                                                              height: 44.0,
+                                                              decoration:
+                                                                  const BoxDecoration(
+                                                                color: Color(
+                                                                    0xF5FFFFFF),
+                                                                shape: BoxShape
+                                                                    .circle,
+                                                                boxShadow: [
+                                                                  BoxShadow(
+                                                                    blurRadius:
+                                                                        10.0,
+                                                                    color: Color(
+                                                                        0x30000000),
+                                                                    offset:
+                                                                        Offset(
+                                                                            0,
+                                                                            3),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              child: const Icon(
+                                                                Icons
+                                                                    .close_rounded,
+                                                                color: Color(
+                                                                    0xFF2D2D2D),
+                                                                size: 24.0,
+                                                              ),
                                                             ),
-                                                          ],
-                                                        ),
-                                                        child: const Icon(
-                                                          Icons.close_rounded,
-                                                          color:
-                                                              Color(0xFF2D2D2D),
-                                                          size: 24.0,
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
+                                                    ],
                                                   ),
                                                 ),
-                                              ],
+                                              ),
                                             ),
                                           ),
                                         ),

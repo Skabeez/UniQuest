@@ -328,20 +328,20 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                                       ),
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
+                              const Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
                                     0.0, 12.0, 16.0, 0.0),
                                 child: Row(
                                   children: [
                                     Icon(
                                       Icons.swipe,
-                                      color: const Color(0xFFFFBD59),
+                                      color: Color(0xFFFFBD59),
                                       size: 20.0,
                                     ),
-                                    const SizedBox(width: 4.0),
+                                    SizedBox(width: 4.0),
                                     Icon(
                                       Icons.arrow_forward_ios,
-                                      color: const Color(0xFFB0B0B0),
+                                      color: Color(0xFFB0B0B0),
                                       size: 16.0,
                                     ),
                                   ],
@@ -1131,9 +1131,9 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                                 24.0, 12.0, 24.0, 0.0),
                             child: LayoutBuilder(
                               builder: (context, constraints) {
-                                final itemWidth =
+                                const itemWidth =
                                     266.0; // 250 card + 16 padding
-                                final totalItems = 5;
+                                const totalItems = 5;
                                 final screenWidth =
                                     MediaQuery.of(context).size.width;
                                 // Actual max scroll is total width of all items minus the visible screen width
@@ -1145,7 +1145,7 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                                         .clamp(0.0, 1.0);
 
                                 final trackWidth = constraints.maxWidth;
-                                final indicatorWidth = 86.0;
+                                const indicatorWidth = 86.0;
                                 final maxIndicatorPosition =
                                     trackWidth - indicatorWidth;
                                 final indicatorPosition =

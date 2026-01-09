@@ -61,10 +61,9 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
         centerTitle: false,
         elevation: 0.0,
       ),
-      body: Padding(
-        padding: const EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
+      body: SingleChildScrollView(
+        padding: const EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 80.0),
         child: Column(
-          mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
@@ -87,10 +86,8 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                     ),
               ),
             ),
-            ListView(
-              padding: EdgeInsets.zero,
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Audio Settings Section
                 Padding(
