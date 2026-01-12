@@ -8,6 +8,7 @@ import 'auth/supabase_auth/supabase_user_provider.dart';
 import 'auth/supabase_auth/auth_util.dart';
 
 import '/backend/supabase/supabase.dart';
+import '/config/env_config.dart';
 import 'backend/firebase/firebase_config.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/flutter_flow_util.dart';
@@ -15,6 +16,8 @@ import 'package:flutter/foundation.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'services/audio_manager.dart';
 import 'services/sound_effects.dart';
+import 'services/cache_service_impl.dart';
+import 'backend/services/connectivity_manager.dart';
 import 'index.dart';
 
 void main() async {
@@ -22,11 +25,20 @@ void main() async {
   GoRouter.optionURLReflectsImperativeAPIs = true;
   usePathUrlStrategy();
 
+  // Initialize environment configuration
+  await EnvConfig.initialize();
+
   await initFirebase();
 
   await SupaFlow.initialize();
 
   await FlutterFlowTheme.initialize();
+
+  // Initialize cache manager for offline support
+  await CacheServiceImpl().initialize();
+
+  // Initialize connectivity manager
+  ConnectivityManager();
 
   // Initialize audio manager
   await AudioManager().initialize();

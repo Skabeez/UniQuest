@@ -52,3 +52,8 @@ android/app/upload-keystore.jks
 android/keystore.properties
 *.jks
 *.keystore
+
+# Environment variables - DO NOT COMMIT
+.env
+.env.local
+.env.*.local

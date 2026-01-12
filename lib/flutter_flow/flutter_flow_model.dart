@@ -36,6 +36,7 @@ T createModel<T extends FlutterFlowModel>(
 
 abstract class FlutterFlowModel<W extends Widget> {
   // Initialization methods
+  // ignore: unused_field
   bool _isInitialized = false;
   void initState(BuildContext context);
   void _init(BuildContext context) {

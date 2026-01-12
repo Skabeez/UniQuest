@@ -15,6 +15,7 @@
         "cached_network_image_platform_interface",
         "cached_network_image_web",
         "collection",
+        "connectivity_plus",
         "cupertino_icons",
         "dropdown_button2",
         "firebase_core",
@@ -25,6 +26,7 @@
         "flutter",
         "flutter_animate",
         "flutter_cache_manager",
+        "flutter_dotenv",
         "flutter_localizations",
         "flutter_web_plugins",
         "font_awesome_flutter",
@@ -672,6 +674,13 @@
       ]
     },
     {
+      "name": "flutter_dotenv",
+      "version": "5.2.1",
+      "dependencies": [
+        "flutter"
+      ]
+    },
+    {
       "name": "flutter_cache_manager",
       "version": "3.4.1",
       "dependencies": [
@@ -779,6 +788,19 @@
       "dependencies": [
         "flutter",
         "flutter_cache_manager"
+      ]
+    },
+    {
+      "name": "connectivity_plus",
+      "version": "6.1.0",
+      "dependencies": [
+        "collection",
+        "connectivity_plus_platform_interface",
+        "flutter",
+        "flutter_web_plugins",
+        "meta",
+        "nm",
+        "web"
       ]
     },
     {
@@ -1161,6 +1183,22 @@
       ]
     },
     {
+      "name": "nm",
+      "version": "0.5.0",
+      "dependencies": [
+        "dbus"
+      ]
+    },
+    {
+      "name": "connectivity_plus_platform_interface",
+      "version": "2.0.1",
+      "dependencies": [
+        "flutter",
+        "meta",
+        "plugin_platform_interface"
+      ]
+    },
+    {
       "name": "octo_image",
       "version": "2.1.0",
       "dependencies": [
@@ -1316,6 +1354,16 @@
       "version": "1.0.1",
       "dependencies": [
         "web"
+      ]
+    },
+    {
+      "name": "dbus",
+      "version": "0.7.11",
+      "dependencies": [
+        "args",
+        "ffi",
+        "meta",
+        "xml"
       ]
     },
     {

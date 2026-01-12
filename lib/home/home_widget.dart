@@ -1,4 +1,3 @@
-import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
 import '/components/mission/mission_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
@@ -1295,23 +1294,59 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                                                 16.0, 12.0, 16.0, 12.0),
                                             child: FutureBuilder<
                                                 List<UserMissionsRow>>(
-                                              future:
-                                                  UserMissionsTable().queryRows(
-                                                queryFn: (q) => q
-                                                    .eqOrNull(
-                                                      'completed',
-                                                      false,
-                                                    )
-                                                    .eqOrNull(
-                                                      'is_archived',
-                                                      false,
-                                                    )
-                                                    .eqOrNull(
-                                                      'user_id',
-                                                      currentUserUid,
-                                                    ),
-                                              ),
+                                              // REFACTORED: Using Service Layer instead of direct Supabase calls
+                                              // Demonstrates: Separation of Concerns, Dependency Inversion
+                                              future: _model.getActiveMissions(),
                                               builder: (context, snapshot) {
+                                                // Show error message if offline or error occurred
+                                                if (_model.missionsError != null) {
+                                                  // Still show UI with cached data if available
+                                                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                                                    return Center(
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.all(20.0),
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment.center,
+                                                          children: [
+                                                            const Icon(
+                                                              Icons.cloud_off_rounded,
+                                                              size: 64.0,
+                                                              color: Color(0xFFFFBD59),
+                                                            ),
+                                                            const SizedBox(height: 16.0),
+                                                            Text(
+                                                              'You\'re offline',
+                                                              style: FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .headlineSmall
+                                                                  .override(
+                                                                    fontFamily: 'Feather',
+                                                                    color: Colors.white,
+                                                                    letterSpacing: 0.0,
+                                                                  ),
+                                                            ),
+                                                            const SizedBox(height: 8.0),
+                                                            Text(
+                                                              'Connect to the internet to view missions',
+                                                              textAlign: TextAlign.center,
+                                                              style: FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .bodyMedium
+                                                                  .override(
+                                                                    fontFamily: 'Feather',
+                                                                    color: const Color(
+                                                                        0xFFB0B0B0),
+                                                                    letterSpacing: 0.0,
+                                                                  ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }
+                                                }
+
                                                 // Customize what your widget looks like when it's loading.
                                                 if (!snapshot.hasData) {
                                                   return Center(

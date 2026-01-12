@@ -15,6 +15,7 @@ class TsaCreationPageModel extends FlutterFlowModel<TsaCreationPageWidget> {
   FocusNode? tasknameFocusNode;
   TextEditingController? tasknameTextController;
   String? Function(BuildContext, String?)? tasknameTextControllerValidator;
+  // ignore: unused_element
   String? _tasknameTextControllerValidator(BuildContext context, String? val) {
     if (val == null || val.isEmpty) {
       return 'Task name is required';
@@ -26,6 +27,7 @@ class TsaCreationPageModel extends FlutterFlowModel<TsaCreationPageWidget> {
   FocusNode? tagsFocusNode;
   TextEditingController? tagsTextController;
   String? Function(BuildContext, String?)? tagsTextControllerValidator;
+  // ignore: unused_element
   String? _tagsTextControllerValidator(BuildContext context, String? val) {
     if (val == null || val.isEmpty) {
       return 'Tag is required';

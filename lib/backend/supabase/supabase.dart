@@ -1,10 +1,11 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:uni_quest/config/env_config.dart';
 
 export 'database/database.dart';
 
-String _kSupabaseUrl = 'https://fwgzodfujdhyvxpwnrrn.supabase.co';
-String _kSupabaseAnonKey =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ3Z3pvZGZ1amRoeXZ4cHducnJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0MzE3NjQsImV4cCI6MjA3ODAwNzc2NH0.wkFQy2YFIxIiZ260zj1hOmZbzblVMludcEUaDW5DYak';
+// Supabase configuration loaded from .env file
+String get _kSupabaseUrl => EnvConfig.supabaseUrl;
+String get _kSupabaseAnonKey => EnvConfig.supabaseAnonKey;
 
 class SupaFlow {
   SupaFlow._();
