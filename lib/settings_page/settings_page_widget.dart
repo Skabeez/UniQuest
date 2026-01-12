@@ -4,6 +4,8 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/services/audio_manager.dart';
+import '/components/modern_alert_dialog.dart';
 import '/index.dart';
 import 'package:flutter/material.dart';
 import 'settings_page_model.dart';
@@ -45,31 +47,23 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF1E1E1E),
         automaticallyImplyLeading: false,
-        actions: const [],
-        flexibleSpace: FlexibleSpaceBar(
-          title: Padding(
-            padding: const EdgeInsets.all(6.0),
-            child: Text(
-              'Settings ',
-              style: FlutterFlowTheme.of(context).headlineSmall.override(
-                    fontFamily: 'Feather',
-                    color: const Color(0xFFFFBD59),
-                    fontSize: 34.0,
-                    letterSpacing: 0.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-          ),
-          centerTitle: false,
-          expandedTitleScale: 1.0,
-          titlePadding: const EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 0.0, 0.0),
+        title: Text(
+          'Settings',
+          style: FlutterFlowTheme.of(context).headlineMedium.override(
+                fontFamily: 'Feather',
+                color: const Color(0xFFFFBD59),
+                fontSize: 32.0,
+                letterSpacing: 0.0,
+                fontWeight: FontWeight.bold,
+              ),
         ),
+        actions: const [],
+        centerTitle: false,
         elevation: 0.0,
       ),
-      body: Padding(
-        padding: const EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
+      body: SingleChildScrollView(
+        padding: const EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 80.0),
         child: Column(
-          mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
@@ -81,7 +75,8 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
               ),
             ),
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(16.0, 10.0, 0.0, 0.0),
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(16.0, 10.0, 0.0, 0.0),
               child: Text(
                 'Please evaluate your options below.',
                 style: FlutterFlowTheme.of(context).labelMedium.override(
@@ -91,13 +86,314 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                     ),
               ),
             ),
-            ListView(
-              padding: EdgeInsets.zero,
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Audio Settings Section
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 1.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                      16.0, 16.0, 16.0, 8.0),
+                  child: Text(
+                    'Audio',
+                    style: FlutterFlowTheme.of(context).labelMedium.override(
+                          fontFamily: 'Feather',
+                          color: const Color(0xFFFFBD59),
+                          fontSize: 12.0,
+                          letterSpacing: 1.0,
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+                ),
+                // BGM Toggle
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                      16.0, 8.0, 16.0, 8.0),
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF2A2A2A),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                width: 40.0,
+                                height: 40.0,
+                                decoration: BoxDecoration(
+                                  color: const Color(0x33FFBD59),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                child: const Icon(
+                                  Icons.music_note_rounded,
+                                  color: Color(0xFFFFBD59),
+                                  size: 24.0,
+                                ),
+                              ),
+                              const SizedBox(width: 12.0),
+                              Text(
+                                'Background Music',
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyLarge
+                                    .override(
+                                      fontFamily: 'Feather',
+                                      color: Colors.white,
+                                      fontSize: 16.0,
+                                      letterSpacing: 0.0,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                              ),
+                            ],
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              final newValue = !_model.isBgmEnabled;
+                              setState(() {
+                                _model.isBgmEnabled = newValue;
+                              });
+                              AudioManager().toggleBgm(newValue);
+                            },
+                            child: Switch.adaptive(
+                              value: _model.isBgmEnabled,
+                              onChanged: (value) {
+                                setState(() {
+                                  _model.isBgmEnabled = value;
+                                });
+                                AudioManager().toggleBgm(value);
+                              },
+                              activeColor: const Color(0xFFFFBD59),
+                              activeTrackColor: const Color(0x80FFBD59),
+                              inactiveThumbColor: const Color(0xFF6B7280),
+                              inactiveTrackColor: const Color(0xFF3A3A3A),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                // BGM Volume Slider
+                if (AudioManager().isBgmEnabled)
+                  Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        16.0, 0.0, 16.0, 16.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF2A2A2A),
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Music Volume',
+                                style: FlutterFlowTheme.of(context)
+                                    .labelMedium
+                                    .override(
+                                      fontFamily: 'Feather',
+                                      color: const Color(0xFFB0B0B0),
+                                      letterSpacing: 0.0,
+                                    ),
+                              ),
+                              Text(
+                                '${(_model.bgmVolume * 100).round()}%',
+                                style: FlutterFlowTheme.of(context)
+                                    .labelMedium
+                                    .override(
+                                      fontFamily: 'Feather',
+                                      color: const Color(0xFFFFBD59),
+                                      letterSpacing: 0.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
+                            ],
+                          ),
+                          SliderTheme(
+                            data: const SliderThemeData(
+                              trackHeight: 4.0,
+                              thumbShape: RoundSliderThumbShape(
+                                  enabledThumbRadius: 8.0),
+                              overlayShape:
+                                  RoundSliderOverlayShape(overlayRadius: 16.0),
+                            ),
+                            child: Slider(
+                              value: _model.bgmVolume,
+                              onChanged: (value) {
+                                setState(() {
+                                  _model.bgmVolume = value;
+                                });
+                                AudioManager().setBgmVolume(value);
+                              },
+                              min: 0.0,
+                              max: 1.0,
+                              activeColor: const Color(0xFFFFBD59),
+                              inactiveColor: const Color(0xFF3A3A3A),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                // SFX Toggle
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                      16.0, 8.0, 16.0, 8.0),
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF2A2A2A),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                width: 40.0,
+                                height: 40.0,
+                                decoration: BoxDecoration(
+                                  color: const Color(0x33FFBD59),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                child: const Icon(
+                                  Icons.volume_up_rounded,
+                                  color: Color(0xFFFFBD59),
+                                  size: 24.0,
+                                ),
+                              ),
+                              const SizedBox(width: 12.0),
+                              Text(
+                                'Sound Effects',
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyLarge
+                                    .override(
+                                      fontFamily: 'Feather',
+                                      color: Colors.white,
+                                      fontSize: 16.0,
+                                      letterSpacing: 0.0,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                              ),
+                            ],
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              final newValue = !_model.isSfxEnabled;
+                              setState(() {
+                                _model.isSfxEnabled = newValue;
+                              });
+                              AudioManager().toggleSfx(newValue);
+                            },
+                            child: Switch.adaptive(
+                              value: _model.isSfxEnabled,
+                              onChanged: (value) {
+                                setState(() {
+                                  _model.isSfxEnabled = value;
+                                });
+                                AudioManager().toggleSfx(value);
+                              },
+                              activeColor: const Color(0xFFFFBD59),
+                              activeTrackColor: const Color(0x80FFBD59),
+                              inactiveThumbColor: const Color(0xFF6B7280),
+                              inactiveTrackColor: const Color(0xFF3A3A3A),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                // SFX Volume Slider
+                if (AudioManager().isSfxEnabled)
+                  Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        16.0, 0.0, 16.0, 16.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF2A2A2A),
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'SFX Volume',
+                                style: FlutterFlowTheme.of(context)
+                                    .labelMedium
+                                    .override(
+                                      fontFamily: 'Feather',
+                                      color: const Color(0xFFB0B0B0),
+                                      letterSpacing: 0.0,
+                                    ),
+                              ),
+                              Text(
+                                '${(_model.sfxVolume * 100).round()}%',
+                                style: FlutterFlowTheme.of(context)
+                                    .labelMedium
+                                    .override(
+                                      fontFamily: 'Feather',
+                                      color: const Color(0xFFFFBD59),
+                                      letterSpacing: 0.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
+                            ],
+                          ),
+                          SliderTheme(
+                            data: const SliderThemeData(
+                              trackHeight: 4.0,
+                              thumbShape: RoundSliderThumbShape(
+                                  enabledThumbRadius: 8.0),
+                              overlayShape:
+                                  RoundSliderOverlayShape(overlayRadius: 16.0),
+                            ),
+                            child: Slider(
+                              value: _model.sfxVolume,
+                              onChanged: (value) {
+                                setState(() {
+                                  _model.sfxVolume = value;
+                                });
+                                AudioManager().setSfxVolume(value);
+                                // Play sample SFX to demonstrate volume level
+                                AudioManager().playSfx('button_soft.mp3');
+                              },
+                              min: 0.0,
+                              max: 1.0,
+                              activeColor: const Color(0xFFFFBD59),
+                              inactiveColor: const Color(0xFF3A3A3A),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                SizedBox(
+                  width: 390.0,
+                  child: Divider(
+                    thickness: 1.0,
+                    color: FlutterFlowTheme.of(context).secondaryText,
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 1.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -121,6 +417,7 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                                   .titleLarge
                                   .override(
                                     fontFamily: 'Feather',
+                                    color: Colors.white,
                                     letterSpacing: 0.0,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -137,7 +434,8 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 1.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 1.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -161,6 +459,7 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                                   .titleLarge
                                   .override(
                                     fontFamily: 'Feather',
+                                    color: Colors.white,
                                     letterSpacing: 0.0,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -177,7 +476,8 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 1.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 1.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -201,6 +501,7 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                                   .titleLarge
                                   .override(
                                     fontFamily: 'Feather',
+                                    color: Colors.white,
                                     letterSpacing: 0.0,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -223,18 +524,21 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 0.0, 0.0),
                   child: Text(
                     'App Versions',
                     style: FlutterFlowTheme.of(context).titleLarge.override(
                           fontFamily: 'Feather',
+                          color: Colors.white,
                           letterSpacing: 0.0,
                           fontWeight: FontWeight.bold,
                         ),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 30.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 30.0, 0.0),
                   child: FutureBuilder<List<ProfilesRow>>(
                     future: ProfilesTable().querySingleRow(
                       queryFn: (q) => q.eqOrNull(
@@ -279,18 +583,13 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                           } else {
                             await showDialog(
                               context: context,
+                              barrierColor: Colors.black87,
                               builder: (alertDialogContext) {
-                                return AlertDialog(
-                                  title: const Text('RESTRICTED!'),
-                                  content: const Text(
-                                      'This function is not meant for users.'),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.pop(alertDialogContext),
-                                      child: const Text('Ok'),
-                                    ),
-                                  ],
+                                return const ModernAlertDialog(
+                                  title: 'Restricted',
+                                  description:
+                                      'This function is not meant for users. Admin access required.',
+                                  primaryButtonText: 'Got It',
                                 );
                               },
                             );
@@ -303,7 +602,8 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
               ],
             ),
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(16.0, 4.0, 0.0, 0.0),
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(16.0, 4.0, 0.0, 0.0),
               child: Text(
                 'v0.0.1',
                 style: FlutterFlowTheme.of(context).labelMedium.override(
@@ -314,7 +614,8 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
               ),
             ),
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 0.0, 0.0),
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 0.0, 0.0),
               child: FFButtonWidget(
                 onPressed: () async {
                   GoRouter.of(context).prepareAuthEvent();
@@ -326,7 +627,8 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
                 text: 'Log Out',
                 options: FFButtonOptions(
                   height: 50.0,
-                  padding: const EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                      24.0, 0.0, 24.0, 0.0),
                   iconPadding:
                       const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                   color: const Color(0xFF1E1E1E),

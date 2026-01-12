@@ -43,6 +43,7 @@ class _HomeCopyWidgetState extends State<HomeCopyWidget>
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       safeSetState(
           () => _model.homeviewController = createPageWalkthrough(context));
+      await Future.delayed(const Duration(milliseconds: 150));
       _model.homeviewController?.show(context: context);
     });
 
@@ -187,8 +188,8 @@ class _HomeCopyWidgetState extends State<HomeCopyWidget>
                   Stack(
                     children: [
                       Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
+                        padding: const EdgeInsetsDirectional.fromSTEB(
+                            0.0, 20.0, 0.0, 0.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           children: [
@@ -199,7 +200,8 @@ class _HomeCopyWidgetState extends State<HomeCopyWidget>
                               child: Stack(
                                 children: [
                                   Align(
-                                    alignment: const AlignmentDirectional(0.0, 0.0),
+                                    alignment:
+                                        const AlignmentDirectional(0.0, 0.0),
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Container(
@@ -217,8 +219,8 @@ class _HomeCopyWidgetState extends State<HomeCopyWidget>
                                     ),
                                   ),
                                   Align(
-                                    alignment:
-                                        const AlignmentDirectional(-0.18, -1.46),
+                                    alignment: const AlignmentDirectional(
+                                        -0.18, -1.46),
                                     child: Container(
                                       width: MediaQuery.sizeOf(context).width *
                                           0.9,
@@ -231,8 +233,9 @@ class _HomeCopyWidgetState extends State<HomeCopyWidget>
                                       child: Stack(
                                         children: [
                                           Align(
-                                            alignment: const AlignmentDirectional(
-                                                -0.81, -0.05),
+                                            alignment:
+                                                const AlignmentDirectional(
+                                                    -0.81, -0.05),
                                             child: Container(
                                               width: 80.0,
                                               height: 80.0,
@@ -242,12 +245,14 @@ class _HomeCopyWidgetState extends State<HomeCopyWidget>
                                                         .primaryText,
                                                 shape: BoxShape.circle,
                                                 border: Border.all(
-                                                  color: const Color(0xFF7E7E7E),
+                                                  color:
+                                                      const Color(0xFF7E7E7E),
                                                   width: 3.0,
                                                 ),
                                               ),
-                                              alignment: const AlignmentDirectional(
-                                                  0.0, 0.0),
+                                              alignment:
+                                                  const AlignmentDirectional(
+                                                      0.0, 0.0),
                                               child: Container(
                                                 width: 80.0,
                                                 height: 80.0,
@@ -264,7 +269,8 @@ class _HomeCopyWidgetState extends State<HomeCopyWidget>
                                           ),
                                           Align(
                                             alignment:
-                                                const AlignmentDirectional(0.5, 0.0),
+                                                const AlignmentDirectional(
+                                                    0.5, 0.0),
                                             child: Text(
                                               'Welcome to \nUniQuest!',
                                               style:
@@ -326,8 +332,9 @@ class _HomeCopyWidgetState extends State<HomeCopyWidget>
                                   scrollDirection: Axis.horizontal,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 12.0, 16.0, 12.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              0.0, 12.0, 16.0, 12.0),
                                       child: InkWell(
                                         splashColor: Colors.transparent,
                                         focusColor: Colors.transparent,
@@ -376,7 +383,8 @@ class _HomeCopyWidgetState extends State<HomeCopyWidget>
                                                   ),
                                                 ),
                                                 child: Padding(
-                                                  padding: const EdgeInsets.all(12.0),
+                                                  padding: const EdgeInsets.all(
+                                                      12.0),
                                                   child: Column(
                                                     mainAxisSize:
                                                         MainAxisSize.max,
@@ -433,8 +441,9 @@ class _HomeCopyWidgetState extends State<HomeCopyWidget>
                                                 ),
                                               ),
                                               Padding(
-                                                padding: const EdgeInsetsDirectional
-                                                    .fromSTEB(
+                                                padding:
+                                                    const EdgeInsetsDirectional
+                                                        .fromSTEB(
                                                         12.0, 12.0, 12.0, 0.0),
                                                 child: Row(
                                                   mainAxisSize:
@@ -499,8 +508,9 @@ class _HomeCopyWidgetState extends State<HomeCopyWidget>
                                           'containerOnPageLoadAnimation1']!),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 12.0, 16.0, 12.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              0.0, 12.0, 16.0, 12.0),
                                       child: InkWell(
                                         splashColor: Colors.transparent,
                                         focusColor: Colors.transparent,
@@ -551,7 +561,8 @@ class _HomeCopyWidgetState extends State<HomeCopyWidget>
                                                   ),
                                                 ),
                                                 child: Padding(
-                                                  padding: const EdgeInsets.all(12.0),
+                                                  padding: const EdgeInsets.all(
+                                                      12.0),
                                                   child: Column(
                                                     mainAxisSize:
                                                         MainAxisSize.max,
@@ -608,8 +619,9 @@ class _HomeCopyWidgetState extends State<HomeCopyWidget>
                                                 ),
                                               ),
                                               Padding(
-                                                padding: const EdgeInsetsDirectional
-                                                    .fromSTEB(
+                                                padding:
+                                                    const EdgeInsetsDirectional
+                                                        .fromSTEB(
                                                         12.0, 12.0, 12.0, 0.0),
                                                 child: Row(
                                                   mainAxisSize:
@@ -671,8 +683,9 @@ class _HomeCopyWidgetState extends State<HomeCopyWidget>
                                           'containerOnPageLoadAnimation2']!),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 12.0, 16.0, 12.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              0.0, 12.0, 16.0, 12.0),
                                       child: InkWell(
                                         splashColor: Colors.transparent,
                                         focusColor: Colors.transparent,
@@ -723,7 +736,8 @@ class _HomeCopyWidgetState extends State<HomeCopyWidget>
                                                   ),
                                                 ),
                                                 child: Padding(
-                                                  padding: const EdgeInsets.all(12.0),
+                                                  padding: const EdgeInsets.all(
+                                                      12.0),
                                                   child: Column(
                                                     mainAxisSize:
                                                         MainAxisSize.max,
@@ -780,8 +794,9 @@ class _HomeCopyWidgetState extends State<HomeCopyWidget>
                                                 ),
                                               ),
                                               Padding(
-                                                padding: const EdgeInsetsDirectional
-                                                    .fromSTEB(
+                                                padding:
+                                                    const EdgeInsetsDirectional
+                                                        .fromSTEB(
                                                         12.0, 12.0, 12.0, 0.0),
                                                 child: Row(
                                                   mainAxisSize:
@@ -843,8 +858,9 @@ class _HomeCopyWidgetState extends State<HomeCopyWidget>
                                           'containerOnPageLoadAnimation3']!),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 12.0, 16.0, 12.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              0.0, 12.0, 16.0, 12.0),
                                       child: InkWell(
                                         splashColor: Colors.transparent,
                                         focusColor: Colors.transparent,
@@ -895,7 +911,8 @@ class _HomeCopyWidgetState extends State<HomeCopyWidget>
                                                   ),
                                                 ),
                                                 child: Padding(
-                                                  padding: const EdgeInsets.all(12.0),
+                                                  padding: const EdgeInsets.all(
+                                                      12.0),
                                                   child: Column(
                                                     mainAxisSize:
                                                         MainAxisSize.max,
@@ -952,8 +969,9 @@ class _HomeCopyWidgetState extends State<HomeCopyWidget>
                                                 ),
                                               ),
                                               Padding(
-                                                padding: const EdgeInsetsDirectional
-                                                    .fromSTEB(
+                                                padding:
+                                                    const EdgeInsetsDirectional
+                                                        .fromSTEB(
                                                         12.0, 12.0, 12.0, 0.0),
                                                 child: Row(
                                                   mainAxisSize:
@@ -1015,8 +1033,9 @@ class _HomeCopyWidgetState extends State<HomeCopyWidget>
                                           'containerOnPageLoadAnimation4']!),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 12.0, 16.0, 12.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              0.0, 12.0, 16.0, 12.0),
                                       child: InkWell(
                                         splashColor: Colors.transparent,
                                         focusColor: Colors.transparent,
@@ -1067,7 +1086,8 @@ class _HomeCopyWidgetState extends State<HomeCopyWidget>
                                                   ),
                                                 ),
                                                 child: Padding(
-                                                  padding: const EdgeInsets.all(12.0),
+                                                  padding: const EdgeInsets.all(
+                                                      12.0),
                                                   child: Column(
                                                     mainAxisSize:
                                                         MainAxisSize.max,
@@ -1124,8 +1144,9 @@ class _HomeCopyWidgetState extends State<HomeCopyWidget>
                                                 ),
                                               ),
                                               Padding(
-                                                padding: const EdgeInsetsDirectional
-                                                    .fromSTEB(
+                                                padding:
+                                                    const EdgeInsetsDirectional
+                                                        .fromSTEB(
                                                         12.0, 12.0, 12.0, 0.0),
                                                 child: Row(
                                                   mainAxisSize:
@@ -1233,13 +1254,16 @@ class _HomeCopyWidgetState extends State<HomeCopyWidget>
                                                   .bodyMedium
                                                   .override(
                                                     fontFamily: 'Feather',
-                                                    color: const Color(0xFF0F1113),
+                                                    color:
+                                                        const Color(0xFF0F1113),
                                                     fontSize: 20.0,
                                                     letterSpacing: 0.0,
                                                     fontWeight: FontWeight.bold,
                                                   ),
-                                          unselectedLabelStyle: const TextStyle(),
-                                          indicatorColor: const Color(0xFFFFBD59),
+                                          unselectedLabelStyle:
+                                              const TextStyle(),
+                                          indicatorColor:
+                                              const Color(0xFFFFBD59),
                                           indicatorWeight: 2.0,
                                           tabs: const [
                                             Tab(
@@ -1257,8 +1281,9 @@ class _HomeCopyWidgetState extends State<HomeCopyWidget>
                                           controller: _model.tabBarController,
                                           children: [
                                             Padding(
-                                              padding: const EdgeInsetsDirectional
-                                                  .fromSTEB(
+                                              padding:
+                                                  const EdgeInsetsDirectional
+                                                      .fromSTEB(
                                                       16.0, 12.0, 16.0, 12.0),
                                               child: FutureBuilder<
                                                   List<MissionsRow>>(
@@ -1382,10 +1407,10 @@ class _HomeCopyWidgetState extends State<HomeCopyWidget>
                   text: 'NEXT',
                   options: FFButtonOptions(
                     height: 40.0,
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
-                    iconPadding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        16.0, 0.0, 16.0, 0.0),
+                    iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                        0.0, 0.0, 0.0, 0.0),
                     color: const Color(0xFF1A9C0E),
                     textStyle: FlutterFlowTheme.of(context).titleSmall.override(
                           font: GoogleFonts.manrope(
@@ -1419,11 +1444,60 @@ class _HomeCopyWidgetState extends State<HomeCopyWidget>
   TutorialCoachMark createPageWalkthrough(BuildContext context) =>
       TutorialCoachMark(
         targets: createWalkthroughTargets(context),
+        colorShadow: Colors.black,
+        paddingFocus: 10,
+        opacityShadow: 0.8,
+        hideSkip: true,
+        useSafeArea: true,
         onFinish: () async {
           safeSetState(() => _model.homeviewController = null);
         },
         onSkip: () {
           return true;
         },
+        onClickTarget: (target) {},
+        onClickTargetWithTapPosition: (target, tapDetails) {},
+        onClickOverlay: (target) {},
+        skipWidget: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0, vertical: 10.0),
+                decoration: BoxDecoration(
+                  color: const Color(0x33FF5252),
+                  borderRadius: BorderRadius.circular(20.0),
+                  border: Border.all(
+                    color: const Color(0x66FF5252),
+                    width: 1.5,
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
+                      Icons.close_rounded,
+                      color: Color(0xFFFF5252),
+                      size: 18.0,
+                    ),
+                    const SizedBox(width: 6.0),
+                    Text(
+                      'Skip All',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily: 'Feather',
+                            color: const Color(0xFFFF5252),
+                            fontSize: 14.0,
+                            letterSpacing: 0.3,
+                            fontWeight: FontWeight.w600,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       );
 }

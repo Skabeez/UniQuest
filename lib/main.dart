@@ -13,8 +13,8 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'flutter_flow/nav/nav.dart';
+import 'services/audio_manager.dart';
+import 'services/sound_effects.dart';
 import 'index.dart';
 
 void main() async {
@@ -27,6 +27,9 @@ void main() async {
   await SupaFlow.initialize();
 
   await FlutterFlowTheme.initialize();
+
+  // Initialize audio manager
+  await AudioManager().initialize();
 
   final appState = FFAppState(); // Initialize FFAppState
   await appState.initializePersistedState();
@@ -136,15 +139,53 @@ class NavBarPage extends StatefulWidget {
 }
 
 /// This is the private State class that goes with NavBarPage.
-class _NavBarPageState extends State<NavBarPage> {
+class _NavBarPageState extends State<NavBarPage>
+    with SingleTickerProviderStateMixin {
   String _currentPageName = 'home';
   late Widget? _currentPage;
+  bool _isNavBarVisible = true;
+  late AnimationController _animationController;
+  late Animation<Offset> _offsetAnimation;
+  double _lastScrollPosition = 0;
 
   @override
   void initState() {
     super.initState();
     _currentPageName = widget.initialPage ?? _currentPageName;
     _currentPage = widget.page;
+
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+
+    _offsetAnimation = Tween<Offset>(
+      begin: Offset.zero,
+      end: const Offset(0.0, 1.0),
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    ));
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  void _hideNavBar() {
+    if (_isNavBarVisible) {
+      setState(() => _isNavBarVisible = false);
+      _animationController.forward();
+    }
+  }
+
+  void _showNavBar() {
+    if (!_isNavBarVisible) {
+      setState(() => _isNavBarVisible = true);
+      _animationController.reverse();
+    }
   }
 
   @override
@@ -157,68 +198,189 @@ class _NavBarPageState extends State<NavBarPage> {
       'settingsPage': const SettingsPageWidget(),
     };
     final currentIndex = tabs.keys.toList().indexOf(_currentPageName);
+    final currentPage = _currentPage ?? tabs[_currentPageName]!;
 
     return Scaffold(
       resizeToAvoidBottomInset: !widget.disableResizeToAvoidBottomInset,
-      body: _currentPage ?? tabs[_currentPageName],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        onTap: (i) => safeSetState(() {
-          _currentPage = null;
-          _currentPageName = tabs.keys.toList()[i];
-        }),
-        backgroundColor: const Color(0xB3131518),
-        selectedItemColor: const Color(0xFFFFBD59),
-        unselectedItemColor: FlutterFlowTheme.of(context).secondaryText,
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        type: BottomNavigationBarType.fixed,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person,
-              size: 20.0,
+      body: NotificationListener<ScrollNotification>(
+        onNotification: (notification) {
+          if (notification is ScrollUpdateNotification) {
+            final currentPosition = notification.metrics.pixels;
+            final isScrollable = notification.metrics.maxScrollExtent > 0;
+            if (isScrollable) {
+              if (currentPosition > _lastScrollPosition &&
+                  currentPosition > 50) {
+                // Scrolling down
+                _hideNavBar();
+              } else if (currentPosition < _lastScrollPosition) {
+                // Scrolling up
+                _showNavBar();
+              }
+              _lastScrollPosition = currentPosition;
+            } else {
+              // Content not scrollable, always show navbar
+              _showNavBar();
+            }
+          }
+          return true;
+        },
+        child: currentPage,
+      ),
+      bottomNavigationBar: SlideTransition(
+        position: _offsetAnimation,
+        child: SafeArea(
+          child: Container(
+            decoration: BoxDecoration(
+              color: const Color(0xFF0F1419),
+              border: Border(
+                top: BorderSide(
+                  color: const Color(0xFFFFBD59).withOpacity(0.1),
+                  width: 1.0,
+                ),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.3),
+                  blurRadius: 20,
+                  offset: const Offset(0, -5),
+                ),
+              ],
             ),
-            label: 'Profile',
-            tooltip: '',
+            padding:
+                const EdgeInsets.symmetric(horizontal: 14.0, vertical: 10.0),
+            height: 72,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildNavItem(
+                  icon: Icons.person_outline_rounded,
+                  activeIcon: Icons.person_rounded,
+                  label: 'Profile',
+                  index: 0,
+                  currentIndex: currentIndex,
+                ),
+                FutureBuilder<List<NotificationsRow>>(
+                  future: NotificationsTable().queryRows(
+                    queryFn: (q) => q
+                        .eqOrNull('user_id', currentUserUid)
+                        .eqOrNull('is_read', false),
+                  ),
+                  builder: (context, snapshot) {
+                    final unreadCount = snapshot.data?.length ?? 0;
+                    return _buildNavItem(
+                      icon: Icons.notifications_outlined,
+                      activeIcon: Icons.notifications_rounded,
+                      label: 'Inbox',
+                      index: 1,
+                      currentIndex: currentIndex,
+                      badge: unreadCount > 0
+                          ? Container(
+                              padding: const EdgeInsets.all(4),
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: const Color(0xFF0F1419),
+                                  width: 2,
+                                ),
+                              ),
+                              constraints: const BoxConstraints(
+                                minWidth: 18,
+                                minHeight: 18,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  unreadCount > 99 ? '99+' : '$unreadCount',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                    height: 1.0,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            )
+                          : null,
+                    );
+                  },
+                ),
+                _buildNavItem(
+                  icon: Icons.home_outlined,
+                  activeIcon: Icons.home_rounded,
+                  label: 'Home',
+                  index: 2,
+                  currentIndex: currentIndex,
+                  isCenter: true,
+                ),
+                _buildNavItem(
+                  icon: Icons.check_box_outlined,
+                  activeIcon: Icons.check_box_rounded,
+                  label: 'Tasks',
+                  index: 3,
+                  currentIndex: currentIndex,
+                ),
+                _buildNavItem(
+                  icon: Icons.settings_outlined,
+                  activeIcon: Icons.settings_rounded,
+                  label: 'Settings',
+                  index: 4,
+                  currentIndex: currentIndex,
+                ),
+              ],
+            ),
           ),
-          BottomNavigationBarItem(
-            icon: FaIcon(
-              FontAwesomeIcons.solidBell,
-              size: 20.0,
-            ),
-            activeIcon: Icon(
-              Icons.notifications_rounded,
-              size: 22.0,
-            ),
-            label: 'Inbox',
-            tooltip: '',
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNavItem({
+    required IconData icon,
+    required IconData activeIcon,
+    required String label,
+    required int index,
+    required int currentIndex,
+    bool isCenter = false,
+    Widget? badge,
+  }) {
+    final isActive = currentIndex == index;
+    final tabs = ['profilePage', 'notif', 'home', 'todoList', 'settingsPage'];
+
+    return Expanded(
+      child: GestureDetector(
+        onTap: () {
+          AudioManager().playSfx(SoundEffects.buttonSoft);
+          _showNavBar(); // Ensure navbar is visible when tapping
+          safeSetState(() {
+            _currentPage = null;
+            _currentPageName = tabs[index];
+          });
+        },
+        behavior: HitTestBehavior.opaque,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeInOut,
+          child: Stack(
+            alignment: Alignment.center,
+            clipBehavior: Clip.none,
+            children: [
+              Icon(
+                isActive ? activeIcon : icon,
+                color: isActive
+                    ? const Color(0xFFFFBD59)
+                    : const Color(0xFF6B7280),
+                size: isActive ? 28.0 : 24.0,
+              ),
+              if (badge != null)
+                Positioned(
+                  right: -8,
+                  top: -4,
+                  child: badge,
+                ),
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: FaIcon(
-              FontAwesomeIcons.home,
-              size: 20.0,
-            ),
-            label: 'Home',
-            tooltip: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.featured_play_list_sharp,
-              size: 20.0,
-            ),
-            label: 'To-Do List',
-            tooltip: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.settings_sharp,
-              size: 20.0,
-            ),
-            label: 'Settings',
-            tooltip: '',
-          )
-        ],
+        ),
       ),
     );
   }

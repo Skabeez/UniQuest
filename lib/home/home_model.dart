@@ -14,17 +14,23 @@ class HomeModel extends FlutterFlowModel<HomeWidget> {
   int get tabBarPreviousIndex =>
       tabBarController != null ? tabBarController!.previousIndex : 0;
 
+  // State field(s) for Categories horizontal scroll
+  ScrollController? categoriesScrollController;
+  double categoriesScrollOffset = 0.0;
+
   // Models for mission dynamic component.
   late FlutterFlowDynamicModels<MissionModel> missionModels;
 
   @override
   void initState(BuildContext context) {
+    categoriesScrollController = ScrollController();
     missionModels = FlutterFlowDynamicModels(() => MissionModel());
   }
 
   @override
   void dispose() {
     tabBarController?.dispose();
+    categoriesScrollController?.dispose();
     missionModels.dispose();
   }
 }

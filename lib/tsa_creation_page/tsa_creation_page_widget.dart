@@ -1,5 +1,6 @@
 import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
+import '/components/modern_alert_dialog.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -39,6 +40,7 @@ class _TsaCreationPageWidgetState extends State<TsaCreationPageWidget> {
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       safeSetState(
           () => _model.taskCreationController = createPageWalkthrough(context));
+      await Future.delayed(const Duration(milliseconds: 150));
       _model.taskCreationController?.show(context: context);
     });
 
@@ -98,8 +100,8 @@ class _TsaCreationPageWidgetState extends State<TsaCreationPageWidget> {
                         ),
                       ),
                       Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(24.0, 4.0, 0.0, 0.0),
+                        padding: const EdgeInsetsDirectional.fromSTEB(
+                            24.0, 4.0, 0.0, 0.0),
                         child: Text(
                           'Below are your task details',
                           style:
@@ -113,370 +115,337 @@ class _TsaCreationPageWidgetState extends State<TsaCreationPageWidget> {
                                   ),
                         ),
                       ),
-                      Column(
-                        mainAxisSize: MainAxisSize.max,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                16.0, 16.0, 16.0, 0.0),
-                            child: TextFormField(
-                              controller: _model.tasknameTextController,
-                              focusNode: _model.tasknameFocusNode,
-                              autofocus: true,
-                              obscureText: false,
-                              decoration: InputDecoration(
-                                labelText: ' Task Name',
-                                labelStyle: FlutterFlowTheme.of(context)
-                                    .labelMedium
-                                    .override(
-                                      font: GoogleFonts.plusJakartaSans(
-                                        fontWeight: FontWeight.w500,
-                                        fontStyle: FlutterFlowTheme.of(context)
-                                            .labelMedium
-                                            .fontStyle,
-                                      ),
-                                      color: const Color(0xFF606A85),
-                                      fontSize: 14.0,
-                                      letterSpacing: 0.0,
-                                      fontWeight: FontWeight.w500,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .labelMedium
-                                          .fontStyle,
-                                    ),
-                                hintStyle: FlutterFlowTheme.of(context)
-                                    .labelMedium
-                                    .override(
-                                      font: GoogleFonts.plusJakartaSans(
-                                        fontWeight: FontWeight.w500,
-                                        fontStyle: FlutterFlowTheme.of(context)
-                                            .labelMedium
-                                            .fontStyle,
-                                      ),
-                                      color: const Color(0xFF606A85),
-                                      fontSize: 14.0,
-                                      letterSpacing: 0.0,
-                                      fontWeight: FontWeight.w500,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .labelMedium
-                                          .fontStyle,
-                                    ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                    color: Color(0xFFE5E7EB),
-                                    width: 2.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(12.0),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                    color: Color(0xFF6F61EF),
-                                    width: 2.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(12.0),
-                                ),
-                                errorBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                    color: Color(0xFFFF5963),
-                                    width: 2.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(12.0),
-                                ),
-                                focusedErrorBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                    color: Color(0xFFFF5963),
-                                    width: 2.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(12.0),
-                                ),
-                                filled: true,
-                                fillColor: Colors.white,
-                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
-                                    20.0, 24.0, 20.0, 24.0),
-                              ),
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyMedium
-                                  .override(
-                                    font: GoogleFonts.plusJakartaSans(
-                                      fontWeight: FontWeight.w500,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .fontStyle,
-                                    ),
-                                    color: const Color(0xFF15161E),
-                                    fontSize: 14.0,
-                                    letterSpacing: 0.0,
-                                    fontWeight: FontWeight.w500,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .bodyMedium
-                                        .fontStyle,
-                                  ),
-                              cursorColor: const Color(0xFF6F61EF),
-                              validator: _model.tasknameTextControllerValidator
-                                  .asValidator(context),
-                            ).addWalkthrough(
-                              textFieldA491pn9x,
-                              _model.taskCreationController,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                16.0, 16.0, 16.0, 0.0),
-                            child: TextFormField(
-                              controller: _model.tagsTextController,
-                              focusNode: _model.tagsFocusNode,
-                              autofocus: true,
-                              obscureText: false,
-                              decoration: InputDecoration(
-                                labelText: 'Tags',
-                                labelStyle: FlutterFlowTheme.of(context)
-                                    .labelMedium
-                                    .override(
-                                      font: GoogleFonts.plusJakartaSans(
-                                        fontWeight: FontWeight.w500,
-                                        fontStyle: FlutterFlowTheme.of(context)
-                                            .labelMedium
-                                            .fontStyle,
-                                      ),
-                                      color: const Color(0xFF606A85),
-                                      fontSize: 14.0,
-                                      letterSpacing: 0.0,
-                                      fontWeight: FontWeight.w500,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .labelMedium
-                                          .fontStyle,
-                                    ),
-                                hintStyle: FlutterFlowTheme.of(context)
-                                    .labelMedium
-                                    .override(
-                                      font: GoogleFonts.plusJakartaSans(
-                                        fontWeight: FontWeight.w500,
-                                        fontStyle: FlutterFlowTheme.of(context)
-                                            .labelMedium
-                                            .fontStyle,
-                                      ),
-                                      color: const Color(0xFF606A85),
-                                      fontSize: 14.0,
-                                      letterSpacing: 0.0,
-                                      fontWeight: FontWeight.w500,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .labelMedium
-                                          .fontStyle,
-                                    ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                    color: Color(0xFFE5E7EB),
-                                    width: 2.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(12.0),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                    color: Color(0xFF6F61EF),
-                                    width: 2.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(12.0),
-                                ),
-                                errorBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                    color: Color(0xFFFF5963),
-                                    width: 2.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(12.0),
-                                ),
-                                focusedErrorBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                    color: Color(0xFFFF5963),
-                                    width: 2.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(12.0),
-                                ),
-                                filled: true,
-                                fillColor: Colors.white,
-                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
-                                    20.0, 24.0, 20.0, 24.0),
-                              ),
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyMedium
-                                  .override(
-                                    font: GoogleFonts.plusJakartaSans(
-                                      fontWeight: FontWeight.w500,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .fontStyle,
-                                    ),
-                                    color: const Color(0xFF15161E),
-                                    fontSize: 14.0,
-                                    letterSpacing: 0.0,
-                                    fontWeight: FontWeight.w500,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .bodyMedium
-                                        .fontStyle,
-                                  ),
-                              cursorColor: const Color(0xFF6F61EF),
-                              validator: _model.tagsTextControllerValidator
-                                  .asValidator(context),
-                            ).addWalkthrough(
-                              textFieldCxxde85t,
-                              _model.taskCreationController,
-                            ),
-                          ),
-                          Align(
-                            alignment: const AlignmentDirectional(0.0, 0.0),
-                            child: Padding(
+                      Form(
+                        key: _model.formKey,
+                        autovalidateMode: AutovalidateMode.disabled,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   16.0, 16.0, 16.0, 0.0),
-                              child: FlutterFlowDropDown<String>(
-                                controller: _model.priorityValueController ??=
-                                    FormFieldController<String>(null),
-                                options: const ['High', 'Medium', 'Low'],
-                                onChanged: (val) => safeSetState(
-                                    () => _model.priorityValue = val),
-                                width: 538.7,
-                                height: 60.0,
-                                textStyle: FlutterFlowTheme.of(context)
+                              child: TextFormField(
+                                controller: _model.tasknameTextController,
+                                focusNode: _model.tasknameFocusNode,
+                                autofocus: true,
+                                obscureText: false,
+                                decoration: InputDecoration(
+                                  hintText: ' Task Name',
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.never,
+                                  hintStyle: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .override(
+                                        font: GoogleFonts.plusJakartaSans(
+                                          fontWeight: FontWeight.w500,
+                                          fontStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .labelMedium
+                                                  .fontStyle,
+                                        ),
+                                        color: const Color(0xFF606A85),
+                                        fontSize: 14.0,
+                                        letterSpacing: 0.0,
+                                        fontWeight: FontWeight.w500,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .labelMedium
+                                            .fontStyle,
+                                      ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                      color: Color(0xFFE5E7EB),
+                                      width: 2.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                      color: Color(0xFF6F61EF),
+                                      width: 2.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                      color: Color(0xFFFF5963),
+                                      width: 2.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                      color: Color(0xFFFF5963),
+                                      width: 2.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  contentPadding:
+                                      const EdgeInsetsDirectional.fromSTEB(
+                                          20.0, 24.0, 20.0, 24.0),
+                                ),
+                                style: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(
-                                      font: GoogleFonts.manrope(
+                                      font: GoogleFonts.plusJakartaSans(
                                         fontWeight: FontWeight.w500,
                                         fontStyle: FlutterFlowTheme.of(context)
                                             .bodyMedium
                                             .fontStyle,
                                       ),
-                                      color: const Color(0xFF606A85),
+                                      color: const Color(0xFF15161E),
+                                      fontSize: 14.0,
                                       letterSpacing: 0.0,
                                       fontWeight: FontWeight.w500,
                                       fontStyle: FlutterFlowTheme.of(context)
                                           .bodyMedium
                                           .fontStyle,
                                     ),
-                                hintText: 'Priority',
-                                icon: Icon(
-                                  Icons.keyboard_arrow_down_rounded,
-                                  color: FlutterFlowTheme.of(context)
-                                      .secondaryText,
-                                  size: 24.0,
-                                ),
-                                fillColor: FlutterFlowTheme.of(context).info,
-                                elevation: 2.0,
-                                borderColor: Colors.transparent,
-                                borderWidth: 0.0,
-                                borderRadius: 8.0,
-                                margin: const EdgeInsetsDirectional.fromSTEB(
-                                    12.0, 0.0, 12.0, 0.0),
-                                hidesUnderline: true,
-                                isOverButton: false,
-                                isSearchable: false,
-                                isMultiSelect: false,
+                                cursorColor: const Color(0xFF6F61EF),
+                                validator: _model
+                                    .tasknameTextControllerValidator
+                                    .asValidator(context),
                               ).addWalkthrough(
-                                dropDownScrmvpes,
+                                textFieldA491pn9x,
                                 _model.taskCreationController,
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                16.0, 16.0, 16.0, 0.0),
-                            child: TextFormField(
-                              controller: _model.notesTextController,
-                              focusNode: _model.notesFocusNode,
-                              autofocus: true,
-                              obscureText: false,
-                              decoration: InputDecoration(
-                                labelText: 'Notes',
-                                labelStyle: FlutterFlowTheme.of(context)
-                                    .labelMedium
-                                    .override(
-                                      font: GoogleFonts.plusJakartaSans(
+                            Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  16.0, 16.0, 16.0, 0.0),
+                              child: TextFormField(
+                                controller: _model.tagsTextController,
+                                focusNode: _model.tagsFocusNode,
+                                autofocus: true,
+                                obscureText: false,
+                                decoration: InputDecoration(
+                                  hintText: 'Tags',
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.never,
+                                  hintStyle: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .override(
+                                        font: GoogleFonts.plusJakartaSans(
+                                          fontWeight: FontWeight.w500,
+                                          fontStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .labelMedium
+                                                  .fontStyle,
+                                        ),
+                                        color: const Color(0xFF606A85),
+                                        fontSize: 14.0,
+                                        letterSpacing: 0.0,
                                         fontWeight: FontWeight.w500,
                                         fontStyle: FlutterFlowTheme.of(context)
                                             .labelMedium
                                             .fontStyle,
                                       ),
-                                      color: const Color(0xFF606A85),
-                                      fontSize: 14.0,
-                                      letterSpacing: 0.0,
-                                      fontWeight: FontWeight.w500,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .labelMedium
-                                          .fontStyle,
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                      color: Color(0xFFE5E7EB),
+                                      width: 2.0,
                                     ),
-                                hintStyle: FlutterFlowTheme.of(context)
-                                    .labelMedium
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                      color: Color(0xFF6F61EF),
+                                      width: 2.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                      color: Color(0xFFFF5963),
+                                      width: 2.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                      color: Color(0xFFFF5963),
+                                      width: 2.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  contentPadding:
+                                      const EdgeInsetsDirectional.fromSTEB(
+                                          20.0, 24.0, 20.0, 24.0),
+                                ),
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyMedium
                                     .override(
                                       font: GoogleFonts.plusJakartaSans(
                                         fontWeight: FontWeight.w500,
                                         fontStyle: FlutterFlowTheme.of(context)
-                                            .labelMedium
+                                            .bodyMedium
                                             .fontStyle,
                                       ),
-                                      color: const Color(0xFF606A85),
+                                      color: const Color(0xFF15161E),
                                       fontSize: 14.0,
                                       letterSpacing: 0.0,
-                                      fontWeight: FontWeight.w500,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .labelMedium
-                                          .fontStyle,
-                                    ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                    color: Color(0xFFE5E7EB),
-                                    width: 2.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(12.0),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                    color: Color(0xFF6F61EF),
-                                    width: 2.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(12.0),
-                                ),
-                                errorBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                    color: Color(0xFFFF5963),
-                                    width: 2.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(12.0),
-                                ),
-                                focusedErrorBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                    color: Color(0xFFFF5963),
-                                    width: 2.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(12.0),
-                                ),
-                                filled: true,
-                                fillColor: Colors.white,
-                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
-                                    20.0, 24.0, 20.0, 24.0),
-                              ),
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyMedium
-                                  .override(
-                                    font: GoogleFonts.plusJakartaSans(
                                       fontWeight: FontWeight.w500,
                                       fontStyle: FlutterFlowTheme.of(context)
                                           .bodyMedium
                                           .fontStyle,
                                     ),
-                                    color: const Color(0xFF15161E),
-                                    fontSize: 14.0,
-                                    letterSpacing: 0.0,
-                                    fontWeight: FontWeight.w500,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                        .bodyMedium
-                                        .fontStyle,
-                                  ),
-                              cursorColor: const Color(0xFF6F61EF),
-                              validator: _model.notesTextControllerValidator
-                                  .asValidator(context),
-                            ).addWalkthrough(
-                              textFieldWse2qryo,
-                              _model.taskCreationController,
+                                cursorColor: const Color(0xFF6F61EF),
+                                validator: _model.tagsTextControllerValidator
+                                    .asValidator(context),
+                              ).addWalkthrough(
+                                textFieldCxxde85t,
+                                _model.taskCreationController,
+                              ),
                             ),
-                          ),
-                        ],
+                            Align(
+                              alignment: const AlignmentDirectional(0.0, 0.0),
+                              child: Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    16.0, 16.0, 16.0, 0.0),
+                                child: FlutterFlowDropDown<String>(
+                                  controller: _model.priorityValueController ??=
+                                      FormFieldController<String>(null),
+                                  options: const ['High', 'Medium', 'Low'],
+                                  onChanged: (val) => safeSetState(
+                                      () => _model.priorityValue = val),
+                                  width: 538.7,
+                                  height: 60.0,
+                                  textStyle: FlutterFlowTheme.of(context)
+                                      .bodyMedium
+                                      .override(
+                                        font: GoogleFonts.manrope(
+                                          fontWeight: FontWeight.w500,
+                                          fontStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMedium
+                                                  .fontStyle,
+                                        ),
+                                        color: const Color(0xFF606A85),
+                                        letterSpacing: 0.0,
+                                        fontWeight: FontWeight.w500,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .fontStyle,
+                                      ),
+                                  hintText: 'Priority',
+                                  icon: Icon(
+                                    Icons.keyboard_arrow_down_rounded,
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryText,
+                                    size: 24.0,
+                                  ),
+                                  fillColor: FlutterFlowTheme.of(context).info,
+                                  elevation: 2.0,
+                                  borderColor: Colors.transparent,
+                                  borderWidth: 0.0,
+                                  borderRadius: 8.0,
+                                  margin: const EdgeInsetsDirectional.fromSTEB(
+                                      12.0, 0.0, 12.0, 0.0),
+                                  hidesUnderline: true,
+                                  isOverButton: false,
+                                  isSearchable: false,
+                                  isMultiSelect: false,
+                                ).addWalkthrough(
+                                  dropDownScrmvpes,
+                                  _model.taskCreationController,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  16.0, 16.0, 16.0, 0.0),
+                              child: TextFormField(
+                                controller: _model.notesTextController,
+                                focusNode: _model.notesFocusNode,
+                                autofocus: true,
+                                obscureText: false,
+                                decoration: InputDecoration(
+                                  hintText: 'Notes',
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.never,
+                                  hintStyle: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .override(
+                                        font: GoogleFonts.plusJakartaSans(
+                                          fontWeight: FontWeight.w500,
+                                          fontStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .labelMedium
+                                                  .fontStyle,
+                                        ),
+                                        color: const Color(0xFF606A85),
+                                        fontSize: 14.0,
+                                        letterSpacing: 0.0,
+                                        fontWeight: FontWeight.w500,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .labelMedium
+                                            .fontStyle,
+                                      ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                      color: Color(0xFFE5E7EB),
+                                      width: 2.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                      color: Color(0xFF6F61EF),
+                                      width: 2.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                      color: Color(0xFFFF5963),
+                                      width: 2.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                      color: Color(0xFFFF5963),
+                                      width: 2.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  contentPadding:
+                                      const EdgeInsetsDirectional.fromSTEB(
+                                          20.0, 24.0, 20.0, 24.0),
+                                ),
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      font: GoogleFonts.plusJakartaSans(
+                                        fontWeight: FontWeight.w500,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .fontStyle,
+                                      ),
+                                      color: const Color(0xFF15161E),
+                                      fontSize: 14.0,
+                                      letterSpacing: 0.0,
+                                      fontWeight: FontWeight.w500,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontStyle,
+                                    ),
+                                cursorColor: const Color(0xFF6F61EF),
+                                validator: _model.notesTextControllerValidator
+                                    .asValidator(context),
+                              ).addWalkthrough(
+                                textFieldWse2qryo,
+                                _model.taskCreationController,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsetsDirectional.fromSTEB(
@@ -496,8 +465,9 @@ class _TsaCreationPageWidgetState extends State<TsaCreationPageWidget> {
                                   height: 44.0,
                                   padding: const EdgeInsetsDirectional.fromSTEB(
                                       24.0, 0.0, 24.0, 0.0),
-                                  iconPadding: const EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 0.0, 0.0, 0.0),
+                                  iconPadding:
+                                      const EdgeInsetsDirectional.fromSTEB(
+                                          0.0, 0.0, 0.0, 0.0),
                                   color: Colors.white,
                                   textStyle: FlutterFlowTheme.of(context)
                                       .bodyMedium
@@ -531,16 +501,60 @@ class _TsaCreationPageWidgetState extends State<TsaCreationPageWidget> {
                               alignment: const AlignmentDirectional(0.0, 0.05),
                               child: FFButtonWidget(
                                 onPressed: () async {
+                                  // Validate form fields
+                                  if (_model.formKey.currentState == null ||
+                                      !_model.formKey.currentState!
+                                          .validate()) {
+                                    return;
+                                  }
+
+                                  // Validate that task name is not empty
+                                  if (_model.tasknameTextController.text
+                                      .trim()
+                                      .isEmpty) {
+                                    await showDialog(
+                                      context: context,
+                                      barrierColor: Colors.black87,
+                                      builder: (alertDialogContext) {
+                                        return const ModernAlertDialog(
+                                          title: 'Task Name Required',
+                                          description:
+                                              'Please enter a name for your task before saving.',
+                                          primaryButtonText: 'Got It',
+                                        );
+                                      },
+                                    );
+                                    return;
+                                  }
+
+                                  // Validate that tags are not empty
+                                  if (_model.tagsTextController.text
+                                      .trim()
+                                      .isEmpty) {
+                                    await showDialog(
+                                      context: context,
+                                      barrierColor: Colors.black87,
+                                      builder: (alertDialogContext) {
+                                        return const ModernAlertDialog(
+                                          title: 'Tags Required',
+                                          description:
+                                              'Please add at least one tag for your task.',
+                                          primaryButtonText: 'Got It',
+                                        );
+                                      },
+                                    );
+                                    return;
+                                  }
+
                                   await TasksTable().insert({
-                                    'title': valueOrDefault<String>(
-                                      _model.tasknameTextController.text,
-                                      '\"Test Task\"',
-                                    ),
+                                    'title': _model.tasknameTextController.text
+                                        .trim(),
                                     'description': valueOrDefault<String>(
-                                      _model.notesTextController.text,
-                                      '\"Test Task\"',
+                                      _model.notesTextController.text.trim(),
+                                      '',
                                     ),
-                                    'tags': _model.tagsTextController.text,
+                                    'tags':
+                                        _model.tagsTextController.text.trim(),
                                     'id': currentUserUid,
                                     'priority': '',
                                     'task_id': '',
@@ -548,17 +562,13 @@ class _TsaCreationPageWidgetState extends State<TsaCreationPageWidget> {
                                   });
                                   await showDialog(
                                     context: context,
+                                    barrierColor: Colors.black87,
                                     builder: (alertDialogContext) {
-                                      return AlertDialog(
-                                        title: const Text('Success!'),
-                                        content: const Text('New Task Created!'),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () => Navigator.pop(
-                                                alertDialogContext),
-                                            child: const Text('Ok'),
-                                          ),
-                                        ],
+                                      return const ModernAlertDialog(
+                                        title: 'Success!',
+                                        description:
+                                            'Your new task has been created successfully.',
+                                        primaryButtonText: 'Done',
                                       );
                                     },
                                   );
@@ -568,8 +578,9 @@ class _TsaCreationPageWidgetState extends State<TsaCreationPageWidget> {
                                   height: 44.0,
                                   padding: const EdgeInsetsDirectional.fromSTEB(
                                       24.0, 0.0, 24.0, 0.0),
-                                  iconPadding: const EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 0.0, 0.0, 0.0),
+                                  iconPadding:
+                                      const EdgeInsetsDirectional.fromSTEB(
+                                          0.0, 0.0, 0.0, 0.0),
                                   color: const Color(0xFFFFBD59),
                                   textStyle: FlutterFlowTheme.of(context)
                                       .titleSmall
@@ -625,10 +636,10 @@ class _TsaCreationPageWidgetState extends State<TsaCreationPageWidget> {
                     text: 'GET STARTED!!',
                     options: FFButtonOptions(
                       height: 40.0,
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
-                      iconPadding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          16.0, 0.0, 16.0, 0.0),
+                      iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 0.0, 0.0, 0.0),
                       color: const Color(0xFF1A9C0E),
                       textStyle:
                           FlutterFlowTheme.of(context).titleSmall.override(
@@ -678,11 +689,60 @@ class _TsaCreationPageWidgetState extends State<TsaCreationPageWidget> {
   TutorialCoachMark createPageWalkthrough(BuildContext context) =>
       TutorialCoachMark(
         targets: createWalkthroughTargets(context),
+        colorShadow: Colors.black,
+        paddingFocus: 10,
+        opacityShadow: 0.8,
+        hideSkip: true,
+        useSafeArea: true,
         onFinish: () async {
           safeSetState(() => _model.taskCreationController = null);
         },
         onSkip: () {
           return true;
         },
+        onClickTarget: (target) {},
+        onClickTargetWithTapPosition: (target, tapDetails) {},
+        onClickOverlay: (target) {},
+        skipWidget: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0, vertical: 10.0),
+                decoration: BoxDecoration(
+                  color: const Color(0x33FF5252),
+                  borderRadius: BorderRadius.circular(20.0),
+                  border: Border.all(
+                    color: const Color(0x66FF5252),
+                    width: 1.5,
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
+                      Icons.close_rounded,
+                      color: Color(0xFFFF5252),
+                      size: 18.0,
+                    ),
+                    const SizedBox(width: 6.0),
+                    Text(
+                      'Skip All',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily: 'Feather',
+                            color: const Color(0xFFFF5252),
+                            fontSize: 14.0,
+                            letterSpacing: 0.3,
+                            fontWeight: FontWeight.w600,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       );
 }

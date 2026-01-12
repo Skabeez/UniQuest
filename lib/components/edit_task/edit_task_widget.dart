@@ -6,6 +6,8 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
+import '/services/audio_manager.dart';
+import '/services/sound_effects.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -41,6 +43,9 @@ class _EditTaskWidgetState extends State<EditTaskWidget>
   void initState() {
     super.initState();
     _model = createModel(context, () => EditTaskModel());
+
+    // Play popup sound
+    AudioManager().playSfx(SoundEffects.popUp);
 
     _model.tasknameFocusNode ??= FocusNode();
 
@@ -98,7 +103,8 @@ class _EditTaskWidgetState extends State<EditTaskWidget>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(16.0, 2.0, 16.0, 16.0),
+            padding:
+                const EdgeInsetsDirectional.fromSTEB(16.0, 2.0, 16.0, 16.0),
             child: Container(
               width: double.infinity,
               constraints: const BoxConstraints(
@@ -167,8 +173,8 @@ class _EditTaskWidgetState extends State<EditTaskWidget>
                         ),
                       ),
                       Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(24.0, 4.0, 0.0, 0.0),
+                        padding: const EdgeInsetsDirectional.fromSTEB(
+                            24.0, 4.0, 0.0, 0.0),
                         child: Text(
                           'Below are your task details',
                           style:
@@ -198,24 +204,9 @@ class _EditTaskWidgetState extends State<EditTaskWidget>
                               autofocus: true,
                               obscureText: false,
                               decoration: InputDecoration(
-                                labelText: ' Task Name',
-                                labelStyle: FlutterFlowTheme.of(context)
-                                    .labelMedium
-                                    .override(
-                                      font: GoogleFonts.plusJakartaSans(
-                                        fontWeight: FontWeight.w500,
-                                        fontStyle: FlutterFlowTheme.of(context)
-                                            .labelMedium
-                                            .fontStyle,
-                                      ),
-                                      color: const Color(0xFF606A85),
-                                      fontSize: 14.0,
-                                      letterSpacing: 0.0,
-                                      fontWeight: FontWeight.w500,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .labelMedium
-                                          .fontStyle,
-                                    ),
+                                hintText: ' Task Name',
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.never,
                                 hintStyle: FlutterFlowTheme.of(context)
                                     .labelMedium
                                     .override(
@@ -263,8 +254,9 @@ class _EditTaskWidgetState extends State<EditTaskWidget>
                                 ),
                                 filled: true,
                                 fillColor: Colors.white,
-                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
-                                    20.0, 24.0, 20.0, 24.0),
+                                contentPadding:
+                                    const EdgeInsetsDirectional.fromSTEB(
+                                        20.0, 24.0, 20.0, 24.0),
                               ),
                               style: FlutterFlowTheme.of(context)
                                   .bodyMedium
@@ -292,24 +284,9 @@ class _EditTaskWidgetState extends State<EditTaskWidget>
                               autofocus: true,
                               obscureText: false,
                               decoration: InputDecoration(
-                                labelText: 'Tag',
-                                labelStyle: FlutterFlowTheme.of(context)
-                                    .labelMedium
-                                    .override(
-                                      font: GoogleFonts.plusJakartaSans(
-                                        fontWeight: FontWeight.w500,
-                                        fontStyle: FlutterFlowTheme.of(context)
-                                            .labelMedium
-                                            .fontStyle,
-                                      ),
-                                      color: const Color(0xFF606A85),
-                                      fontSize: 14.0,
-                                      letterSpacing: 0.0,
-                                      fontWeight: FontWeight.w500,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .labelMedium
-                                          .fontStyle,
-                                    ),
+                                hintText: 'Tag',
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.never,
                                 hintStyle: FlutterFlowTheme.of(context)
                                     .labelMedium
                                     .override(
@@ -357,8 +334,9 @@ class _EditTaskWidgetState extends State<EditTaskWidget>
                                 ),
                                 filled: true,
                                 fillColor: Colors.white,
-                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
-                                    20.0, 24.0, 20.0, 24.0),
+                                contentPadding:
+                                    const EdgeInsetsDirectional.fromSTEB(
+                                        20.0, 24.0, 20.0, 24.0),
                               ),
                               style: FlutterFlowTheme.of(context)
                                   .bodyMedium
@@ -450,24 +428,9 @@ class _EditTaskWidgetState extends State<EditTaskWidget>
                               autofocus: true,
                               obscureText: false,
                               decoration: InputDecoration(
-                                labelText: 'Notes',
-                                labelStyle: FlutterFlowTheme.of(context)
-                                    .labelMedium
-                                    .override(
-                                      font: GoogleFonts.plusJakartaSans(
-                                        fontWeight: FontWeight.w500,
-                                        fontStyle: FlutterFlowTheme.of(context)
-                                            .labelMedium
-                                            .fontStyle,
-                                      ),
-                                      color: const Color(0xFF606A85),
-                                      fontSize: 14.0,
-                                      letterSpacing: 0.0,
-                                      fontWeight: FontWeight.w500,
-                                      fontStyle: FlutterFlowTheme.of(context)
-                                          .labelMedium
-                                          .fontStyle,
-                                    ),
+                                hintText: 'Notes',
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.never,
                                 hintStyle: FlutterFlowTheme.of(context)
                                     .labelMedium
                                     .override(
@@ -515,8 +478,9 @@ class _EditTaskWidgetState extends State<EditTaskWidget>
                                 ),
                                 filled: true,
                                 fillColor: Colors.white,
-                                contentPadding: const EdgeInsetsDirectional.fromSTEB(
-                                    20.0, 24.0, 20.0, 24.0),
+                                contentPadding:
+                                    const EdgeInsetsDirectional.fromSTEB(
+                                        20.0, 24.0, 20.0, 24.0),
                               ),
                               style: FlutterFlowTheme.of(context)
                                   .bodyMedium
@@ -637,11 +601,11 @@ class _EditTaskWidgetState extends State<EditTaskWidget>
                                       ),
                                     ),
                                     Align(
-                                      alignment:
-                                          const AlignmentDirectional(-0.89, -0.19),
+                                      alignment: const AlignmentDirectional(
+                                          -0.89, -0.19),
                                       child: Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 5.0, 0.0, 0.0),
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(0.0, 5.0, 0.0, 0.0),
                                         child: Text(
                                           valueOrDefault<String>(
                                             dateTimeFormat("MMMM, d",
@@ -695,8 +659,9 @@ class _EditTaskWidgetState extends State<EditTaskWidget>
                                   height: 44.0,
                                   padding: const EdgeInsetsDirectional.fromSTEB(
                                       24.0, 0.0, 24.0, 0.0),
-                                  iconPadding: const EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 0.0, 0.0, 0.0),
+                                  iconPadding:
+                                      const EdgeInsetsDirectional.fromSTEB(
+                                          0.0, 0.0, 0.0, 0.0),
                                   color: Colors.white,
                                   textStyle: FlutterFlowTheme.of(context)
                                       .bodyMedium
@@ -754,7 +719,8 @@ class _EditTaskWidgetState extends State<EditTaskWidget>
                                     builder: (alertDialogContext) {
                                       return AlertDialog(
                                         title: const Text('Success!'),
-                                        content: const Text('Task has been Updated.'),
+                                        content: const Text(
+                                            'Task has been Updated.'),
                                         actions: [
                                           TextButton(
                                             onPressed: () => Navigator.pop(
@@ -771,8 +737,9 @@ class _EditTaskWidgetState extends State<EditTaskWidget>
                                   height: 44.0,
                                   padding: const EdgeInsetsDirectional.fromSTEB(
                                       24.0, 0.0, 24.0, 0.0),
-                                  iconPadding: const EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 0.0, 0.0, 0.0),
+                                  iconPadding:
+                                      const EdgeInsetsDirectional.fromSTEB(
+                                          0.0, 0.0, 0.0, 0.0),
                                   color: const Color(0xFFFFBD59),
                                   textStyle: FlutterFlowTheme.of(context)
                                       .titleSmall

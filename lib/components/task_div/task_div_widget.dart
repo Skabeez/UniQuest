@@ -135,18 +135,22 @@ class _TaskDivWidgetState extends State<TaskDivWidget> {
                         padding:
                             const EdgeInsetsDirectional.fromSTEB(0.0, 30.0, 0.0, 0.0),
                         child: Text(
-                          valueOrDefault<String>(
-                            widget.tasks?.title,
-                            'title',
-                          ),
+                          (widget.tasks == null || widget.tasks!.title.trim().isEmpty)
+                              ? '(Untitled Task)'
+                              : widget.tasks!.title,
                           style: FlutterFlowTheme.of(context)
                               .bodyMedium
                               .override(
                                 fontFamily: 'Feather',
-                                color: FlutterFlowTheme.of(context).primaryText,
+                                color: (widget.tasks == null || widget.tasks!.title.trim().isEmpty)
+                                    ? FlutterFlowTheme.of(context).secondaryText
+                                    : FlutterFlowTheme.of(context).primaryText,
                                 fontSize: 20.0,
                                 letterSpacing: 0.0,
                                 fontWeight: FontWeight.bold,
+                                fontStyle: (widget.tasks == null || widget.tasks!.title.trim().isEmpty)
+                                    ? FontStyle.italic
+                                    : FontStyle.normal,
                               ),
                         ),
                       ),
@@ -159,7 +163,7 @@ class _TaskDivWidgetState extends State<TaskDivWidget> {
                         child: Text(
                           valueOrDefault<String>(
                             widget.tasks?.description,
-                            'des',
+                            'no notes',
                           ),
                           style:
                               FlutterFlowTheme.of(context).bodyMedium.override(
@@ -210,7 +214,7 @@ class _TaskDivWidgetState extends State<TaskDivWidget> {
                         },
                         text: valueOrDefault<String>(
                           widget.tasks?.priority,
-                          'prio',
+                          'no prio',
                         ),
                         options: FFButtonOptions(
                           height: 23.0,
@@ -287,7 +291,7 @@ class _TaskDivWidgetState extends State<TaskDivWidget> {
                           print('Button pressed ...');
                         },
                         text:
-                            dateTimeFormat("MMM, dd", widget.tasks!.dueDate!),
+                            dateTimeFormat("MMM, dd", widget.tasks!.dueDate),
                         icon: const Icon(
                           Icons.calendar_today_outlined,
                           size: 15.0,

@@ -1,9 +1,11 @@
 import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
+import '/components/lottie_burst_overlay/lottie_burst_overlay_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/index.dart';
+import '/services/audio_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -37,6 +39,8 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => OnboardingModel());
+// Keep login BGM playing during onboarding
+    AudioManager().playLoginBgm();
 
     _model.unameInputTextController1 ??= TextEditingController();
     _model.unameInputFocusNode1 ??= FocusNode();
@@ -75,8 +79,8 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 30.0, 0.0, 0.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        0.0, 30.0, 0.0, 0.0),
                     child: Container(
                       width: 200.0,
                       height: 200.0,
@@ -98,6 +102,16 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                               child: Image.network(
                                 FFAppState().draftAvatarUrl,
                                 fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Container(
+                                    color: const Color(0xFF2D2D2D),
+                                    child: const Icon(
+                                      Icons.person,
+                                      color: Color(0xFFFFBD59),
+                                      size: 80,
+                                    ),
+                                  );
+                                },
                               ),
                             ),
                           ),
@@ -422,8 +436,8 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                     ),
                   ),
                   Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 60.0, 0.0, 0.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        0.0, 60.0, 0.0, 0.0),
                     child: FFButtonWidget(
                       onPressed: () async {
                         await ProfilesTable().update(
@@ -439,7 +453,21 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                           ),
                         );
 
-                        context.pushNamed(WelcomeviewWidget.routeName);
+                        if (context.mounted) {
+                          LottieBurstOverlay.showCentered(
+                            context: context,
+                            lottieAsset:
+                                'assets/jsons/Businessman flies up with rocket.json',
+                          );
+
+                          // Wait for animation to be visible before navigating
+                          await Future.delayed(
+                              const Duration(milliseconds: 1800));
+                        }
+
+                        if (context.mounted) {
+                          context.pushNamed(WelcomeviewWidget.routeName);
+                        }
                       },
                       text: 'Continue',
                       options: FFButtonOptions(
@@ -447,8 +475,8 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                         height: 50.0,
                         padding: const EdgeInsetsDirectional.fromSTEB(
                             24.0, 0.0, 24.0, 0.0),
-                        iconPadding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                        iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                            0.0, 0.0, 0.0, 0.0),
                         color: FlutterFlowTheme.of(context).primary,
                         textStyle:
                             FlutterFlowTheme.of(context).titleMedium.override(

@@ -8,7 +8,7 @@ import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'loadinpage_model.dart';
 export 'loadinpage_model.dart';
 
@@ -40,13 +40,22 @@ class _LoadinpageWidgetState extends State<LoadinpageWidget>
     super.initState();
     _model = createModel(context, () => LoadinpageModel());
 
+    // Precache assets to prevent flickering
+    _precacheAssets();
+
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       if (widget.id != null && widget.id != '') {
-        await ProfilesTable().insert({
-          'id': currentUserUid,
-          'email': currentUserEmail,
-        });
+        // New user - create profile with onboarding_completed = false
+        try {
+          await ProfilesTable().insert({
+            'id': currentUserUid,
+            'email': currentUserEmail,
+            'onboarding_completed': false,
+          });
+        } catch (e) {
+          // Profile might already exist, ignore error
+        }
       }
     });
 
@@ -126,6 +135,32 @@ class _LoadinpageWidgetState extends State<LoadinpageWidget>
     });
   }
 
+  Future<void> _precacheAssets() async {
+    // Precache logo image
+    try {
+      await precacheImage(
+        const AssetImage('assets/images/app_launcher_icon.png'),
+        context,
+      );
+    } catch (e) {
+      debugPrint('❌ Error preloading logo: $e');
+    }
+
+    // Precache Lottie animations used throughout the app
+    try {
+      await AssetLottie('assets/jsons/Rocket_in_space.json').load();
+      await AssetLottie('assets/jsons/Fire.json').load();
+      await AssetLottie('assets/jsons/Confetti.json').load();
+      await AssetLottie('assets/jsons/Businessman flies up with rocket.json')
+          .load();
+      await AssetLottie('assets/jsons/black rainbow cat.json').load();
+
+      debugPrint('✅ All Lottie animations preloaded successfully');
+    } catch (e) {
+      debugPrint('❌ Error preloading Lottie: $e');
+    }
+  }
+
   @override
   void dispose() {
     _model.dispose();
@@ -177,161 +212,179 @@ class _LoadinpageWidgetState extends State<LoadinpageWidget>
               key: scaffoldKey,
               backgroundColor: const Color(0xFF0F1419),
               body: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      const Color(0xFF1A1F36),
-                      const Color(0xFF0F1419),
+                      Color(0xFF1A1F36),
+                      Color(0xFF0F1419),
                     ],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                   ),
                 ),
                 child: InkWell(
-                splashColor: Colors.transparent,
-                focusColor: Colors.transparent,
-                hoverColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-                onTap: () async {
-                  if ((loadinpageProfilesRow?.id == currentUserUid) &&
-                      loadinpageProfilesRow!.onboardingCompleted) {
-                    context.pushNamed(HomeWidget.routeName);
-                  } else {
-                    context.pushNamed(OnboardingWidget.routeName);
-                  }
-                },
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        width: double.infinity,
-                        height: 500.0,
-                        decoration: const BoxDecoration(
-                          color: Color(0xFF0F1419),
-                        ),
+                  splashColor: Colors.transparent,
+                  focusColor: Colors.transparent,
+                  hoverColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onTap: () async {
+                    // Check if user has a profile AND has completed onboarding
+                    if (loadinpageProfilesRow != null &&
+                        loadinpageProfilesRow.onboardingCompleted == true) {
+                      // Existing user who completed onboarding - go to main home
+                      context.pushNamed(HomeWidget.routeName);
+                    } else if (loadinpageProfilesRow != null &&
+                        loadinpageProfilesRow.username != null &&
+                        loadinpageProfilesRow.username!.isNotEmpty) {
+                      // Legacy user with username but no onboarding_completed flag - go to main home
+                      context.pushNamed(HomeWidget.routeName);
+                    } else {
+                      // New user OR user who hasn't completed onboarding - show onboarding
+                      context.pushNamed(OnboardingWidget.routeName);
+                    }
+                  },
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
                         child: Container(
-                          width: 100.0,
-                          height: 100.0,
-                          decoration: BoxDecoration(
-                            gradient: const LinearGradient(
-                              colors: [Color(0x661A1F36), Color(0xCC0F1419)],
-                              stops: [0.0, 1.0],
-                              begin: AlignmentDirectional(0.0, -1.0),
-                              end: AlignmentDirectional(0, 1.0),
-                            ),
+                          width: double.infinity,
+                          height: 500.0,
+                          decoration: const BoxDecoration(
+                            color: Color(0xFF0F1419),
                           ),
-                          child: Column(
+                          child: Container(
+                            width: 100.0,
+                            height: 100.0,
+                            decoration: const BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [Color(0x661A1F36), Color(0xCC0F1419)],
+                                stops: [0.0, 1.0],
+                                begin: AlignmentDirectional(0.0, -1.0),
+                                end: AlignmentDirectional(0, 1.0),
+                              ),
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 200.0,
+                                  height: 200.0,
+                                  decoration: const BoxDecoration(
+                                    color: Color(0xFF2A2E3A),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Image.asset(
+                                      'assets/images/Just_the_logo.png',
+                                      width: 100.0,
+                                      height: 100.0,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ).animateOnPageLoad(animationsMap[
+                                    'containerOnPageLoadAnimation2']!),
+                                Align(
+                                  alignment:
+                                      const AlignmentDirectional(0.0, 0.0),
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 44.0, 0.0, 0.0),
+                                    child: Text(
+                                      'Welcome to \nUniQuest!',
+                                      textAlign: TextAlign.center,
+                                      style: FlutterFlowTheme.of(context)
+                                          .displaySmall
+                                          .override(
+                                            fontFamily: 'Feather',
+                                            color: Colors.white,
+                                            letterSpacing: 0.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                    ).animateOnPageLoad(animationsMap[
+                                        'textOnPageLoadAnimation']!),
+                                  ),
+                                ),
+                              ],
+                            ).animateOnPageLoad(
+                                animationsMap['columnOnPageLoadAnimation']!),
+                          ),
+                        ).animateOnPageLoad(
+                            animationsMap['containerOnPageLoadAnimation1']!),
+                      ),
+                      Align(
+                        alignment: const AlignmentDirectional(0.0, 0.0),
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              0.0, 0.0, 0.0, 100.0),
+                          child: Row(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Container(
-                                width: 200.0,
-                                height: 200.0,
-                                decoration: const BoxDecoration(
-                                  color: Color(0xFF2A2E3A),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Image.asset(
-                                    'assets/images/Just_the_logo.png',
-                                    width: 100.0,
-                                    height: 100.0,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ).animateOnPageLoad(animationsMap[
-                                  'containerOnPageLoadAnimation2']!),
                               Align(
                                 alignment: const AlignmentDirectional(0.0, 0.0),
-                                child: Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 44.0, 0.0, 0.0),
-                                  child: Text(
-                                    'Welcome to \nUniQuest!',
-                                    textAlign: TextAlign.center,
-                                    style: FlutterFlowTheme.of(context)
-                                        .displaySmall
+                                child: FFButtonWidget(
+                                  onPressed: () async {
+                                    // Check if user has a profile AND has completed onboarding
+                                    if (loadinpageProfilesRow != null &&
+                                        loadinpageProfilesRow
+                                                .onboardingCompleted ==
+                                            true) {
+                                      // Existing user who completed onboarding - go to main home
+                                      context.pushNamed(HomeWidget.routeName);
+                                    } else if (loadinpageProfilesRow != null &&
+                                        loadinpageProfilesRow.username !=
+                                            null &&
+                                        loadinpageProfilesRow
+                                            .username!.isNotEmpty) {
+                                      // Legacy user with username but no onboarding_completed flag - go to main home
+                                      context.pushNamed(HomeWidget.routeName);
+                                    } else {
+                                      // New user OR user who hasn't completed onboarding - show onboarding
+                                      context.pushNamed(
+                                          OnboardingWidget.routeName);
+                                    }
+                                  },
+                                  text: 'Continue',
+                                  options: FFButtonOptions(
+                                    height: 54.0,
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            32.0, 0.0, 32.0, 0.0),
+                                    iconPadding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 0.0),
+                                    color: const Color(0xFFFFBD59),
+                                    textStyle: FlutterFlowTheme.of(context)
+                                        .titleMedium
                                         .override(
                                           fontFamily: 'Feather',
+                                          color: const Color(0xFF2D2D2D),
+                                          fontSize: 16.0,
                                           letterSpacing: 0.0,
                                           fontWeight: FontWeight.bold,
                                         ),
-                                  ).animateOnPageLoad(animationsMap[
-                                      'textOnPageLoadAnimation']!),
+                                    elevation: 8.0,
+                                    borderSide: const BorderSide(
+                                      color: Colors.transparent,
+                                      width: 0.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(27.0),
+                                  ),
                                 ),
                               ),
                             ],
-                          ).animateOnPageLoad(
-                              animationsMap['columnOnPageLoadAnimation']!),
-                        ),
-                      ).animateOnPageLoad(
-                          animationsMap['containerOnPageLoadAnimation1']!),
-                    ),
-                    Align(
-                      alignment: const AlignmentDirectional(0.0, 0.0),
-                      child: Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
-                            0.0, 0.0, 0.0, 100.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Align(
-                              alignment: const AlignmentDirectional(0.0, 0.0),
-                              child: FFButtonWidget(
-                                onPressed: () async {
-                                  context.goNamed('home');
-                                },
-                                text: 'Continue to Home',
-                                options: FFButtonOptions(
-                                  height: 48.0,
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                    24.0, 0.0, 24.0, 0.0),
-                                  iconPadding: const EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 0.0, 0.0, 0.0),
-                                  color: const Color(0xFFFFBD59),
-                                  textStyle: FlutterFlowTheme.of(context)
-                                    .titleSmall
-                                    .override(
-                                    font: GoogleFonts.manrope(
-                                      fontWeight:
-                                        FlutterFlowTheme.of(context)
-                                          .titleSmall
-                                          .fontWeight,
-                                      fontStyle:
-                                        FlutterFlowTheme.of(context)
-                                          .titleSmall
-                                          .fontStyle,
-                                    ),
-                                    color: Colors.black,
-                                    letterSpacing: 0.0,
-                                    fontWeight: FlutterFlowTheme.of(context)
-                                      .titleSmall
-                                      .fontWeight,
-                                    fontStyle: FlutterFlowTheme.of(context)
-                                      .titleSmall
-                                      .fontStyle,
-                                    ),
-                                  elevation: 1.0,
-                                  borderSide: const BorderSide(
-                                  color: Colors.transparent,
-                                  width: 0.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(24.0),
-                                ),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-                ),
             ),
           ),
         );

@@ -4,6 +4,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/index.dart';
+import '/services/audio_manager.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -34,7 +35,10 @@ class _LoginRedirectWidgetState extends State<LoginRedirectWidget>
   void initState() {
     super.initState();
     _model = createModel(context, () => LoginRedirectModel());
+// Start login BGM
+    AudioManager().playLoginBgm();
 
+    
     _model.emailAddressTextController ??= TextEditingController();
     _model.emailAddressFocusNode ??= FocusNode();
 

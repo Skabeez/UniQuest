@@ -23,7 +23,7 @@ List<TargetFocus> createWalkthroughTargets(BuildContext context) => [
             align: ContentAlign.bottom,
             builder: (context, __) => const WalkthroughBubbleWidget(
               text:
-                  'This icon button will lead you to the task creation page!!!',
+                  'This icon button will lead you to the task creation page!',
             ),
           ),
         ],
@@ -40,7 +40,7 @@ List<TargetFocus> createWalkthroughTargets(BuildContext context) => [
           TargetContent(
             align: ContentAlign.top,
             builder: (context, __) => const WalkthroughBubbleWidget(
-              text: 'In this page you wil see the created tasks',
+              text: 'On this page, you will see all your created tasks',
             ),
           ),
         ],

@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 import '/backend/supabase/supabase.dart';
@@ -12,7 +10,6 @@ import '/auth/base_auth_user_provider.dart';
 import '/main.dart';
 
 import '/flutter_flow/flutter_flow_util.dart';
-import 'serialization_util.dart';
 
 import '/index.dart';
 
@@ -269,6 +266,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               ParamType.String,
             ),
           ),
+        ),
+        FFRoute(
+          name: 'EmailConfirm',
+          path: '/email-confirm',
+          builder: (context, params) => const EmailConfirmWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

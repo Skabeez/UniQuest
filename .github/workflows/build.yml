@@ -26,15 +26,79 @@ jobs:
       with:
         flutter-version: '3.38.5'
         channel: 'stable'
+    
+    - name: Decode Keystore
+      run: |
+        echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/upload-keystore.jks
+        ls -lh android/app/upload-keystore.jks
+        file android/app/upload-keystore.jks
+        
+    - name: Create keystore.properties
+      run: |
+        echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" > android/keystore.properties
+        echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/keystore.properties
+        echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/keystore.properties
+        echo "storeFile=upload-keystore.jks" >> android/keystore.properties
+        cat android/keystore.properties
       
     - name: Get dependencies
       run: flutter pub get
+    
+    - name: Clear Flutter cache
+      run: flutter clean
+    
+    - name: Generate launcher icons
+      run: flutter pub run flutter_launcher_icons:main
       
     - name: Build APK
       run: flutter build apk --release
+    
+    - name: Zipalign APK
+      run: |
+        ZIPALIGN=$(ls -d $ANDROID_HOME/build-tools/*/zipalign | sort | tail -n 1)
+        echo "Using zipalign: $ZIPALIGN"
+        $ZIPALIGN -v 4 build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/app-release-aligned.apk
+
+    - name: Sign APK manually
+      run: |
+        APKSIGNER=$(ls -d $ANDROID_HOME/build-tools/*/apksigner | sort | tail -n 1)
+        echo "Using apksigner: $APKSIGNER"
+        $APKSIGNER sign \
+          --ks android/app/upload-keystore.jks \
+          --ks-key-alias upload \
+          --ks-pass pass:uniquest2025 \
+          --key-pass pass:uniquest2025 \
+          --out build/app/outputs/flutter-apk/app-release-signed.apk \
+          build/app/outputs/flutter-apk/app-release-aligned.apk
+    
+    - name: Verify APK signature
+      run: |
+        APKSIGNER=$(ls -d $ANDROID_HOME/build-tools/*/apksigner | sort | tail -n 1)
+        echo "Using apksigner: $APKSIGNER"
+        ls -lh build/app/outputs/flutter-apk/app-release-signed.apk
+        $APKSIGNER verify --print-certs build/app/outputs/flutter-apk/app-release-signed.apk
       
-    - name: Upload APK
+    - name: Upload APK to Artifacts
       uses: actions/upload-artifact@v4
       with:
         name: app-release
-        path: build/app/outputs/flutter-apk/app-release.apk
+        path: build/app/outputs/flutter-apk/app-release-signed.apk
+    
+    - name: Create GitHub Release
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      uses: softprops/action-gh-release@v1
+      with:
+        files: build/app/outputs/flutter-apk/app-release-signed.apk
+        tag_name: v${{ github.run_number }}
+        name: UniQuest v${{ github.run_number }}
+        body: |
+          **UniQuest Release Build**
+          
+          APK: UniQuest.apk
+          
+          Built on: ${{ github.event.head_commit.timestamp }}
+          Commit: ${{ github.sha }}
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

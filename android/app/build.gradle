@@ -66,17 +66,31 @@ android {
 
    signingConfigs {
        release {
-           keyAlias keystoreProperties['keyAlias']
-           keyPassword keystoreProperties['keyPassword']
-           storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
-           storePassword keystoreProperties['storePassword']
+           if (keystorePropertiesFile.exists()) {
+               def keystoreFile = new File(keystoreProperties['storeFile'])
+               if (!keystoreFile.isAbsolute()) {
+                   keystoreFile = new File(projectDir, keystoreProperties['storeFile'])
+               }
+               
+               keyAlias keystoreProperties['keyAlias']
+               keyPassword keystoreProperties['keyPassword']
+               storeFile keystoreFile
+               storePassword keystoreProperties['storePassword']
+           }
        }
    }
 
     buildTypes {
         release {
-            signingConfig signingConfigs.release
+            signingConfig keystorePropertiesFile.exists() ? signingConfigs.release : null
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    // Set output APK name
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            outputFileName = "UniQuest-${variant.versionName}.apk"
         }
     }
 }

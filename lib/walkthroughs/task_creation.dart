@@ -29,7 +29,7 @@ List<TargetFocus> createWalkthroughTargets(BuildContext context) => [
             align: ContentAlign.bottom,
             builder: (context, __) => const WalkthroughBubbleWidget(
               text:
-                  'This is the task creation page in where you can input your data about the task you are going to create',
+                  'This is the task creation page where you can enter details about your task',
             ),
           ),
         ],
@@ -46,7 +46,7 @@ List<TargetFocus> createWalkthroughTargets(BuildContext context) => [
           TargetContent(
             align: ContentAlign.bottom,
             builder: (context, __) => const WalkthroughBubbleWidget(
-              text: 'In this column you can write your task name',
+              text: 'In this field, you can write your task name',
             ),
           ),
         ],
@@ -63,7 +63,7 @@ List<TargetFocus> createWalkthroughTargets(BuildContext context) => [
           TargetContent(
             align: ContentAlign.bottom,
             builder: (context, __) => const WalkthroughBubbleWidget(
-              text: 'Right here you can input the tags',
+              text: 'Here you can add tags to categorize your task',
             ),
           ),
         ],
@@ -80,7 +80,7 @@ List<TargetFocus> createWalkthroughTargets(BuildContext context) => [
           TargetContent(
             align: ContentAlign.bottom,
             builder: (context, __) => const WalkthroughBubbleWidget(
-              text: 'In this column you can set your task priority',
+              text: 'In this dropdown, you can set your task priority',
             ),
           ),
         ],
@@ -149,7 +149,7 @@ List<TargetFocus> createWalkthroughTargets(BuildContext context) => [
           TargetContent(
             align: ContentAlign.top,
             builder: (context, __) => const WalkthroughBubbleWidget(
-              text: 'That is all now get started and HAPPY QUESTING!!!',
+              text: 'That\'s all! Now get started and happy questing!',
             ),
           ),
         ],

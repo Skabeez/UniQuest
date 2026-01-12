@@ -1,7 +1,11 @@
 import '/backend/supabase/supabase.dart';
+import '/components/lottie_burst_overlay/lottie_burst_overlay_widget.dart';
+import '/components/modern_alert_dialog.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/services/audio_manager.dart';
+import '/services/sound_effects.dart';
 import 'package:flutter/material.dart';
 import 'menu_task_model.dart';
 export 'menu_task_model.dart';
@@ -33,6 +37,9 @@ class _MenuTaskWidgetState extends State<MenuTaskWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => MenuTaskModel());
+
+    // Play popup sound
+    AudioManager().playSfx(SoundEffects.popUp);
   }
 
   @override
@@ -72,28 +79,24 @@ class _MenuTaskWidgetState extends State<MenuTaskWidget> {
           mainAxisSize: MainAxisSize.max,
           children: [
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
               child: FFButtonWidget(
                 onPressed: () async {
                   var confirmDialogResponse = await showDialog<bool>(
                         context: context,
+                        barrierColor: Colors.black87,
                         builder: (alertDialogContext) {
-                          return AlertDialog(
-                            title: const Text(
-                                'Are you certain you want to delete this?'),
-                            content: const Text('Confirm'),
-                            actions: [
-                              TextButton(
-                                onPressed: () =>
-                                    Navigator.pop(alertDialogContext, false),
-                                child: const Text('Cancel'),
-                              ),
-                              TextButton(
-                                onPressed: () =>
-                                    Navigator.pop(alertDialogContext, true),
-                                child: const Text('Confirm'),
-                              ),
-                            ],
+                          return ModernAlertDialog(
+                            title: 'Delete Task?',
+                            description:
+                                'This task will be permanently deleted. This action cannot be undone.',
+                            secondaryButtonText: 'DELETE',
+                            primaryButtonText: 'Cancel',
+                            onSecondaryPressed: () =>
+                                Navigator.pop(alertDialogContext, true),
+                            onPrimaryPressed: () =>
+                                Navigator.pop(alertDialogContext, false),
                           );
                         },
                       ) ??
@@ -107,17 +110,13 @@ class _MenuTaskWidgetState extends State<MenuTaskWidget> {
                     );
                     await showDialog(
                       context: context,
+                      barrierColor: Colors.black87,
                       builder: (alertDialogContext) {
-                        return AlertDialog(
-                          title: const Text('Success!'),
-                          content: const Text('The task has been deleted.'),
-                          actions: [
-                            TextButton(
-                              onPressed: () =>
-                                  Navigator.pop(alertDialogContext),
-                              child: const Text('Ok'),
-                            ),
-                          ],
+                        return const ModernAlertDialog(
+                          title: 'Deleted!',
+                          description:
+                              'The task has been deleted successfully.',
+                          primaryButtonText: 'Done',
                         );
                       },
                     );
@@ -125,17 +124,12 @@ class _MenuTaskWidgetState extends State<MenuTaskWidget> {
                   } else {
                     await showDialog(
                       context: context,
+                      barrierColor: Colors.black87,
                       builder: (alertDialogContext) {
-                        return AlertDialog(
-                          title: const Text('Cancelled.'),
-                          content: const Text('You\'ve cancelled this action.'),
-                          actions: [
-                            TextButton(
-                              onPressed: () =>
-                                  Navigator.pop(alertDialogContext),
-                              child: const Text('Ok'),
-                            ),
-                          ],
+                        return const ModernAlertDialog(
+                          title: 'Cancelled',
+                          description: 'The delete action has been cancelled.',
+                          primaryButtonText: 'OK',
                         );
                       },
                     );
@@ -166,7 +160,8 @@ class _MenuTaskWidgetState extends State<MenuTaskWidget> {
               ),
             ),
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
               child: FFButtonWidget(
                 onPressed: () async {
                   await TasksTable().update(
@@ -180,15 +175,12 @@ class _MenuTaskWidgetState extends State<MenuTaskWidget> {
                   );
                   await showDialog(
                     context: context,
+                    barrierColor: Colors.black87,
                     builder: (alertDialogContext) {
-                      return AlertDialog(
-                        content: const Text('Success!'),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.pop(alertDialogContext),
-                            child: const Text('Ok'),
-                          ),
-                        ],
+                      return const ModernAlertDialog(
+                        title: 'Updated!',
+                        description: 'Task marked as ongoing.',
+                        primaryButtonText: 'Done',
                       );
                     },
                   );
@@ -218,27 +210,24 @@ class _MenuTaskWidgetState extends State<MenuTaskWidget> {
               ),
             ),
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
               child: FFButtonWidget(
                 onPressed: () async {
                   var confirmDialogResponse = await showDialog<bool>(
                         context: context,
+                        barrierColor: Colors.black87,
                         builder: (alertDialogContext) {
-                          return AlertDialog(
-                            title: const Text('Confirmation'),
-                            content: const Text('This action cannot be undone.'),
-                            actions: [
-                              TextButton(
-                                onPressed: () =>
-                                    Navigator.pop(alertDialogContext, false),
-                                child: const Text('Cancel'),
-                              ),
-                              TextButton(
-                                onPressed: () =>
-                                    Navigator.pop(alertDialogContext, true),
-                                child: const Text('Confirm'),
-                              ),
-                            ],
+                          return ModernAlertDialog(
+                            title: 'Complete Task?',
+                            description:
+                                'Mark this task as complete? This action cannot be undone.',
+                            secondaryButtonText: 'Cancel',
+                            primaryButtonText: 'Complete',
+                            onSecondaryPressed: () =>
+                                Navigator.pop(alertDialogContext, false),
+                            onPrimaryPressed: () =>
+                                Navigator.pop(alertDialogContext, true),
                           );
                         },
                       ) ??
@@ -262,19 +251,25 @@ class _MenuTaskWidgetState extends State<MenuTaskWidget> {
                         widget.tasksid,
                       ),
                     );
+
+                    // 🎉 Trigger confetti burst!
+                    if (context.mounted) {
+                      LottieBurstOverlay.showCentered(
+                        context: context,
+                        lottieAsset: 'assets/jsons/Confetti.json',
+                        size: 400.0,
+                      );
+                    }
+
                     await showDialog(
                       context: context,
+                      barrierColor: Colors.black87,
                       builder: (alertDialogContext) {
-                        return AlertDialog(
-                          title: const Text('Success!'),
-                          content: const Text('Congrats on completing a task.'),
-                          actions: [
-                            TextButton(
-                              onPressed: () =>
-                                  Navigator.pop(alertDialogContext),
-                              child: const Text('Ok'),
-                            ),
-                          ],
+                        return const ModernAlertDialog(
+                          title: 'Completed! 🎉',
+                          description:
+                              'Congrats on completing the task! Keep up the great work!',
+                          primaryButtonText: 'Awesome',
                         );
                       },
                     );
@@ -282,16 +277,12 @@ class _MenuTaskWidgetState extends State<MenuTaskWidget> {
                   } else {
                     await showDialog(
                       context: context,
+                      barrierColor: Colors.black87,
                       builder: (alertDialogContext) {
-                        return AlertDialog(
-                          title: const Text('Cancelled'),
-                          actions: [
-                            TextButton(
-                              onPressed: () =>
-                                  Navigator.pop(alertDialogContext),
-                              child: const Text('Ok'),
-                            ),
-                          ],
+                        return const ModernAlertDialog(
+                          title: 'Cancelled',
+                          description: 'Task completion cancelled.',
+                          primaryButtonText: 'OK',
                         );
                       },
                     );
@@ -322,7 +313,8 @@ class _MenuTaskWidgetState extends State<MenuTaskWidget> {
               ),
             ),
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
               child: FFButtonWidget(
                 onPressed: () async {
                   context.pop();

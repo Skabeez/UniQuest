@@ -77,11 +77,12 @@ class _WelcomeviewWidgetState extends State<WelcomeviewWidget> {
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: Text(
-                            'Hello Welcome to our onboarding walthrough on how to create a task using our app UNI-QUEST.\n\nThis walkthrough will help you navigate and understand the concept of task creation in this app.\n\nHAPPY QUESTING!',
+                            'Hello! Welcome to our onboarding walkthrough on how to create a task using our app, UNI-QUEST.\n\nThis walkthrough will help you navigate and understand the concept of task creation in this app.\n\nHAPPY QUESTING!',
                             textAlign: TextAlign.center,
                             style:
                                 FlutterFlowTheme.of(context).bodyLarge.override(
                                       fontFamily: 'Feather',
+                                      color: Colors.white,
                                       letterSpacing: 0.0,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -109,10 +110,10 @@ class _WelcomeviewWidgetState extends State<WelcomeviewWidget> {
                   text: 'NEXT',
                   options: FFButtonOptions(
                     height: 40.0,
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
-                    iconPadding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        16.0, 0.0, 16.0, 0.0),
+                    iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                        0.0, 0.0, 0.0, 0.0),
                     color: const Color(0xFF1A9C0E),
                     textStyle: FlutterFlowTheme.of(context).titleSmall.override(
                           font: GoogleFonts.manrope(

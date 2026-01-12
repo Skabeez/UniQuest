@@ -48,6 +48,7 @@ class _TodoListCopyWidgetState extends State<TodoListCopyWidget>
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       safeSetState(
           () => _model.todolistViewController = createPageWalkthrough(context));
+      await Future.delayed(const Duration(milliseconds: 150));
       _model.todolistViewController?.show(context: context);
     });
 
@@ -84,8 +85,8 @@ class _TodoListCopyWidgetState extends State<TodoListCopyWidget>
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 0.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          20.0, 0.0, 0.0, 0.0),
                       child: Text(
                         'To-Do List ',
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
@@ -148,8 +149,8 @@ class _TodoListCopyWidgetState extends State<TodoListCopyWidget>
                 Align(
                   alignment: const AlignmentDirectional(0.0, -1.0),
                   child: Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        0.0, 0.0, 0.0, 10.0),
                     child: FlutterFlowCalendar(
                       color: FlutterFlowTheme.of(context).primary,
                       iconColor: FlutterFlowTheme.of(context).secondaryText,
@@ -244,7 +245,8 @@ class _TodoListCopyWidgetState extends State<TodoListCopyWidget>
             Align(
               alignment: const AlignmentDirectional(0.0, 0.0),
               child: Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 310.0, 0.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(0.0, 310.0, 0.0, 0.0),
                 child: Stack(
                   children: [
                     Column(
@@ -331,11 +333,11 @@ class _TodoListCopyWidgetState extends State<TodoListCopyWidget>
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
                                     Align(
-                                      alignment:
-                                          const AlignmentDirectional(0.0, -0.25),
+                                      alignment: const AlignmentDirectional(
+                                          0.0, -0.25),
                                       child: Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
-                                            15.0, 0.0, 15.0, 0.0),
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(15.0, 0.0, 15.0, 0.0),
                                         child: StreamBuilder<List<TasksRow>>(
                                           stream: _model
                                                   .listViewSupabaseStream1 ??=
@@ -376,8 +378,9 @@ class _TodoListCopyWidgetState extends State<TodoListCopyWidget>
                                                 snapshot.data!;
 
                                             return ListView.separated(
-                                              padding: const EdgeInsets.symmetric(
-                                                  vertical: 10.0),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 10.0),
                                               shrinkWrap: true,
                                               scrollDirection: Axis.vertical,
                                               itemCount:
@@ -390,8 +393,9 @@ class _TodoListCopyWidgetState extends State<TodoListCopyWidget>
                                                     listViewTasksRowList[
                                                         listViewIndex];
                                                 return Padding(
-                                                  padding: const EdgeInsetsDirectional
-                                                      .fromSTEB(
+                                                  padding:
+                                                      const EdgeInsetsDirectional
+                                                          .fromSTEB(
                                                           0.0, 0.0, 0.0, 15.0),
                                                   child: InkWell(
                                                     splashColor:
@@ -474,11 +478,11 @@ class _TodoListCopyWidgetState extends State<TodoListCopyWidget>
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
                                     Align(
-                                      alignment:
-                                          const AlignmentDirectional(0.0, -0.25),
+                                      alignment: const AlignmentDirectional(
+                                          0.0, -0.25),
                                       child: Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
-                                            15.0, 0.0, 15.0, 0.0),
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(15.0, 0.0, 15.0, 0.0),
                                         child: StreamBuilder<List<TasksRow>>(
                                           stream: _model
                                                   .listViewSupabaseStream2 ??=
@@ -519,8 +523,9 @@ class _TodoListCopyWidgetState extends State<TodoListCopyWidget>
                                                 snapshot.data!;
 
                                             return ListView.separated(
-                                              padding: const EdgeInsets.symmetric(
-                                                  vertical: 10.0),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 10.0),
                                               shrinkWrap: true,
                                               scrollDirection: Axis.vertical,
                                               itemCount:
@@ -533,8 +538,9 @@ class _TodoListCopyWidgetState extends State<TodoListCopyWidget>
                                                     listViewTasksRowList[
                                                         listViewIndex];
                                                 return Padding(
-                                                  padding: const EdgeInsetsDirectional
-                                                      .fromSTEB(
+                                                  padding:
+                                                      const EdgeInsetsDirectional
+                                                          .fromSTEB(
                                                           0.0, 0.0, 0.0, 15.0),
                                                   child: InkWell(
                                                     splashColor:
@@ -612,10 +618,12 @@ class _TodoListCopyWidgetState extends State<TodoListCopyWidget>
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
                                   Align(
-                                    alignment: const AlignmentDirectional(0.0, -0.25),
+                                    alignment:
+                                        const AlignmentDirectional(0.0, -0.25),
                                     child: Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          15.0, 0.0, 15.0, 0.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              15.0, 0.0, 15.0, 0.0),
                                       child: StreamBuilder<List<TasksRow>>(
                                         stream: _model
                                                 .listViewSupabaseStream3 ??=
@@ -667,8 +675,9 @@ class _TodoListCopyWidgetState extends State<TodoListCopyWidget>
                                                   listViewTasksRowList[
                                                       listViewIndex];
                                               return Padding(
-                                                padding: const EdgeInsetsDirectional
-                                                    .fromSTEB(
+                                                padding:
+                                                    const EdgeInsetsDirectional
+                                                        .fromSTEB(
                                                         0.0, 0.0, 0.0, 15.0),
                                                 child: InkWell(
                                                   splashColor:
@@ -746,10 +755,12 @@ class _TodoListCopyWidgetState extends State<TodoListCopyWidget>
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
                                   Align(
-                                    alignment: const AlignmentDirectional(0.0, -0.25),
+                                    alignment:
+                                        const AlignmentDirectional(0.0, -0.25),
                                     child: Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          15.0, 0.0, 15.0, 0.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              15.0, 0.0, 15.0, 0.0),
                                       child: StreamBuilder<List<TasksRow>>(
                                         stream: _model
                                                 .listViewSupabaseStream4 ??=
@@ -801,8 +812,9 @@ class _TodoListCopyWidgetState extends State<TodoListCopyWidget>
                                                   listViewTasksRowList[
                                                       listViewIndex];
                                               return Padding(
-                                                padding: const EdgeInsetsDirectional
-                                                    .fromSTEB(
+                                                padding:
+                                                    const EdgeInsetsDirectional
+                                                        .fromSTEB(
                                                         0.0, 0.0, 0.0, 15.0),
                                                 child: InkWell(
                                                   splashColor:
@@ -912,7 +924,8 @@ class _TodoListCopyWidgetState extends State<TodoListCopyWidget>
                 text: 'NEXT',
                 options: FFButtonOptions(
                   height: 40.0,
-                  padding: const EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                      16.0, 0.0, 16.0, 0.0),
                   iconPadding:
                       const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                   color: const Color(0xFF1A9C0E),
@@ -945,11 +958,60 @@ class _TodoListCopyWidgetState extends State<TodoListCopyWidget>
   TutorialCoachMark createPageWalkthrough(BuildContext context) =>
       TutorialCoachMark(
         targets: createWalkthroughTargets(context),
+        colorShadow: Colors.black,
+        paddingFocus: 10,
+        opacityShadow: 0.8,
+        hideSkip: true,
+        useSafeArea: true,
         onFinish: () async {
           safeSetState(() => _model.todolistViewController = null);
         },
         onSkip: () {
           return true;
         },
+        onClickTarget: (target) {},
+        onClickTargetWithTapPosition: (target, tapDetails) {},
+        onClickOverlay: (target) {},
+        skipWidget: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0, vertical: 10.0),
+                decoration: BoxDecoration(
+                  color: const Color(0x33FF5252),
+                  borderRadius: BorderRadius.circular(20.0),
+                  border: Border.all(
+                    color: const Color(0x66FF5252),
+                    width: 1.5,
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
+                      Icons.close_rounded,
+                      color: Color(0xFFFF5252),
+                      size: 18.0,
+                    ),
+                    const SizedBox(width: 6.0),
+                    Text(
+                      'Skip All',
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily: 'Feather',
+                            color: const Color(0xFFFF5252),
+                            fontSize: 14.0,
+                            letterSpacing: 0.3,
+                            fontWeight: FontWeight.w600,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       );
 }

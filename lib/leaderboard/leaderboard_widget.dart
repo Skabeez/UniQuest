@@ -2,6 +2,7 @@ import '/backend/supabase/supabase.dart';
 import '/components/leader_div/leader_div_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/services/audio_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -28,6 +29,8 @@ class _LeaderboardWidgetState extends State<LeaderboardWidget>
   void initState() {
     super.initState();
     _model = createModel(context, () => LeaderboardModel());
+
+    AudioManager().playMainBgm();
 
     _model.tabBarController = TabController(
       vsync: this,
@@ -77,11 +80,12 @@ class _LeaderboardWidgetState extends State<LeaderboardWidget>
                             hoverColor: Colors.transparent,
                             highlightColor: Colors.transparent,
                             onTap: () async {
+                              AudioManager().playSfx('button_soft.mp3');
                               context.safePop();
                             },
-                            child: Icon(
+                            child: const Icon(
                               Icons.arrow_back,
-                              color: FlutterFlowTheme.of(context).primaryText,
+                              color: Colors.white,
                               size: 24.0,
                             ),
                           ),
@@ -94,6 +98,7 @@ class _LeaderboardWidgetState extends State<LeaderboardWidget>
                                 .bodyMedium
                                 .override(
                                   fontFamily: 'Feather',
+                                  color: Colors.white,
                                   fontSize: 34.0,
                                   letterSpacing: 0.0,
                                   fontWeight: FontWeight.bold,
@@ -124,7 +129,8 @@ class _LeaderboardWidgetState extends State<LeaderboardWidget>
                 ],
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 130.0, 0.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(0.0, 130.0, 0.0, 0.0),
                 child: Column(
                   children: [
                     Align(
@@ -274,6 +280,31 @@ class _LeaderboardWidgetState extends State<LeaderboardWidget>
                                               listViewLeaderboardViewRowList =
                                               snapshot.data!;
 
+                                          if (listViewLeaderboardViewRowList
+                                              .isEmpty) {
+                                            return Center(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(40.0),
+                                                child: Text(
+                                                  'No users in this tier yet',
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .bodyLarge
+                                                      .override(
+                                                        fontFamily: 'Feather',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondaryText,
+                                                        fontSize: 16.0,
+                                                        letterSpacing: 0.0,
+                                                      ),
+                                                ),
+                                              ),
+                                            );
+                                          }
+
                                           return ListView.separated(
                                             padding: EdgeInsets.zero,
                                             shrinkWrap: true,
@@ -387,6 +418,31 @@ class _LeaderboardWidgetState extends State<LeaderboardWidget>
                                           List<LeaderboardViewRow>
                                               listViewLeaderboardViewRowList =
                                               snapshot.data!;
+
+                                          if (listViewLeaderboardViewRowList
+                                              .isEmpty) {
+                                            return Center(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(40.0),
+                                                child: Text(
+                                                  'No users in this tier yet',
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .bodyLarge
+                                                      .override(
+                                                        fontFamily: 'Feather',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondaryText,
+                                                        fontSize: 16.0,
+                                                        letterSpacing: 0.0,
+                                                      ),
+                                                ),
+                                              ),
+                                            );
+                                          }
 
                                           return ListView.separated(
                                             padding: EdgeInsets.zero,
@@ -502,6 +558,31 @@ class _LeaderboardWidgetState extends State<LeaderboardWidget>
                                               listViewLeaderboardViewRowList =
                                               snapshot.data!;
 
+                                          if (listViewLeaderboardViewRowList
+                                              .isEmpty) {
+                                            return Center(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(40.0),
+                                                child: Text(
+                                                  'No users in this tier yet',
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .bodyLarge
+                                                      .override(
+                                                        fontFamily: 'Feather',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondaryText,
+                                                        fontSize: 16.0,
+                                                        letterSpacing: 0.0,
+                                                      ),
+                                                ),
+                                              ),
+                                            );
+                                          }
+
                                           return ListView.separated(
                                             padding: EdgeInsets.zero,
                                             shrinkWrap: true,
@@ -616,6 +697,31 @@ class _LeaderboardWidgetState extends State<LeaderboardWidget>
                                               listViewLeaderboardViewRowList =
                                               snapshot.data!;
 
+                                          if (listViewLeaderboardViewRowList
+                                              .isEmpty) {
+                                            return Center(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(40.0),
+                                                child: Text(
+                                                  'No users in this tier yet',
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .bodyLarge
+                                                      .override(
+                                                        fontFamily: 'Feather',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondaryText,
+                                                        fontSize: 16.0,
+                                                        letterSpacing: 0.0,
+                                                      ),
+                                                ),
+                                              ),
+                                            );
+                                          }
+
                                           return ListView.separated(
                                             padding: EdgeInsets.zero,
                                             shrinkWrap: true,
@@ -729,6 +835,31 @@ class _LeaderboardWidgetState extends State<LeaderboardWidget>
                                           List<LeaderboardViewRow>
                                               listViewLeaderboardViewRowList =
                                               snapshot.data!;
+
+                                          if (listViewLeaderboardViewRowList
+                                              .isEmpty) {
+                                            return Center(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(40.0),
+                                                child: Text(
+                                                  'No users in this tier yet',
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .bodyLarge
+                                                      .override(
+                                                        fontFamily: 'Feather',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondaryText,
+                                                        fontSize: 16.0,
+                                                        letterSpacing: 0.0,
+                                                      ),
+                                                ),
+                                              ),
+                                            );
+                                          }
 
                                           return ListView.separated(
                                             padding: EdgeInsets.zero,
