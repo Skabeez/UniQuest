@@ -1,21 +1,24 @@
 import 'package:uni_quest/backend/core/result.dart';
 import 'package:uni_quest/backend/supabase/database/database.dart';
 import 'package:uni_quest/repositories/base_repository.dart';
+import 'package:uni_quest/services/cache_service_impl.dart';
 
 /// User Repository - Data Access for User Profiles
 /// Handles all database operations for user profiles and settings
-/// 
+///
 /// Manages profiles table:
 /// - User profile data (username, avatar, bio)
 /// - XP, level, rank progression
 /// - Cosmetics and customization
 /// - Streaks and statistics
-/// 
+///
 /// Demonstrates:
 /// - Repository Pattern for user data
 /// - Clean separation from authentication logic
 /// - Type-safe profile operations
 class UserRepository extends BaseRepository<ProfilesRow> {
+  final _cacheService = CacheServiceImpl();
+
   UserRepository(super.supabase);
 
   @override
@@ -45,28 +48,52 @@ class UserRepository extends BaseRepository<ProfilesRow> {
   @override
   Future<Result<ProfilesRow?>> getById(String id) async {
     try {
-      final response = await supabase
-          .from(tableName)
-          .select()
-          .eq('id', id)
-          .maybeSingle();
-      
+      final response =
+          await supabase.from(tableName).select().eq('id', id).maybeSingle();
+
       if (response == null) return Success(null);
-      return Success(fromJson(response));
+      final profile = fromJson(response);
+
+      // Cache the profile data for offline access
+      await _cacheProfile(id, profile);
+
+      return Success(profile);
     } catch (e) {
+      // Try to return cached data if network fails
+      final cached = await _getCachedProfile(id);
+      if (cached != null) {
+        return Success(cached);
+      }
       return Failure('Failed to get profile: ${e.toString()}');
     }
+  }
+
+  Future<void> _cacheProfile(String id, ProfilesRow profile) async {
+    try {
+      await _cacheService.saveToCache('profile_$id', profile.data);
+    } catch (_) {
+      // Ignore cache errors
+    }
+  }
+
+  Future<ProfilesRow?> _getCachedProfile(String id) async {
+    try {
+      final data = await _cacheService.getFromCache('profile_$id');
+      if (data != null) {
+        return ProfilesRow(data as Map<String, dynamic>);
+      }
+    } catch (_) {
+      // Ignore cache errors
+    }
+    return null;
   }
 
   @override
   Future<Result<ProfilesRow>> insert(Map<String, dynamic> data) async {
     try {
-      final response = await supabase
-          .from(tableName)
-          .insert(data)
-          .select()
-          .single();
-      
+      final response =
+          await supabase.from(tableName).insert(data).select().single();
+
       return Success(fromJson(response));
     } catch (e) {
       return Failure('Failed to insert profile: ${e.toString()}');
@@ -74,7 +101,8 @@ class UserRepository extends BaseRepository<ProfilesRow> {
   }
 
   @override
-  Future<Result<ProfilesRow>> update(String id, Map<String, dynamic> data) async {
+  Future<Result<ProfilesRow>> update(
+      String id, Map<String, dynamic> data) async {
     try {
       final response = await supabase
           .from(tableName)
@@ -82,7 +110,7 @@ class UserRepository extends BaseRepository<ProfilesRow> {
           .eq('id', id)
           .select()
           .single();
-      
+
       return Success(fromJson(response));
     } catch (e) {
       return Failure('Failed to update profile: ${e.toString()}');
@@ -102,11 +130,9 @@ class UserRepository extends BaseRepository<ProfilesRow> {
   @override
   Future<Result<List<ProfilesRow>>> getByIds(List<String> ids) async {
     try {
-      final response = await supabase
-          .from(tableName)
-          .select()
-          .inFilter('id', ids);
-      
+      final response =
+          await supabase.from(tableName).select().inFilter('id', ids);
+
       return Success(
         (response as List).map((json) => fromJson(json)).toList(),
       );
@@ -116,13 +142,11 @@ class UserRepository extends BaseRepository<ProfilesRow> {
   }
 
   @override
-  Future<Result<List<ProfilesRow>>> insertBatch(List<Map<String, dynamic>> dataList) async {
+  Future<Result<List<ProfilesRow>>> insertBatch(
+      List<Map<String, dynamic>> dataList) async {
     try {
-      final response = await supabase
-          .from(tableName)
-          .insert(dataList)
-          .select();
-      
+      final response = await supabase.from(tableName).insert(dataList).select();
+
       return Success(
         (response as List).map((json) => fromJson(json)).toList(),
       );
@@ -132,7 +156,8 @@ class UserRepository extends BaseRepository<ProfilesRow> {
   }
 
   @override
-  Future<Result<int>> updateWhere(String condition, Map<String, dynamic> data) async {
+  Future<Result<int>> updateWhere(
+      String condition, Map<String, dynamic> data) async {
     try {
       await supabase.from(tableName).update(data);
       // Note: Supabase doesn't return count for updates, return 0 for now
@@ -173,7 +198,7 @@ class UserRepository extends BaseRepository<ProfilesRow> {
           .select('id')
           .eq('id', id)
           .maybeSingle();
-      
+
       return Success(response != null);
     } catch (e) {
       return Failure('Failed to check existence: ${e.toString()}');
@@ -183,11 +208,11 @@ class UserRepository extends BaseRepository<ProfilesRow> {
   Future<Result<List<ProfilesRow>>> query(Map<String, dynamic> filters) async {
     try {
       var query = supabase.from(tableName).select();
-      
+
       filters.forEach((key, value) {
         query = query.eq(key, value);
       });
-      
+
       final response = await query;
       return Success(
         (response as List).map((json) => fromJson(json)).toList(),
@@ -198,10 +223,14 @@ class UserRepository extends BaseRepository<ProfilesRow> {
   }
 
   @override
-  Future<Result<List<ProfilesRow>>> paginate({required int page, required int pageSize}) async {
+  Future<Result<List<ProfilesRow>>> paginate(
+      {required int page, required int pageSize}) async {
     try {
       final offset = (page - 1) * pageSize;
-      final response = await supabase.from(tableName).select().range(offset, offset + pageSize - 1);
+      final response = await supabase
+          .from(tableName)
+          .select()
+          .range(offset, offset + pageSize - 1);
       return Success((response as List).map((json) => fromJson(json)).toList());
     } catch (e) {
       return Failure('Failed to paginate: ${e.toString()}');
@@ -209,7 +238,10 @@ class UserRepository extends BaseRepository<ProfilesRow> {
   }
 
   @override
-  Future<Result<List<ProfilesRow>>> filter({required String column, required String operator, required dynamic value}) async {
+  Future<Result<List<ProfilesRow>>> filter(
+      {required String column,
+      required String operator,
+      required dynamic value}) async {
     try {
       final response = await supabase.from(tableName).select();
       return Success((response as List).map((json) => fromJson(json)).toList());
@@ -219,9 +251,13 @@ class UserRepository extends BaseRepository<ProfilesRow> {
   }
 
   @override
-  Future<Result<List<ProfilesRow>>> orderBy({required String column, bool ascending = true}) async {
+  Future<Result<List<ProfilesRow>>> orderBy(
+      {required String column, bool ascending = true}) async {
     try {
-      final response = await supabase.from(tableName).select().order(column, ascending: ascending);
+      final response = await supabase
+          .from(tableName)
+          .select()
+          .order(column, ascending: ascending);
       return Success((response as List).map((json) => fromJson(json)).toList());
     } catch (e) {
       return Failure('Failed to order by: ${e.toString()}');
@@ -229,17 +265,20 @@ class UserRepository extends BaseRepository<ProfilesRow> {
   }
 
   @override
-  Future<Result<void>> transaction(List<Future<Result<dynamic>>> operations) async {
+  Future<Result<void>> transaction(
+      List<Future<Result<dynamic>>> operations) async {
     return Failure('Transactions not implemented');
   }
 
   @override
-  Future<Result<List<ProfilesRow>>> search({required String query, required List<String> columns}) async {
+  Future<Result<List<ProfilesRow>>> search(
+      {required String query, required List<String> columns}) async {
     return Failure('Search not implemented');
   }
 
   @override
-  Future<Result<List<ProfilesRow>>> findWhere(Map<String, dynamic> conditions) async {
+  Future<Result<List<ProfilesRow>>> findWhere(
+      Map<String, dynamic> conditions) async {
     return query(conditions);
   }
 
@@ -251,7 +290,8 @@ class UserRepository extends BaseRepository<ProfilesRow> {
   @override
   Future<Result<ProfilesRow>> upsert(Map<String, dynamic> data) async {
     try {
-      final response = await supabase.from(tableName).upsert(data).select().single();
+      final response =
+          await supabase.from(tableName).upsert(data).select().single();
       return Success(fromJson(response));
     } catch (e) {
       return Failure('Failed to upsert: ${e.toString()}');
@@ -292,7 +332,7 @@ class UserRepository extends BaseRepository<ProfilesRow> {
           .select()
           .eq('username', username)
           .maybeSingle();
-      
+
       if (response == null) return Success(null);
       return Success(fromJson(response));
     } catch (e) {
@@ -309,7 +349,7 @@ class UserRepository extends BaseRepository<ProfilesRow> {
           .select()
           .eq('email', email)
           .maybeSingle();
-      
+
       if (response == null) return Success(null);
       return Success(fromJson(response));
     } catch (e) {
@@ -329,7 +369,7 @@ class UserRepository extends BaseRepository<ProfilesRow> {
     try {
       final user = supabase.auth.currentUser;
       if (user == null) return Success(null);
-      
+
       return getUserById(user.id);
     } catch (e) {
       return Failure('Failed to get current user: ${e.toString()}');
@@ -395,7 +435,7 @@ class UserRepository extends BaseRepository<ProfilesRow> {
       final result = await getUserById(userId);
       if (result.isFailure) return Failure(result.error ?? 'Failed to get XP');
       if (result.data == null) return Failure('User not found');
-      
+
       return Success(result.data!.xp);
     } catch (e) {
       return Failure('Failed to get user XP: ${e.toString()}');
@@ -419,8 +459,9 @@ class UserRepository extends BaseRepository<ProfilesRow> {
   }) async {
     try {
       final xpResult = await getUserXp(userId);
-      if (xpResult.isFailure) return Failure(xpResult.error ?? 'Failed to add XP');
-      
+      if (xpResult.isFailure)
+        return Failure(xpResult.error ?? 'Failed to add XP');
+
       final currentXp = xpResult.data!;
       return updateXp(userId: userId, xp: currentXp + xpAmount);
     } catch (e) {
@@ -432,9 +473,10 @@ class UserRepository extends BaseRepository<ProfilesRow> {
   Future<Result<String?>> getUserRank(String userId) async {
     try {
       final result = await getUserById(userId);
-      if (result.isFailure) return Failure(result.error ?? 'Failed to get rank');
+      if (result.isFailure)
+        return Failure(result.error ?? 'Failed to get rank');
       if (result.data == null) return Failure('User not found');
-      
+
       return Success(result.data!.rank);
     } catch (e) {
       return Failure('Failed to get user rank: ${e.toString()}');
@@ -457,9 +499,10 @@ class UserRepository extends BaseRepository<ProfilesRow> {
   Future<Result<List<String>>> getUnlockedCosmetics(String userId) async {
     try {
       final result = await getUserById(userId);
-      if (result.isFailure) return Failure(result.error ?? 'Failed to get cosmetics');
+      if (result.isFailure)
+        return Failure(result.error ?? 'Failed to get cosmetics');
       if (result.data == null) return Failure('User not found');
-      
+
       return Success(result.data!.unlockedCosmetics);
     } catch (e) {
       return Failure('Failed to get unlocked cosmetics: ${e.toString()}');
@@ -477,12 +520,12 @@ class UserRepository extends BaseRepository<ProfilesRow> {
       if (cosmeticsResult.isFailure) {
         return Failure(cosmeticsResult.error ?? 'Failed to unlock cosmetic');
       }
-      
+
       final cosmetics = cosmeticsResult.data!;
       if (!cosmetics.contains(cosmeticId)) {
         cosmetics.add(cosmeticId);
       }
-      
+
       return update(userId, {'unlocked_cosmetics': cosmetics});
     } catch (e) {
       return Failure('Failed to unlock cosmetic: ${e.toString()}');
@@ -499,10 +542,10 @@ class UserRepository extends BaseRepository<ProfilesRow> {
       if (cosmeticsResult.isFailure) {
         return Failure(cosmeticsResult.error ?? 'Failed to remove cosmetic');
       }
-      
+
       final cosmetics = cosmeticsResult.data!;
       cosmetics.remove(cosmeticId);
-      
+
       return update(userId, {'unlocked_cosmetics': cosmetics});
     } catch (e) {
       return Failure('Failed to remove cosmetic: ${e.toString()}');
@@ -517,7 +560,7 @@ class UserRepository extends BaseRepository<ProfilesRow> {
     try {
       final cosmeticsResult = await getUnlockedCosmetics(userId);
       if (cosmeticsResult.isFailure) return Success(false);
-      
+
       return Success(cosmeticsResult.data!.contains(cosmeticId));
     } catch (e) {
       return Failure('Failed to check cosmetic: ${e.toString()}');
@@ -547,13 +590,13 @@ class UserRepository extends BaseRepository<ProfilesRow> {
     required String cosmeticType,
   }) async {
     final Map<String, dynamic> updates = {};
-    
+
     if (cosmeticType == 'namecard') {
       updates['equipped_namecard'] = null;
     } else if (cosmeticType == 'border') {
       updates['equipped_border'] = null;
     }
-    
+
     if (updates.isEmpty) return Failure('Invalid cosmetic type');
     return update(userId, updates);
   }
@@ -566,9 +609,10 @@ class UserRepository extends BaseRepository<ProfilesRow> {
   Future<Result<int>> getTaskStreak(String userId) async {
     try {
       final result = await getUserById(userId);
-      if (result.isFailure) return Failure(result.error ?? 'Failed to get streak');
+      if (result.isFailure)
+        return Failure(result.error ?? 'Failed to get streak');
       if (result.data == null) return Failure('User not found');
-      
+
       return Success(result.data!.taskStreak ?? 0);
     } catch (e) {
       return Failure('Failed to get task streak: ${e.toString()}');
@@ -590,7 +634,7 @@ class UserRepository extends BaseRepository<ProfilesRow> {
       if (streakResult.isFailure) {
         return Failure(streakResult.error ?? 'Failed to increment streak');
       }
-      
+
       final currentStreak = streakResult.data!;
       return updateTaskStreak(userId: userId, streak: currentStreak + 1);
     } catch (e) {
@@ -611,7 +655,7 @@ class UserRepository extends BaseRepository<ProfilesRow> {
         return Failure(result.error ?? 'Failed to get last task done');
       }
       if (result.data == null) return Failure('User not found');
-      
+
       return Success(result.data!.lastTaskDone);
     } catch (e) {
       return Failure('Failed to get last task done: ${e.toString()}');
@@ -633,11 +677,11 @@ class UserRepository extends BaseRepository<ProfilesRow> {
       final lastTaskResult = await getLastTaskDone(userId);
       if (lastTaskResult.isFailure) return Success(false);
       if (lastTaskResult.data == null) return Success(false);
-      
+
       final lastTask = lastTaskResult.data!;
       final now = DateTime.now();
       final difference = now.difference(lastTask).inDays;
-      
+
       return Success(difference <= 1);
     } catch (e) {
       return Failure('Failed to check streak: ${e.toString()}');
@@ -656,7 +700,7 @@ class UserRepository extends BaseRepository<ProfilesRow> {
         return Failure(result.error ?? 'Failed to get achievements');
       }
       if (result.data == null) return Failure('User not found');
-      
+
       return Success(result.data!.totalAchievements ?? 0);
     } catch (e) {
       return Failure('Failed to get total achievements: ${e.toString()}');
@@ -676,9 +720,10 @@ class UserRepository extends BaseRepository<ProfilesRow> {
     try {
       final achievementsResult = await getTotalAchievements(userId);
       if (achievementsResult.isFailure) {
-        return Failure(achievementsResult.error ?? 'Failed to increment achievements');
+        return Failure(
+            achievementsResult.error ?? 'Failed to increment achievements');
       }
-      
+
       final currentCount = achievementsResult.data!;
       return updateTotalAchievements(userId: userId, count: currentCount + 1);
     } catch (e) {
@@ -695,7 +740,7 @@ class UserRepository extends BaseRepository<ProfilesRow> {
         return Failure(result.error ?? 'Failed to get statistics');
       }
       if (result.data == null) return Failure('User not found');
-      
+
       final profile = result.data!;
       return Success(UserStatistics(
         xp: profile.xp,
@@ -720,7 +765,7 @@ class UserRepository extends BaseRepository<ProfilesRow> {
       final result = await getUserById(userId);
       if (result.isFailure) return Success(false);
       if (result.data == null) return Success(false);
-      
+
       return Success(result.data!.onboardingCompleted);
     } catch (e) {
       return Failure('Failed to check onboarding: ${e.toString()}');
@@ -752,7 +797,7 @@ class UserRepository extends BaseRepository<ProfilesRow> {
         'is_admin': false,
         'created_at': DateTime.now().toIso8601String(),
       };
-      
+
       return insert(profileData);
     } catch (e) {
       return Failure('Failed to initialize profile: ${e.toString()}');
@@ -772,7 +817,7 @@ class UserRepository extends BaseRepository<ProfilesRow> {
           .select()
           .ilike('username', '%$query%')
           .limit(50);
-      
+
       return Success(
         (response as List).map((json) => fromJson(json)).toList(),
       );
@@ -792,7 +837,7 @@ class UserRepository extends BaseRepository<ProfilesRow> {
           .select()
           .order('xp', ascending: false)
           .limit(limit);
-      
+
       return Success(
         (response as List).map((json) => fromJson(json)).toList(),
       );
@@ -811,12 +856,13 @@ class UserRepository extends BaseRepository<ProfilesRow> {
           .select()
           .order('total_achievements', ascending: false)
           .limit(limit);
-      
+
       return Success(
         (response as List).map((json) => fromJson(json)).toList(),
       );
     } catch (e) {
-      return Failure('Failed to get top users by achievements: ${e.toString()}');
+      return Failure(
+          'Failed to get top users by achievements: ${e.toString()}');
     }
   }
 
@@ -830,7 +876,7 @@ class UserRepository extends BaseRepository<ProfilesRow> {
           .select()
           .order('task_streak', ascending: false)
           .limit(limit);
-      
+
       return Success(
         (response as List).map((json) => fromJson(json)).toList(),
       );
@@ -850,7 +896,7 @@ class UserRepository extends BaseRepository<ProfilesRow> {
           .select()
           .order('updated_at', ascending: false)
           .limit(limit);
-      
+
       return Success(
         (response as List).map((json) => fromJson(json)).toList(),
       );
@@ -871,7 +917,7 @@ class UserRepository extends BaseRepository<ProfilesRow> {
           .select('id')
           .eq('username', username)
           .maybeSingle();
-      
+
       return Success(response != null);
     } catch (e) {
       return Failure('Failed to check username: ${e.toString()}');
@@ -886,7 +932,7 @@ class UserRepository extends BaseRepository<ProfilesRow> {
           .select('id')
           .eq('email', email)
           .maybeSingle();
-      
+
       return Success(response != null);
     } catch (e) {
       return Failure('Failed to check email: ${e.toString()}');
@@ -903,17 +949,17 @@ class UserRepository extends BaseRepository<ProfilesRow> {
   Result<bool> validateUsername(String username) {
     if (username.length < 3) return Failure('Username too short');
     if (username.length > 20) return Failure('Username too long');
-    
+
     final usernameRegex = RegExp(r'^[a-zA-Z0-9_]+$');
     if (!usernameRegex.hasMatch(username)) {
       return Failure('Username contains invalid characters');
     }
-    
+
     final reservedWords = ['admin', 'root', 'system', 'moderator'];
     if (reservedWords.contains(username.toLowerCase())) {
       return Failure('Username is reserved');
     }
-    
+
     return Success(true);
   }
 
@@ -935,7 +981,7 @@ class UserRepository extends BaseRepository<ProfilesRow> {
         return Failure(result.error ?? 'Failed to get FCM token');
       }
       if (result.data == null) return Failure('User not found');
-      
+
       return Success(result.data!.fcmToken);
     } catch (e) {
       return Failure('Failed to get FCM token: ${e.toString()}');
@@ -965,7 +1011,7 @@ class UserRepository extends BaseRepository<ProfilesRow> {
       final result = await getUserById(userId);
       if (result.isFailure) return Success(false);
       if (result.data == null) return Success(false);
-      
+
       return Success(result.data!.isAdmin);
     } catch (e) {
       return Failure('Failed to check admin status: ${e.toString()}');
@@ -985,11 +1031,9 @@ class UserRepository extends BaseRepository<ProfilesRow> {
   /// Get all admin users
   Future<Result<List<ProfilesRow>>> getAdminUsers() async {
     try {
-      final response = await supabase
-          .from(tableName)
-          .select()
-          .eq('is_admin', true);
-      
+      final response =
+          await supabase.from(tableName).select().eq('is_admin', true);
+
       return Success(
         (response as List).map((json) => fromJson(json)).toList(),
       );
@@ -1011,7 +1055,7 @@ class UserRepository extends BaseRepository<ProfilesRow> {
     try {
       final user1Result = await getUserById(userId1);
       final user2Result = await getUserById(userId2);
-      
+
       if (user1Result.isFailure) {
         return Failure(user1Result.error ?? 'Failed to get user 1');
       }
@@ -1021,15 +1065,16 @@ class UserRepository extends BaseRepository<ProfilesRow> {
       if (user1Result.data == null || user2Result.data == null) {
         return Failure('User not found');
       }
-      
+
       final user1 = user1Result.data!;
       final user2 = user2Result.data!;
-      
+
       return Success(UserComparison(
         user1: user1,
         user2: user2,
         xpDifference: user1.xp - user2.xp,
-        achievementDifference: (user1.totalAchievements ?? 0) - (user2.totalAchievements ?? 0),
+        achievementDifference:
+            (user1.totalAchievements ?? 0) - (user2.totalAchievements ?? 0),
         streakDifference: (user1.taskStreak ?? 0) - (user2.taskStreak ?? 0),
       ));
     } catch (e) {
@@ -1046,15 +1091,15 @@ class UserRepository extends BaseRepository<ProfilesRow> {
         return Failure(userResult.error ?? 'Failed to get rank position');
       }
       if (userResult.data == null) return Failure('User not found');
-      
+
       final userXp = userResult.data!.xp;
-      
+
       final response = await supabase
           .from(tableName)
           .select('id')
           .gt('xp', userXp)
           .count(CountOption.exact);
-      
+
       return Success(response.count + 1);
     } catch (e) {
       return Failure('Failed to get rank position: ${e.toString()}');
@@ -1072,7 +1117,7 @@ class UserRepository extends BaseRepository<ProfilesRow> {
   ) async {
     try {
       final results = <ProfilesRow>[];
-      
+
       for (final update in updates) {
         final result = await addXp(
           userId: update.userId,
@@ -1082,7 +1127,7 @@ class UserRepository extends BaseRepository<ProfilesRow> {
           results.add(result.data!);
         }
       }
-      
+
       return Success(results);
     } catch (e) {
       return Failure('Failed to bulk update XP: ${e.toString()}');
@@ -1093,11 +1138,8 @@ class UserRepository extends BaseRepository<ProfilesRow> {
   /// Returns all users with specific rank
   Future<Result<List<ProfilesRow>>> getUsersByRank(String rank) async {
     try {
-      final response = await supabase
-          .from(tableName)
-          .select()
-          .eq('rank', rank);
-      
+      final response = await supabase.from(tableName).select().eq('rank', rank);
+
       return Success(
         (response as List).map((json) => fromJson(json)).toList(),
       );
@@ -1113,14 +1155,14 @@ class UserRepository extends BaseRepository<ProfilesRow> {
   ) async {
     try {
       final results = <ProfilesRow>[];
-      
+
       for (final update in updates) {
         final result = await this.update(update.userId, update.updates);
         if (result.isSuccess) {
           results.add(result.data!);
         }
       }
-      
+
       return Success(results);
     } catch (e) {
       return Failure('Failed to bulk update profiles: ${e.toString()}');

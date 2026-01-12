@@ -1,11 +1,13 @@
 import 'package:uni_quest/backend/supabase/database/database.dart';
 import 'package:uni_quest/auth/supabase_auth/auth_util.dart';
+import 'package:uni_quest/services/cache_service_impl.dart';
 import '../core/result.dart';
 import 'base_repository.dart';
 
 /// Repository for Tasks following Repository Pattern
 class TaskRepository extends SupabaseRepository<TasksRow> {
   static final TaskRepository _instance = TaskRepository._internal();
+  final _cacheService = CacheServiceImpl();
 
   factory TaskRepository() => _instance;
 
@@ -23,24 +25,52 @@ class TaskRepository extends SupabaseRepository<TasksRow> {
 
   /// Get active (non-completed, non-archived) tasks for current user
   Future<Result<List<TasksRow>>> getActiveTasks() async {
-    return executeQuery(() => table.queryRows(
-          queryFn: (q) => q
-              .eqOrNull('is_completed', false)
-              .eqOrNull('is_archived', false)
-              .eqOrNull('user_id', currentUserUid)
-              .order('created_at', ascending: false),
-        ));
+    try {
+      final result = await executeQuery(() => table.queryRows(
+            queryFn: (q) => q
+                .eqOrNull('is_completed', false)
+                .eqOrNull('is_archived', false)
+                .eqOrNull('user_id', currentUserUid)
+                .order('created_at', ascending: false),
+          ));
+
+      // Cache on success
+      if (result.isSuccess && result.data != null) {
+        await _cacheTasks(currentUserUid, 'active', result.data!);
+      }
+
+      return result;
+    } catch (e) {
+      // Return cached data on failure
+      final cached = await _getCachedTasks(currentUserUid, 'active');
+      if (cached != null) return Success(cached);
+      return Failure('Failed to get active tasks: ${e.toString()}');
+    }
   }
 
   /// Get completed tasks for current user
   Future<Result<List<TasksRow>>> getCompletedTasks() async {
-    return executeQuery(() => table.queryRows(
-          queryFn: (q) => q
-              .eqOrNull('is_completed', true)
-              .eqOrNull('is_archived', false)
-              .eqOrNull('user_id', currentUserUid)
-              .order('updated_at', ascending: false),
-        ));
+    try {
+      final result = await executeQuery(() => table.queryRows(
+            queryFn: (q) => q
+                .eqOrNull('is_completed', true)
+                .eqOrNull('is_archived', false)
+                .eqOrNull('user_id', currentUserUid)
+                .order('updated_at', ascending: false),
+          ));
+
+      // Cache on success
+      if (result.isSuccess && result.data != null) {
+        await _cacheTasks(currentUserUid, 'completed', result.data!);
+      }
+
+      return result;
+    } catch (e) {
+      // Return cached data on failure
+      final cached = await _getCachedTasks(currentUserUid, 'completed');
+      if (cached != null) return Success(cached);
+      return Failure('Failed to get completed tasks: ${e.toString()}');
+    }
   }
 
   /// Get archived tasks for current user
@@ -115,14 +145,58 @@ class TaskRepository extends SupabaseRepository<TasksRow> {
   // Offline support methods (to be implemented with cache layer)
   @override
   Future<bool> hasCachedData() async {
-    return false;
+    try {
+      final cached =
+          await _cacheService.getString('tasks_${currentUserUid}_active');
+      return cached != null;
+    } catch (_) {
+      return false;
+    }
   }
 
   @override
   Future<Result<List<TasksRow>>> getCached() async {
-    return const Failure('Cache not implemented yet');
+    final cached = await _getCachedTasks(currentUserUid, 'active');
+    if (cached != null) return Success(cached);
+    return const Failure('No cached tasks available');
   }
 
   @override
-  Future<void> clearCache() async {}
+  Future<void> clearCache() async {
+    try {
+      await _cacheService.clearCacheKey('tasks_${currentUserUid}_active');
+      await _cacheService.clearCacheKey('tasks_${currentUserUid}_completed');
+      await _cacheService.clearCacheKey('tasks_${currentUserUid}_archived');
+    } catch (_) {
+      // Ignore cache errors
+    }
+  }
+
+  // ============================================================================
+  // CACHE HELPERS
+  // ============================================================================
+
+  Future<void> _cacheTasks(
+      String userId, String type, List<TasksRow> tasks) async {
+    try {
+      final data = tasks.map((t) => t.data).toList();
+      await _cacheService.saveToCache('tasks_${userId}_$type', data);
+    } catch (_) {
+      // Ignore cache errors
+    }
+  }
+
+  Future<List<TasksRow>?> _getCachedTasks(String userId, String type) async {
+    try {
+      final data = await _cacheService.getFromCache('tasks_${userId}_$type');
+      if (data is List) {
+        return data
+            .map((json) => TasksRow(json as Map<String, dynamic>))
+            .toList();
+      }
+    } catch (_) {
+      // Ignore cache errors
+    }
+    return null;
+  }
 }

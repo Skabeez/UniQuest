@@ -1,6 +1,7 @@
 import 'package:uni_quest/backend/core/result.dart';
 import 'package:uni_quest/backend/supabase/database/database.dart';
 import 'package:uni_quest/repositories/base_repository.dart';
+import 'package:uni_quest/services/cache_service_impl.dart';
 
 /// Quest Repository - Data Access for Quests/Missions
 /// Handles all database operations for quests and user quest progress
@@ -14,6 +15,8 @@ import 'package:uni_quest/repositories/base_repository.dart';
 /// - Separation of data access from business logic
 /// - Type-safe database queries
 class QuestRepository extends BaseRepository<UserMissionsRow> {
+  final _cacheService = CacheServiceImpl();
+
   QuestRepository(super.supabase);
 
   @override
@@ -295,10 +298,18 @@ class QuestRepository extends BaseRepository<UserMissionsRow> {
           .eq('completed', false)
           .eq('is_archived', false);
 
-      return Success(
-        (response as List).map((json) => fromJson(json)).toList(),
-      );
+      final quests = (response as List).map((json) => fromJson(json)).toList();
+
+      // Cache active quests for offline access
+      await _cacheQuests(userId, 'active', quests);
+
+      return Success(quests);
     } catch (e) {
+      // Try to return cached data if network fails
+      final cached = await _getCachedQuests(userId, 'active');
+      if (cached != null) {
+        return Success(cached);
+      }
       return Failure('Failed to get active quests: ${e.toString()}');
     }
   }
@@ -314,12 +325,49 @@ class QuestRepository extends BaseRepository<UserMissionsRow> {
           .eq('user_id', userId)
           .eq('completed', true);
 
-      return Success(
-        (response as List).map((json) => fromJson(json)).toList(),
-      );
+      final quests = (response as List).map((json) => fromJson(json)).toList();
+
+      // Cache completed quests for offline access
+      await _cacheQuests(userId, 'completed', quests);
+
+      return Success(quests);
     } catch (e) {
+      // Try to return cached data if network fails
+      final cached = await _getCachedQuests(userId, 'completed');
+      if (cached != null) {
+        return Success(cached);
+      }
       return Failure('Failed to get completed quests: ${e.toString()}');
     }
+  }
+
+  // ============================================================================
+  // CACHE HELPERS
+  // ============================================================================
+
+  Future<void> _cacheQuests(
+      String userId, String type, List<UserMissionsRow> quests) async {
+    try {
+      final data = quests.map((q) => q.data).toList();
+      await _cacheService.saveToCache('quests_${userId}_$type', data);
+    } catch (_) {
+      // Ignore cache errors
+    }
+  }
+
+  Future<List<UserMissionsRow>?> _getCachedQuests(
+      String userId, String type) async {
+    try {
+      final data = await _cacheService.getFromCache('quests_${userId}_$type');
+      if (data is List) {
+        return data
+            .map((json) => UserMissionsRow(json as Map<String, dynamic>))
+            .toList();
+      }
+    } catch (_) {
+      // Ignore cache errors
+    }
+    return null;
   }
 
   /// Get all archived quests for user
