@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '/backend/supabase/supabase.dart';
 
 import '/auth/base_auth_user_provider.dart';
+import '/auth/supabase_auth/auth_util.dart';
 
 import '/main.dart';
 
@@ -79,13 +80,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       refreshListenable: appStateNotifier,
       navigatorKey: appNavigatorKey,
       errorBuilder: (context, state) =>
-          appStateNotifier.loggedIn ? const NavBarPage() : const WelcomeWidget(),
+          appStateNotifier.loggedIn ? LoadinpageWidget(id: currentUserUid) : const WelcomeWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
           builder: (context, _) =>
-              appStateNotifier.loggedIn ? const NavBarPage() : const WelcomeWidget(),
+              appStateNotifier.loggedIn ? LoadinpageWidget(id: currentUserUid) : const WelcomeWidget(),
         ),
         FFRoute(
           name: ProfilePageWidget.routeName,
