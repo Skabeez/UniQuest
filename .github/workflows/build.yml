@@ -38,7 +38,7 @@ jobs:
         echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" > android/keystore.properties
         echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/keystore.properties
         echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/keystore.properties
-        echo "storeFile=upload-keystore.jks" >> android/keystore.properties
+        echo "storeFile=app/upload-keystore.jks" >> android/keystore.properties
         cat android/keystore.properties
       
     - name: Get dependencies
@@ -53,42 +53,24 @@ jobs:
     - name: Build APK
       run: flutter build apk --release
     
-    - name: Zipalign APK
-      run: |
-        ZIPALIGN=$(ls -d $ANDROID_HOME/build-tools/*/zipalign | sort | tail -n 1)
-        echo "Using zipalign: $ZIPALIGN"
-        $ZIPALIGN -v 4 build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/app-release-aligned.apk
-
-    - name: Sign APK manually
-      run: |
-        APKSIGNER=$(ls -d $ANDROID_HOME/build-tools/*/apksigner | sort | tail -n 1)
-        echo "Using apksigner: $APKSIGNER"
-        $APKSIGNER sign \
-          --ks android/app/upload-keystore.jks \
-          --ks-key-alias upload \
-          --ks-pass pass:uniquest2025 \
-          --key-pass pass:uniquest2025 \
-          --out build/app/outputs/flutter-apk/app-release-signed.apk \
-          build/app/outputs/flutter-apk/app-release-aligned.apk
-    
     - name: Verify APK signature
       run: |
         APKSIGNER=$(ls -d $ANDROID_HOME/build-tools/*/apksigner | sort | tail -n 1)
         echo "Using apksigner: $APKSIGNER"
-        ls -lh build/app/outputs/flutter-apk/app-release-signed.apk
-        $APKSIGNER verify --print-certs build/app/outputs/flutter-apk/app-release-signed.apk
+        ls -lh build/app/outputs/flutter-apk/app-release.apk
+        $APKSIGNER verify --print-certs build/app/outputs/flutter-apk/app-release.apk
       
     - name: Upload APK to Artifacts
       uses: actions/upload-artifact@v4
       with:
         name: app-release
-        path: build/app/outputs/flutter-apk/app-release-signed.apk
+        path: build/app/outputs/flutter-apk/app-release.apk
     
     - name: Create GitHub Release
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
       uses: softprops/action-gh-release@v1
       with:
-        files: build/app/outputs/flutter-apk/app-release-signed.apk
+        files: build/app/outputs/flutter-apk/app-release.apk
         tag_name: v${{ github.run_number }}
         name: UniQuest v${{ github.run_number }}
         body: |
