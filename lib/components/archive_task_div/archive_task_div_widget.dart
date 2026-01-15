@@ -77,74 +77,72 @@ class _ArchiveTaskDivWidgetState extends State<ArchiveTaskDivWidget> {
           child: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Column(
-              mainAxisSize: MainAxisSize.max,
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  width: double.infinity,
-                  height: 139.9,
-                  child: Stack(
-                    children: [
-                      Align(
-                        alignment: const AlignmentDirectional(-0.79, -0.9),
-                        child: Text(
-                          valueOrDefault<String>(
-                            widget.title,
-                            'title',
-                          ),
-                          style: FlutterFlowTheme.of(context)
-                              .bodyMedium
-                              .override(
-                                fontFamily: 'Feather',
-                                color: FlutterFlowTheme.of(context).primaryText,
-                                fontSize: 24.0,
-                                letterSpacing: 0.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                        ),
+                Text(
+                  valueOrDefault<String>(
+                    widget.title,
+                    'title',
+                  ),
+                  style: FlutterFlowTheme.of(context).bodyMedium.override(
+                        fontFamily: 'Feather',
+                        color: FlutterFlowTheme.of(context).primaryText,
+                        fontSize: 24.0,
+                        letterSpacing: 0.0,
+                        fontWeight: FontWeight.bold,
                       ),
-                      Align(
-                        alignment: const AlignmentDirectional(-0.94, -0.45),
-                        child: Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
-                              30.0, 0.0, 0.0, 0.0),
-                          child: Text(
-                            valueOrDefault<String>(
-                              widget.description,
-                              'details',
-                            ),
-                            style: FlutterFlowTheme.of(context)
-                                .bodyMedium
-                                .override(
-                                  fontFamily: 'Feather',
-                                  color:
-                                      FlutterFlowTheme.of(context).primaryText,
-                                  fontSize: 12.0,
-                                  letterSpacing: 0.0,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                          ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 8.0),
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                      0.0, 0.0, 0.0, 8.0),
+                  child: Text(
+                    valueOrDefault<String>(
+                      widget.description,
+                      'details',
+                    ),
+                    style: FlutterFlowTheme.of(context).bodyMedium.override(
+                          fontFamily: 'Feather',
+                          color: FlutterFlowTheme.of(context).primaryText,
+                          fontSize: 12.0,
+                          letterSpacing: 0.0,
+                          fontWeight: FontWeight.w500,
                         ),
-                      ),
-                      Align(
-                        alignment: const AlignmentDirectional(-0.83, -0.06),
-                        child: Text(
-                          valueOrDefault<String>(
-                            widget.tag,
-                            '[]',
-                          ),
-                          style: FlutterFlowTheme.of(context)
-                              .bodyMedium
-                              .override(
-                                fontFamily: 'Feather',
-                                color: FlutterFlowTheme.of(context).primaryText,
-                                letterSpacing: 0.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                        ),
-                      ),
-                    ],
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
+                if (widget.tag != null && widget.tag!.isNotEmpty)
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12.0,
+                      vertical: 4.0,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFFBD59).withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(8.0),
+                      border: Border.all(
+                        color: const Color(0xFFFFBD59),
+                        width: 1.0,
+                      ),
+                    ),
+                    child: Text(
+                      valueOrDefault<String>(
+                        widget.tag,
+                        '[]',
+                      ),
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily: 'Feather',
+                            color: const Color(0xFFFFBD59),
+                            fontSize: 12.0,
+                            letterSpacing: 0.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                  ),
               ],
             ),
           ),

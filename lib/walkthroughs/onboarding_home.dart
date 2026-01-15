@@ -26,11 +26,13 @@ List<TargetFocus> createWalkthroughTargets(BuildContext context) => [
         enableOverlayTab: true,
         alignSkip: Alignment.bottomRight,
         shape: ShapeLightFocus.RRect,
-        radius: 12.0,
-        color: const Color(0x99000000),
+        radius: 16.0,
+        paddingFocus: 10.0,
+        color: const Color(0xCC000000),
         contents: [
           TargetContent(
             align: ContentAlign.bottom,
+            padding: const EdgeInsets.all(16.0),
             builder: (context, __) => const WalkthroughBubbleWidget(
               text:
                   'Welcome! This guide will show you how to create and manage your tasks. Tap anywhere to continue.',
@@ -45,11 +47,13 @@ List<TargetFocus> createWalkthroughTargets(BuildContext context) => [
         enableOverlayTab: true,
         alignSkip: Alignment.bottomRight,
         shape: ShapeLightFocus.Circle,
-        radius: 8.0,
-        color: const Color(0x99000000),
+        radius: 12.0,
+        paddingFocus: 20.0,
+        color: const Color(0xCC000000),
         contents: [
           TargetContent(
             align: ContentAlign.bottom,
+            padding: const EdgeInsets.all(16.0),
             builder: (context, __) => const WalkthroughBubbleWidget(
               text:
                   'Tap this + button to create a new task. A simple form will appear to enter your task details.',
@@ -64,11 +68,13 @@ List<TargetFocus> createWalkthroughTargets(BuildContext context) => [
         enableOverlayTab: true,
         alignSkip: Alignment.bottomRight,
         shape: ShapeLightFocus.RRect,
-        radius: 12.0,
-        color: const Color(0x99000000),
+        radius: 16.0,
+        paddingFocus: 15.0,
+        color: const Color(0xCC000000),
         contents: [
           TargetContent(
             align: ContentAlign.bottom,
+            padding: const EdgeInsets.all(16.0),
             builder: (context, __) => const WalkthroughBubbleWidget(
               text: 'Your created tasks will appear here as cards. Tap on any task to view or edit it.',
             ),
@@ -82,11 +88,13 @@ List<TargetFocus> createWalkthroughTargets(BuildContext context) => [
         enableOverlayTab: true,
         alignSkip: Alignment.bottomRight,
         shape: ShapeLightFocus.RRect,
-        radius: 8.0,
-        color: const Color(0x99000000),
+        radius: 12.0,
+        paddingFocus: 10.0,
+        color: const Color(0xCC000000),
         contents: [
           TargetContent(
             align: ContentAlign.bottom,
+            padding: const EdgeInsets.all(16.0),
             builder: (context, __) => const WalkthroughBubbleWidget(
               text: 'Give your task a clear, descriptive name.',
             ),
@@ -100,11 +108,13 @@ List<TargetFocus> createWalkthroughTargets(BuildContext context) => [
         enableOverlayTab: true,
         alignSkip: Alignment.bottomRight,
         shape: ShapeLightFocus.RRect,
-        radius: 8.0,
-        color: const Color(0x99000000),
+        radius: 12.0,
+        paddingFocus: 10.0,
+        color: const Color(0xCC000000),
         contents: [
           TargetContent(
             align: ContentAlign.bottom,
+            padding: const EdgeInsets.all(16.0),
             builder: (context, __) => const WalkthroughBubbleWidget(
               text: 'Set the priority level (Low, Medium, High) based on urgency.',
             ),
@@ -118,11 +128,13 @@ List<TargetFocus> createWalkthroughTargets(BuildContext context) => [
         enableOverlayTab: true,
         alignSkip: Alignment.bottomRight,
         shape: ShapeLightFocus.RRect,
-        radius: 8.0,
-        color: const Color(0x99000000),
+        radius: 12.0,
+        paddingFocus: 10.0,
+        color: const Color(0xCC000000),
         contents: [
           TargetContent(
             align: ContentAlign.bottom,
+            padding: const EdgeInsets.all(16.0),
             builder: (context, __) => const WalkthroughBubbleWidget(
               text: 'Tap Save to create your task, or Cancel to discard it.',
             ),
@@ -136,11 +148,13 @@ List<TargetFocus> createWalkthroughTargets(BuildContext context) => [
         enableOverlayTab: true,
         alignSkip: Alignment.bottomRight,
         shape: ShapeLightFocus.RRect,
-        radius: 8.0,
-        color: const Color(0x99000000),
+        radius: 12.0,
+        paddingFocus: 10.0,
+        color: const Color(0xCC000000),
         contents: [
           TargetContent(
             align: ContentAlign.top,
+            padding: const EdgeInsets.all(16.0),
             builder: (context, __) => const WalkthroughBubbleWidget(
               text:
                   'You\'re ready! Tap Get Started to begin creating your first task and start questing!',

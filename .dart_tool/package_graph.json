@@ -15,6 +15,7 @@
         "cached_network_image_platform_interface",
         "cached_network_image_web",
         "collection",
+        "connectivity_plus",
         "cupertino_icons",
         "dropdown_button2",
         "firebase_core",
@@ -399,6 +400,18 @@
         "meta",
         "sign_in_with_apple_platform_interface",
         "sign_in_with_apple_web"
+      ]
+    },
+    {
+      "name": "connectivity_plus",
+      "version": "5.0.2",
+      "dependencies": [
+        "connectivity_plus_platform_interface",
+        "flutter",
+        "flutter_web_plugins",
+        "js",
+        "meta",
+        "nm"
       ]
     },
     {
@@ -1068,6 +1081,22 @@
       "dependencies": []
     },
     {
+      "name": "nm",
+      "version": "0.5.0",
+      "dependencies": [
+        "dbus"
+      ]
+    },
+    {
+      "name": "connectivity_plus_platform_interface",
+      "version": "1.2.4",
+      "dependencies": [
+        "flutter",
+        "meta",
+        "plugin_platform_interface"
+      ]
+    },
+    {
       "name": "file",
       "version": "7.0.1",
       "dependencies": [
@@ -1331,6 +1360,23 @@
       "name": "vm_service",
       "version": "15.0.2",
       "dependencies": []
+    },
+    {
+      "name": "js",
+      "version": "0.6.7",
+      "dependencies": [
+        "meta"
+      ]
+    },
+    {
+      "name": "dbus",
+      "version": "0.7.11",
+      "dependencies": [
+        "args",
+        "ffi",
+        "meta",
+        "xml"
+      ]
     }
   ],
   "configVersion": 1

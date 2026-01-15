@@ -18,3 +18,6 @@ export 'tables/achievement_defs.dart';
 export 'tables/missions.dart';
 export 'tables/user_cosmetics.dart';
 export 'tables/notifications.dart';
+export 'tables/quests.dart';
+export 'tables/quest_codes.dart';
+export 'tables/quest_code_redemptions.dart';

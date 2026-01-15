@@ -1,5 +1,6 @@
 import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
+import '/components/modern_alert_dialog.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -8,6 +9,7 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
 import '/services/audio_manager.dart';
 import '/services/sound_effects.dart';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -95,35 +97,35 @@ class _EditTaskWidgetState extends State<EditTaskWidget>
     return Container(
       width: 600.0,
       height: double.infinity,
-      decoration: const BoxDecoration(
-        color: Color(0x9AFFFFFF),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding:
-                const EdgeInsetsDirectional.fromSTEB(16.0, 2.0, 16.0, 16.0),
-            child: Container(
-              width: double.infinity,
-              constraints: const BoxConstraints(
-                maxWidth: 670.0,
-              ),
-              decoration: BoxDecoration(
-                color: const Color(0xFF1E1E1E),
-                boxShadow: const [
-                  BoxShadow(
-                    blurRadius: 12.0,
-                    color: Color(0x1E000000),
-                    offset: Offset(
-                      0.0,
-                      5.0,
-                    ),
-                  )
-                ],
-                borderRadius: BorderRadius.circular(16.0),
-              ),
+      color: Colors.black.withOpacity(0.5),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(16.0, 2.0, 16.0, 16.0),
+              child: Container(
+                width: double.infinity,
+                constraints: const BoxConstraints(
+                  maxWidth: 670.0,
+                ),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1E1E1E),
+                  boxShadow: const [
+                    BoxShadow(
+                      blurRadius: 12.0,
+                      color: Color(0x1E000000),
+                      offset: Offset(
+                        0.0,
+                        5.0,
+                      ),
+                    )
+                  ],
+                  borderRadius: BorderRadius.circular(16.0),
+                ),
               child: FutureBuilder<List<TasksRow>>(
                 future: TasksTable().querySingleRow(
                   queryFn: (q) => q.eqOrNull(
@@ -716,18 +718,13 @@ class _EditTaskWidgetState extends State<EditTaskWidget>
                                   );
                                   await showDialog(
                                     context: context,
+                                    barrierColor: Colors.black87,
                                     builder: (alertDialogContext) {
-                                      return AlertDialog(
-                                        title: const Text('Success!'),
-                                        content: const Text(
-                                            'Task has been Updated.'),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () => Navigator.pop(
-                                                alertDialogContext),
-                                            child: const Text('Ok'),
-                                          ),
-                                        ],
+                                      return const ModernAlertDialog(
+                                        title: 'Success!',
+                                        description:
+                                            'Your task has been updated successfully.',
+                                        primaryButtonText: 'Done',
                                       );
                                     },
                                   );
@@ -774,8 +771,8 @@ class _EditTaskWidgetState extends State<EditTaskWidget>
                 },
               ),
             ).animateOnPageLoad(animationsMap['containerOnPageLoadAnimation']!),
-          ),
-        ],
+        )],
+        ),
       ),
     );
   }

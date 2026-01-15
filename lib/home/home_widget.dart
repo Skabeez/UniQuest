@@ -1,6 +1,7 @@
 import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
 import '/components/mission/mission_widget.dart';
+import '/components/quest/quest_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -40,13 +41,6 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
       length: 1,
       initialIndex: 0,
     )..addListener(() => safeSetState(() {}));
-
-    _model.categoriesScrollController?.addListener(() {
-      setState(() {
-        _model.categoriesScrollOffset =
-            _model.categoriesScrollController?.offset ?? 0.0;
-      });
-    });
 
     animationsMap.addAll({
       'containerOnPageLoadAnimation1': AnimationInfo(
@@ -1131,25 +1125,7 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                                 24.0, 12.0, 24.0, 0.0),
                             child: LayoutBuilder(
                               builder: (context, constraints) {
-                                const itemWidth =
-                                    266.0; // 250 card + 16 padding
-                                const totalItems = 5;
-                                final screenWidth =
-                                    MediaQuery.of(context).size.width;
-                                // Actual max scroll is total width of all items minus the visible screen width
-                                final maxScroll = (itemWidth * totalItems) -
-                                    screenWidth +
-                                    48; // 48 = horizontal padding
-                                final scrollProgress =
-                                    (_model.categoriesScrollOffset / maxScroll)
-                                        .clamp(0.0, 1.0);
-
-                                final trackWidth = constraints.maxWidth;
-                                const indicatorWidth = 86.0;
-                                final maxIndicatorPosition =
-                                    trackWidth - indicatorWidth;
-                                final indicatorPosition =
-                                    scrollProgress * maxIndicatorPosition;
+                                // Static indicator - no scroll tracking
 
                                 return Container(
                                   height: 10.0,
@@ -1187,13 +1163,10 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                                           ),
                                         ),
                                       ),
-                                      AnimatedPositioned(
-                                        duration:
-                                            const Duration(milliseconds: 160),
-                                        curve: Curves.easeOut,
-                                        left: indicatorPosition,
+                                      Positioned(
+                                        left: 2.0,
                                         child: Container(
-                                          width: indicatorWidth,
+                                          width: 86.0,
                                           height: 10.0,
                                           decoration: BoxDecoration(
                                             gradient: const LinearGradient(
@@ -1277,6 +1250,9 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                                         tabs: const [
                                           Tab(
                                             text: ' Missions',
+                                          ),
+                                          Tab(
+                                            text: ' Quests',
                                           ),
                                         ],
                                         controller: _model.tabBarController,
@@ -1372,6 +1348,76 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                                                         status: '',
                                                         deadline: '',
                                                       ),
+                                                    );
+                                                  },
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                          // Quests Tab
+                                          Padding(
+                                            padding: const EdgeInsetsDirectional
+                                                .fromSTEB(
+                                                16.0, 12.0, 16.0, 12.0),
+                                            child: FutureBuilder<
+                                                List<QuestsRow>>(
+                                              future:
+                                                  QuestsTable().queryRows(
+                                                queryFn: (q) => q
+                                                    .eqOrNull(
+                                                      'is_active',
+                                                      true,
+                                                    ),
+                                              ),
+                                              builder: (context, snapshot) {
+                                                // Customize what your widget looks like when it's loading.
+                                                if (!snapshot.hasData) {
+                                                  return Center(
+                                                    child: SizedBox(
+                                                      width: 50.0,
+                                                      height: 50.0,
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        valueColor:
+                                                            AlwaysStoppedAnimation<
+                                                                Color>(
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .primary,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                }
+                                                List<QuestsRow>
+                                                    listViewQuestsRowList =
+                                                    snapshot.data!;
+
+                                                return ListView.builder(
+                                                  padding: EdgeInsets.zero,
+                                                  primary: false,
+                                                  shrinkWrap: true,
+                                                  scrollDirection:
+                                                      Axis.vertical,
+                                                  itemCount:
+                                                      listViewQuestsRowList
+                                                          .length,
+                                                  itemBuilder:
+                                                      (context, listViewIndex) {
+                                                    final listViewQuestsRow =
+                                                        listViewQuestsRowList[
+                                                            listViewIndex];
+                                                    
+                                                    return QuestWidget(
+                                                      key: Key(
+                                                        'Quest_${listViewQuestsRow.id}',
+                                                      ),
+                                                      questId: listViewQuestsRow.id,
+                                                      questTitle: listViewQuestsRow.title,
+                                                      description: listViewQuestsRow.description,
+                                                      xpReward: listViewQuestsRow.xpReward,
+                                                      difficulty: listViewQuestsRow.difficulty,
+                                                      requiresCode: listViewQuestsRow.requiresCode,
                                                     );
                                                   },
                                                 );

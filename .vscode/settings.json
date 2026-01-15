@@ -1,0 +1,27 @@
+{
+  "typescript.validate.enable": true,
+  "files.exclude": {
+    "**/.dart_tool": true,
+    "**/.git": true,
+    "supabase/functions/**": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.dart_tool": true,
+    "**/supabase/functions": true
+  },
+  "files.watcherExclude": {
+    "**/supabase/functions/**": true
+  },
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "[typescript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "deno.enable": false,
+  "deno.enablePaths": [
+    "./supabase/functions"
+  ],
+  "eslint.workingDirectories": [
+    { "pattern": "!supabase/functions/*" }
+  ]
+}

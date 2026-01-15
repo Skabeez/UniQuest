@@ -1,5 +1,8 @@
 import '/backend/supabase/supabase.dart';
 import '/components/add_mission/add_mission_widget.dart';
+import '/components/add_quest/add_quest_widget.dart';
+import '/components/add_quest_code/add_quest_code_widget.dart';
+import '/active_quests/active_quests_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -88,6 +91,32 @@ class _AdminDashboardWidgetState extends State<AdminDashboardWidget>
         ],
       ),
       'containerOnPageLoadAnimation6': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 300.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 300.0.ms,
+            begin: const Offset(0.0, 20.0),
+            end: const Offset(0.0, 0.0),
+          ),
+          TiltEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 300.0.ms,
+            begin: const Offset(0.698, 0),
+            end: const Offset(0, 0),
+          ),
+        ],
+      ),
+      'containerOnPageLoadAnimation7': AnimationInfo(
         trigger: AnimationTrigger.onPageLoad,
         effectsBuilder: () => [
           FadeEffect(
@@ -893,9 +922,218 @@ class _AdminDashboardWidgetState extends State<AdminDashboardWidget>
                       ).animateOnPageLoad(
                           animationsMap['containerOnPageLoadAnimation5']!),
                     ),
+                    // Quest Management Section
                     Padding(
                       padding: const EdgeInsetsDirectional.fromSTEB(
                           16.0, 450.0, 16.0, 0.0),
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: const [
+                            BoxShadow(
+                              blurRadius: 3.0,
+                              color: Color(0x33000000),
+                              offset: Offset(
+                                0.0,
+                                1.0,
+                              ),
+                            )
+                          ],
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              0.0, 0.0, 0.0, 8.0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 12.0, 0.0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                          16.0, 12.0, 12.0, 0.0),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.max,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Quest Management',
+                                            style: FlutterFlowTheme.of(context)
+                                                .headlineSmall
+                                                .override(
+                                                  fontFamily: 'Feather',
+                                                  color: const Color(0xFF14181B),
+                                                  fontSize: 24.0,
+                                                  letterSpacing: 0.0,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                          ),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 4.0, 0.0, 0.0),
+                                            child: Text(
+                                              'Create and manage campus quests.',
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .labelMedium
+                                                  .override(
+                                                    fontFamily: 'Feather',
+                                                    color: const Color(0xFF57636C),
+                                                    fontSize: 14.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
+                                        16.0, 12.0, 0.0, 12.0),
+                                    child: FFButtonWidget(
+                                      onPressed: () async {
+                                        await showModalBottomSheet(
+                                          isScrollControlled: true,
+                                          backgroundColor: Colors.transparent,
+                                          enableDrag: false,
+                                          context: context,
+                                          builder: (context) {
+                                            return GestureDetector(
+                                              onTap: () {
+                                                FocusScope.of(context).unfocus();
+                                                FocusManager.instance.primaryFocus?.unfocus();
+                                              },
+                                              child: Padding(
+                                                padding: MediaQuery.viewInsetsOf(context),
+                                                child: const AddQuestWidget(),
+                                              ),
+                                            );
+                                          },
+                                        ).then((value) => safeSetState(() {}));
+                                      },
+                                      text: 'Create Quest',
+                                      options: FFButtonOptions(
+                                        height: 40.0,
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(16.0, 0.0, 16.0, 0.0),
+                                        iconPadding: const EdgeInsetsDirectional
+                                            .fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                        color: FlutterFlowTheme.of(context).tertiary,
+                                        textStyle: FlutterFlowTheme.of(context)
+                                            .titleSmall
+                                            .override(
+                                              fontFamily: 'Feather',
+                                              color: Colors.white,
+                                              letterSpacing: 0.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                        elevation: 0.0,
+                                        borderRadius: BorderRadius.circular(8.0),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
+                                        12.0, 12.0, 0.0, 12.0),
+                                    child: FFButtonWidget(
+                                      onPressed: () async {
+                                        await showModalBottomSheet(
+                                          isScrollControlled: true,
+                                          backgroundColor: Colors.transparent,
+                                          enableDrag: false,
+                                          context: context,
+                                          builder: (context) {
+                                            return GestureDetector(
+                                              onTap: () {
+                                                FocusScope.of(context).unfocus();
+                                                FocusManager.instance.primaryFocus?.unfocus();
+                                              },
+                                              child: Padding(
+                                                padding: MediaQuery.viewInsetsOf(context),
+                                                child: const AddQuestCodeWidget(),
+                                              ),
+                                            );
+                                          },
+                                        ).then((value) => safeSetState(() {}));
+                                      },
+                                      text: 'Generate Code',
+                                      options: FFButtonOptions(
+                                        height: 40.0,
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(16.0, 0.0, 16.0, 0.0),
+                                        iconPadding: const EdgeInsetsDirectional
+                                            .fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                        color: const Color(0xFFFFBD59),
+                                        textStyle: FlutterFlowTheme.of(context)
+                                            .titleSmall
+                                            .override(
+                                              fontFamily: 'Feather',
+                                              color: Colors.white,
+                                              letterSpacing: 0.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                        elevation: 0.0,
+                                        borderRadius: BorderRadius.circular(8.0),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
+                                        12.0, 12.0, 0.0, 12.0),
+                                    child: FFButtonWidget(
+                                      onPressed: () async {
+                                        context.pushNamed(ActiveQuestsWidget.routeName);
+                                      },
+                                      text: 'View Quests',
+                                      options: FFButtonOptions(
+                                        height: 40.0,
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(16.0, 0.0, 16.0, 0.0),
+                                        iconPadding: const EdgeInsetsDirectional
+                                            .fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                        color: FlutterFlowTheme.of(context).primary,
+                                        textStyle: FlutterFlowTheme.of(context)
+                                            .titleSmall
+                                            .override(
+                                              fontFamily: 'Feather',
+                                              color: Colors.white,
+                                              letterSpacing: 0.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                        elevation: 0.0,
+                                        borderRadius: BorderRadius.circular(8.0),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ).animateOnPageLoad(
+                          animationsMap['containerOnPageLoadAnimation6']!),
+                    ),
+                    Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          16.0, 600.0, 16.0, 0.0),
                       child: Container(
                         width: double.infinity,
                         decoration: BoxDecoration(
@@ -1025,7 +1263,7 @@ class _AdminDashboardWidgetState extends State<AdminDashboardWidget>
                           ),
                         ),
                       ).animateOnPageLoad(
-                          animationsMap['containerOnPageLoadAnimation6']!),
+                          animationsMap['containerOnPageLoadAnimation7']!),
                     ),
                   ],
                 ),

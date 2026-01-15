@@ -203,62 +203,188 @@ class _OnboardingContainerWidgetState extends State<OnboardingContainerWidget>
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Container(
-                              width: 300.0,
-                              height: 600.0,
+                              width: 360.0,
+                              height: 700.0,
                               decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
+                                gradient: LinearGradient(
+                                  colors: [
+                                    const Color(0xFF1A9C0E),
+                                    FlutterFlowTheme.of(context).primary,
+                                  ],
+                                  stops: const [0.0, 1.0],
+                                  begin: const AlignmentDirectional(0.0, -1.0),
+                                  end: const AlignmentDirectional(0, 1.0),
+                                ),
+                                borderRadius: BorderRadius.circular(20.0),
                               ),
                               child: Padding(
-                                padding: const EdgeInsets.all(10.0),
+                                padding: const EdgeInsets.all(24.0),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
                                     ClipRRect(
-                                      borderRadius: BorderRadius.circular(8.0),
+                                      borderRadius: BorderRadius.circular(16.0),
                                       child: Image.asset(
                                         'assets/images/Just_the_logo.png',
-                                        width: 200.0,
-                                        height: 200.0,
+                                        width: 180.0,
+                                        height: 180.0,
                                         fit: BoxFit.cover,
                                       ),
                                     ),
-                                    Align(
-                                      alignment: const AlignmentDirectional(0.0, 0.0),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(16.0),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Text(
-                                              'Welcome to UniQuest! 🚀',
-                                              textAlign: TextAlign.center,
-                                              style: FlutterFlowTheme.of(context)
-                                                  .headlineMedium
-                                                  .override(
-                                                    fontFamily: 'Feather',
-                                                    letterSpacing: 0.0,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                            ),
-                                            const SizedBox(height: 16.0),
-                                            Text(
-                                              'Let\'s take a quick tour to help you get started with task management.\n\nYou\'ll learn how to create tasks, set priorities, and stay organized.\n\nReady to begin your quest?',
-                                              textAlign: TextAlign.center,
-                                              style: FlutterFlowTheme.of(context)
-                                                  .bodyLarge
-                                                  .override(
-                                                    fontFamily: 'Feather',
-                                                    fontSize: 16.0,
-                                                    letterSpacing: 0.0,
-                                                    fontWeight: FontWeight.normal,
-                                                  ),
-                                            ),
-                                          ],
+                                    Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          'Welcome to UniQuest! 🎓',
+                                          textAlign: TextAlign.center,
+                                          style: FlutterFlowTheme.of(context)
+                                              .headlineMedium
+                                              .override(
+                                                fontFamily: 'Feather',
+                                                color: Colors.white,
+                                                fontSize: 32.0,
+                                                letterSpacing: 0.0,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                         ),
-                                      ),
+                                        const SizedBox(height: 24.0),
+                                        Text(
+                                          'Transform your campus life into an epic adventure!',
+                                          textAlign: TextAlign.center,
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyLarge
+                                              .override(
+                                                fontFamily: 'Feather',
+                                                color: const Color(0xFFE0E0E0),
+                                                fontSize: 18.0,
+                                                letterSpacing: 0.0,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                        ),
+                                        const SizedBox(height: 20.0),
+                                        Container(
+                                          padding: const EdgeInsets.all(16.0),
+                                          decoration: BoxDecoration(
+                                            color: const Color(0x33FFFFFF),
+                                            borderRadius: BorderRadius.circular(12.0),
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  const Icon(
+                                                    Icons.check_circle,
+                                                    color: Color(0xFFFFBD59),
+                                                    size: 24.0,
+                                                  ),
+                                                  const SizedBox(width: 12.0),
+                                                  Expanded(
+                                                    child: Text(
+                                                      'Complete quests and earn XP',
+                                                      style: FlutterFlowTheme.of(context)
+                                                          .bodyMedium
+                                                          .override(
+                                                            fontFamily: 'Feather',
+                                                            color: Colors.white,
+                                                            fontSize: 15.0,
+                                                            letterSpacing: 0.0,
+                                                          ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              const SizedBox(height: 12.0),
+                                              Row(
+                                                children: [
+                                                  const Icon(
+                                                    Icons.emoji_events,
+                                                    color: Color(0xFFFFBD59),
+                                                    size: 24.0,
+                                                  ),
+                                                  const SizedBox(width: 12.0),
+                                                  Expanded(
+                                                    child: Text(
+                                                      'Level up and unlock achievements',
+                                                      style: FlutterFlowTheme.of(context)
+                                                          .bodyMedium
+                                                          .override(
+                                                            fontFamily: 'Feather',
+                                                            color: Colors.white,
+                                                            fontSize: 15.0,
+                                                            letterSpacing: 0.0,
+                                                          ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              const SizedBox(height: 12.0),
+                                              Row(
+                                                children: [
+                                                  const Icon(
+                                                    Icons.people,
+                                                    color: Color(0xFFFFBD59),
+                                                    size: 24.0,
+                                                  ),
+                                                  const SizedBox(width: 12.0),
+                                                  Expanded(
+                                                    child: Text(
+                                                      'Compete on the leaderboard',
+                                                      style: FlutterFlowTheme.of(context)
+                                                          .bodyMedium
+                                                          .override(
+                                                            fontFamily: 'Feather',
+                                                            color: Colors.white,
+                                                            fontSize: 15.0,
+                                                            letterSpacing: 0.0,
+                                                          ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              const SizedBox(height: 12.0),
+                                              Row(
+                                                children: [
+                                                  const Icon(
+                                                    Icons.map,
+                                                    color: Color(0xFFFFBD59),
+                                                    size: 24.0,
+                                                  ),
+                                                  const SizedBox(width: 12.0),
+                                                  Expanded(
+                                                    child: Text(
+                                                      'Explore campus locations',
+                                                      style: FlutterFlowTheme.of(context)
+                                                          .bodyMedium
+                                                          .override(
+                                                            fontFamily: 'Feather',
+                                                            color: Colors.white,
+                                                            fontSize: 15.0,
+                                                            letterSpacing: 0.0,
+                                                          ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(height: 20.0),
+                                        Text(
+                                          'Ready to start your quest? 🚀',
+                                          textAlign: TextAlign.center,
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyLarge
+                                              .override(
+                                                fontFamily: 'Feather',
+                                                color: const Color(0xFFFFBD59),
+                                                fontSize: 16.0,
+                                                letterSpacing: 0.0,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),

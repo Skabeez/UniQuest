@@ -13,6 +13,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'components/offline_banner.dart';
 import 'services/audio_manager.dart';
 import 'services/sound_effects.dart';
 import 'index.dart';
@@ -202,29 +203,36 @@ class _NavBarPageState extends State<NavBarPage>
 
     return Scaffold(
       resizeToAvoidBottomInset: !widget.disableResizeToAvoidBottomInset,
-      body: NotificationListener<ScrollNotification>(
-        onNotification: (notification) {
-          if (notification is ScrollUpdateNotification) {
-            final currentPosition = notification.metrics.pixels;
-            final isScrollable = notification.metrics.maxScrollExtent > 0;
-            if (isScrollable) {
-              if (currentPosition > _lastScrollPosition &&
-                  currentPosition > 50) {
-                // Scrolling down
-                _hideNavBar();
-              } else if (currentPosition < _lastScrollPosition) {
-                // Scrolling up
-                _showNavBar();
-              }
-              _lastScrollPosition = currentPosition;
-            } else {
-              // Content not scrollable, always show navbar
-              _showNavBar();
-            }
-          }
-          return true;
-        },
-        child: currentPage,
+      body: Column(
+        children: [
+          const OfflineBanner(),
+          Expanded(
+            child: NotificationListener<ScrollNotification>(
+              onNotification: (notification) {
+                if (notification is ScrollUpdateNotification) {
+                  final currentPosition = notification.metrics.pixels;
+                  final isScrollable = notification.metrics.maxScrollExtent > 0;
+                  if (isScrollable) {
+                    if (currentPosition > _lastScrollPosition &&
+                        currentPosition > 50) {
+                      // Scrolling down
+                      _hideNavBar();
+                    } else if (currentPosition < _lastScrollPosition) {
+                      // Scrolling up
+                      _showNavBar();
+                    }
+                    _lastScrollPosition = currentPosition;
+                  } else {
+                    // Content not scrollable, always show navbar
+                    _showNavBar();
+                  }
+                }
+                return true;
+              },
+              child: currentPage,
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: SlideTransition(
         position: _offsetAnimation,

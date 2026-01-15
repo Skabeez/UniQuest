@@ -31,6 +31,25 @@ class _SignupWidgetState extends State<SignupWidget>
 
   final animationsMap = <String, AnimationInfo>{};
 
+  String? validateCvsuEmail(String? email) {
+    if (email == null || email.isEmpty) {
+      return 'Email is required';
+    }
+
+    // Basic email format check
+    final emailRegex = RegExp(r'^[\w\.-]+@[\w\.-]+\.\w+$');
+    if (!emailRegex.hasMatch(email)) {
+      return 'Please enter a valid email';
+    }
+
+    // CvSU domain check
+    if (!email.toLowerCase().endsWith('@cvsu.edu.ph')) {
+      return 'Must use CvSU student email (@cvsu.edu.ph)';
+    }
+
+    return null; // Valid
+  }
+
   @override
   void initState() {
     super.initState();
@@ -349,6 +368,19 @@ class _SignupWidgetState extends State<SignupWidget>
                                                                 .labelMedium
                                                                 .fontStyle,
                                                       ),
+                                              helperText:
+                                                  'Use your CvSU email (e.g., student@cvsu.edu.ph)',
+                                              helperStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodySmall
+                                                      .override(
+                                                        fontFamily: 'Poppins',
+                                                        color: FlutterFlowTheme
+                                                                .of(context)
+                                                            .secondaryText,
+                                                        fontSize: 12.0,
+                                                        letterSpacing: 0.0,
+                                                      ),
                                               enabledBorder: OutlineInputBorder(
                                                 borderSide: BorderSide(
                                                   color: FlutterFlowTheme.of(
@@ -429,9 +461,7 @@ class _SignupWidgetState extends State<SignupWidget>
                                             cursorColor:
                                                 FlutterFlowTheme.of(context)
                                                     .primary,
-                                            validator: _model
-                                                .emailAddressCreateTextControllerValidator
-                                                .asValidator(context),
+                                            validator: validateCvsuEmail,
                                           ),
                                         ),
                                       ),

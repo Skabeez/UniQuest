@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "checkJs": false
+  },
+  "exclude": [
+    "supabase/functions/**/*",
+    "node_modules",
+    ".dart_tool"
+  ]
+}

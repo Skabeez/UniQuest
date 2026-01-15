@@ -98,7 +98,7 @@ class _WelcomeviewWidgetState extends State<WelcomeviewWidget> {
                 child: FFButtonWidget(
                   onPressed: () async {
                     context.goNamed(
-                      HomeCopyWidget.routeName,
+                      OnboardingContainerWidget.routeName,
                       extra: <String, dynamic>{
                         kTransitionInfoKey: const TransitionInfo(
                           hasTransition: true,
