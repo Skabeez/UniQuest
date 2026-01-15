@@ -38,6 +38,12 @@ class QuestsRow extends SupabaseDataRow {
   bool get isActive => getField<bool>('is_active')!;
   set isActive(bool value) => setField<bool>('is_active', value);
 
+  DateTime? get expirationDate => getField<DateTime>('expiration_date');
+  set expirationDate(DateTime? value) => setField<DateTime>('expiration_date', value);
+
+  bool get isRetired => getField<bool>('is_retired') ?? false;
+  set isRetired(bool value) => setField<bool>('is_retired', value);
+
   DateTime get createdAt => getField<DateTime>('created_at')!;
   set createdAt(DateTime value) => setField<DateTime>('created_at', value);
 

@@ -308,17 +308,21 @@ class _CosmeticsListWidgetState extends State<CosmeticsListWidget>
                             itemBuilder: (context, listViewIndex) {
                               final listViewCosmeticsRow =
                                   listViewCosmeticsRowList[listViewIndex];
-                              return wrapWithModel(
-                                model: _model.cosmeticDivModels2.getModel(
-                                  listViewCosmeticsRow.id,
-                                  listViewIndex,
-                                ),
-                                updateCallback: () => safeSetState(() {}),
-                                child: CosmeticDivWidget(
-                                  key: Key(
-                                    'Key4lr_${listViewCosmeticsRow.id}',
+                              return Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    15.0, 0.0, 15.0, 10.0),
+                                child: wrapWithModel(
+                                  model: _model.cosmeticDivModels2.getModel(
+                                    listViewCosmeticsRow.id,
+                                    listViewIndex,
                                   ),
-                                  cosmetics: listViewCosmeticsRow,
+                                  updateCallback: () => safeSetState(() {}),
+                                  child: CosmeticDivWidget(
+                                    key: Key(
+                                      'Key4lr_${listViewCosmeticsRow.id}',
+                                    ),
+                                    cosmetics: listViewCosmeticsRow,
+                                  ),
                                 ),
                               );
                             },

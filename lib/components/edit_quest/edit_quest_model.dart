@@ -33,6 +33,12 @@ class EditQuestModel extends FlutterFlowModel<EditQuestWidget> {
   // State field(s) for isActive switch widget.
   bool? isActiveValue;
 
+  // State field(s) for isRetired switch widget.
+  bool? isRetiredValue;
+
+  // State field(s) for expiration date
+  DateTime? expirationDate;
+
   @override
   void initState(BuildContext context) {}
 

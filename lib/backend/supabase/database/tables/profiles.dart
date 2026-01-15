@@ -77,4 +77,16 @@ class ProfilesRow extends SupabaseDataRow {
   bool get onboardingCompleted => getField<bool>('onboarding_completed')!;
   set onboardingCompleted(bool value) =>
       setField<bool>('onboarding_completed', value);
+
+    int get dailyTaskXpLimit => getField<int>('daily_task_xp_limit') ?? 50;
+  set dailyTaskXpLimit(int value) =>
+      setField<int>('daily_task_xp_limit', value);
+
+  int get taskXpEarnedToday => getField<int>('task_xp_earned_today') ?? 0;
+  set taskXpEarnedToday(int value) =>
+      setField<int>('task_xp_earned_today', value);
+
+  DateTime? get taskXpResetDate => getField<DateTime>('task_xp_reset_date');
+  set taskXpResetDate(DateTime? value) =>
+      setField<DateTime>('task_xp_reset_date', value);
 }

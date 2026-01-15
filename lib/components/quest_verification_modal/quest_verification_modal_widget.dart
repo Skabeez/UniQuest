@@ -1,11 +1,11 @@
 import '/auth/supabase_auth/auth_util.dart';
+import '/backend/supabase/supabase.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
-import 'package:http/http.dart' as http;
 import 'quest_verification_modal_model.dart';
 export 'quest_verification_modal_model.dart';
 
@@ -59,34 +59,23 @@ class _QuestVerificationModalWidgetState
     });
 
     try {
-      final response = await http.post(
-        Uri.parse(
-            'https://fwgzodfujdhyvxpwnrrn.supabase.co/functions/v1/verify-quest-code'),
-        headers: {
-          'Authorization':
-              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ3Z3pvZGZ1amRoeXZ4cHducnJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0MzE3NjQsImV4cCI6MjA3ODAwNzc2NH0.wkFQy2YFIxIiZ260zj1hOmZbzblVMludcEUaDW5DYak',
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode({
-          'userId': currentUserUid,
-          'questId': widget.questId,
-          'userInputCode': _model.codeController.text.toUpperCase().trim(),
-        }),
-      );
+      // Insert into quest_code_redemptions - trigger handles validation and XP award
+      await QuestCodeRedemptionsTable().insert({
+        'user_id': currentUserUid,
+        'code': _model.codeController.text.toUpperCase().trim(),
+      });
 
-      final result = jsonDecode(response.body);
-
-      if (result['success'] == true) {
-        await _showSuccessAnimation();
-      } else {
-        setState(() {
-          _model.errorMessage = result['error'] ?? 'Verification failed';
-          _model.isLoading = false;
-        });
-      }
+      // Success - show animation
+      await _showSuccessAnimation();
     } catch (e) {
       setState(() {
-        _model.errorMessage = 'Network error. Please try again.';
+        _model.errorMessage = e.toString().contains('already redeemed')
+            ? 'You already redeemed this code'
+            : e.toString().contains('Invalid or inactive')
+            ? 'Invalid code'
+            : e.toString().contains('maximum uses')
+            ? 'Code has reached maximum uses'
+            : 'Verification failed. Please try again.';
         _model.isLoading = false;
       });
     }

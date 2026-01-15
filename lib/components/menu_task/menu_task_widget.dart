@@ -1,4 +1,5 @@
 import '/backend/supabase/supabase.dart';
+import '/auth/supabase_auth/auth_util.dart';
 import '/components/lottie_burst_overlay/lottie_burst_overlay_widget.dart';
 import '/components/modern_alert_dialog.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -233,17 +234,107 @@ class _MenuTaskWidgetState extends State<MenuTaskWidget> {
                       ) ??
                       false;
                   if (confirmDialogResponse) {
+                    // Get task details to check XP reward
+                    final taskRows = await TasksTable().queryRows(
+                      queryFn: (q) => q.eqOrNull('task_id', widget.tasksid),
+                    );
+
+                    if (taskRows.isEmpty) {
+                      await showDialog(
+                        context: context,
+                        barrierColor: Colors.black87,
+                        builder: (alertDialogContext) {
+                          return const ModernAlertDialog(
+                            title: 'Error',
+                            description: 'Unable to load task details.',
+                            primaryButtonText: 'OK',
+                          );
+                        },
+                      );
+                      return;
+                    }
+
+                    final taskXp = taskRows.first.xpReward ?? 0;
+
+                    // Get current user profile to check daily limit
+                    final userRows = await ProfilesTable().queryRows(
+                      queryFn: (q) => q.eqOrNull('uid', currentUserUid),
+                    );
+
+                    if (userRows.isEmpty) {
+                      await showDialog(
+                        context: context,
+                        barrierColor: Colors.black87,
+                        builder: (alertDialogContext) {
+                          return const ModernAlertDialog(
+                            title: 'Error',
+                            description: 'Unable to load user profile.',
+                            primaryButtonText: 'OK',
+                          );
+                        },
+                      );
+                      return;
+                    }
+
+                    final userProfile = userRows.first;
+
+                    final now = DateTime.now();
+                    final today = DateTime(now.year, now.month, now.day);
+                    
+                    // Calculate XP reduction for late tasks
+                    int baseTaskXp = taskXp;
+                    int xpReduction = 0;
+                    String lateMessage = '';
+                    
+                    if (taskRows.first.dueDate != null) {
+                      final dueDate = DateTime(
+                        taskRows.first.dueDate!.year,
+                        taskRows.first.dueDate!.month,
+                        taskRows.first.dueDate!.day,
+                      );
+                      
+                      if (today.isAfter(dueDate)) {
+                        // Task is late - calculate days late
+                        final daysLate = today.difference(dueDate).inDays;
+                        
+                        // 10% XP reduction per day late, max 50% reduction
+                        // (5 days late = 50% reduction, 6+ days = 50% max)
+                        final reductionPercent = (daysLate * 10).clamp(0, 50);
+                        xpReduction = ((baseTaskXp * reductionPercent) / 100).round();
+                        
+                        if (xpReduction > 0) {
+                          lateMessage = ' (-${reductionPercent}% for $daysLate day${daysLate == 1 ? '' : 's'} late)';
+                        }
+                      }
+                    }
+                    
+                    final adjustedTaskXp = baseTaskXp - xpReduction;
+                    
+                    final resetDate = userProfile.taskXpResetDate != null
+                        ? DateTime(
+                            userProfile.taskXpResetDate!.year,
+                            userProfile.taskXpResetDate!.month,
+                            userProfile.taskXpResetDate!.day,
+                          )
+                        : null;
+
+                    int xpEarnedToday = userProfile.taskXpEarnedToday;
+                    final dailyLimit = userProfile.dailyTaskXpLimit;
+
+                    // Reset counter if it's a new day
+                    if (resetDate == null || resetDate.isBefore(today)) {
+                      xpEarnedToday = 0;
+                    }
+
+                    // Check if adding this task's XP would exceed daily limit
+                    final remainingXp = dailyLimit - xpEarnedToday;
+                    final xpToAward = adjustedTaskXp > remainingXp ? remainingXp : adjustedTaskXp;
+                    final limitReached = xpToAward < adjustedTaskXp;
+
+                    // Mark task as done
                     await TasksTable().update(
                       data: {
                         'status': 'Completed',
-                      },
-                      matchingRows: (rows) => rows.eqOrNull(
-                        'task_id',
-                        widget.tasksid,
-                      ),
-                    );
-                    await TasksTable().update(
-                      data: {
                         'isdone': true,
                       },
                       matchingRows: (rows) => rows.eqOrNull(
@@ -251,6 +342,27 @@ class _MenuTaskWidgetState extends State<MenuTaskWidget> {
                         widget.tasksid,
                       ),
                     );
+
+                    // Award XP if any is available
+                    if (xpToAward > 0) {
+                      await ProfilesTable().update(
+                        data: {
+                          'xp': userProfile.xp + xpToAward,
+                          'level': ((userProfile.xp + xpToAward) ~/ 100) + 1,
+                          'task_xp_earned_today': xpEarnedToday + xpToAward,
+                          'task_xp_reset_date': today.toIso8601String(),
+                        },
+                        matchingRows: (rows) => rows.eqOrNull('uid', currentUserUid),
+                      );
+                    } else {
+                      // Just update the reset date even if no XP awarded
+                      await ProfilesTable().update(
+                        data: {
+                          'task_xp_reset_date': today.toIso8601String(),
+                        },
+                        matchingRows: (rows) => rows.eqOrNull('uid', currentUserUid),
+                      );
+                    }
 
                     // 🎉 Trigger confetti burst!
                     if (context.mounted) {
@@ -261,14 +373,47 @@ class _MenuTaskWidgetState extends State<MenuTaskWidget> {
                       );
                     }
 
+                    // Show appropriate completion message
+                    String completionMessage;
+                    if (xpReduction > 0) {
+                      // Task was late - show penalty info
+                      if (limitReached) {
+                        completionMessage =
+                            'Task completed!$lateMessage\n\nBase XP: $baseTaskXp → Adjusted: +$xpToAward XP\nDaily task XP: ${xpEarnedToday + xpToAward}/$dailyLimit';
+                      } else if (xpToAward > 0) {
+                        completionMessage =
+                            'Task completed!$lateMessage\n\nBase XP: $baseTaskXp → Adjusted: +$xpToAward XP (-${((xpReduction * 100) / baseTaskXp).round()}% penalty)\nDaily task XP: ${xpEarnedToday + xpToAward}/$dailyLimit';
+                      } else {
+                        completionMessage =
+                            'Task completed!$lateMessage\n\nBase XP: $baseTaskXp but daily limit reached.\n\nQuests still earn unlimited XP!';
+                      }
+                    } else if (limitReached) {
+                      completionMessage =
+                          'Task completed! You\'ve reached your daily XP limit from tasks ($dailyLimit XP/day).\n\nXP awarded: +$xpToAward XP\nQuests still earn unlimited XP!';
+                    } else if (xpToAward > 0) {
+                      completionMessage =
+                          'Task completed! You earned +$xpToAward XP!\n\nDaily task XP: ${xpEarnedToday + xpToAward}/$dailyLimit';
+                    } else {
+                      completionMessage =
+                          'Task completed!\n\nYou\'ve reached your daily XP limit from tasks ($dailyLimit XP/day).\n\nQuests still earn unlimited XP!';
+                    }
+
                     await showDialog(
                       context: context,
                       barrierColor: Colors.black87,
                       builder: (alertDialogContext) {
-                        return const ModernAlertDialog(
-                          title: 'Completed! 🎉',
-                          description:
-                              'Congrats on completing the task! Keep up the great work!',
+                        String dialogTitle;
+                        if (xpReduction > 0) {
+                          dialogTitle = 'Task Late! ⏰';
+                        } else if (limitReached) {
+                          dialogTitle = 'Daily Limit Reached! ⏰';
+                        } else {
+                          dialogTitle = 'Completed! 🎉';
+                        }
+                        
+                        return ModernAlertDialog(
+                          title: dialogTitle,
+                          description: completionMessage,
                           primaryButtonText: 'Awesome',
                         );
                       },

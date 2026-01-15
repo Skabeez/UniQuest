@@ -1367,7 +1367,12 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                                                     .eqOrNull(
                                                       'is_active',
                                                       true,
-                                                    ),
+                                                    )
+                                                    .eqOrNull(
+                                                      'is_retired',
+                                                      false,
+                                                    )
+                                                    .or('expiration_date.is.null,expiration_date.gt.${DateTime.now().toIso8601String()}'),
                                               ),
                                               builder: (context, snapshot) {
                                                 // Customize what your widget looks like when it's loading.
@@ -1397,6 +1402,7 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                                                   padding: EdgeInsets.zero,
                                                   primary: false,
                                                   shrinkWrap: true,
+                                                  physics: const NeverScrollableScrollPhysics(),
                                                   scrollDirection:
                                                       Axis.vertical,
                                                   itemCount:

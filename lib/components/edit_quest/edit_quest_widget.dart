@@ -616,6 +616,146 @@ class _EditQuestWidgetState extends State<EditQuestWidget>
                                 ],
                               ),
                             ),
+                            // Retired Checkbox
+                            Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 0.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Retired',
+                                          style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                fontFamily: 'Feather',
+                                                color: Colors.white,
+                                                fontSize: 14.0,
+                                                letterSpacing: 0.0,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                        ),
+                                        const SizedBox(height: 4.0),
+                                        Text(
+                                          'Retired quests are hidden from students',
+                                          style: FlutterFlowTheme.of(context).bodySmall.override(
+                                                fontFamily: 'Feather',
+                                                color: const Color(0xFF9CA3AF),
+                                                fontSize: 11.0,
+                                                letterSpacing: 0.0,
+                                              ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Switch(
+                                    value: _model.isRetiredValue ??= widget.quest?.isRetired ?? false,
+                                    onChanged: (newValue) async {
+                                      safeSetState(() => _model.isRetiredValue = newValue);
+                                    },
+                                    activeColor: const Color(0xFFFF5963),
+                                    activeTrackColor: const Color(0x4DFF5963),
+                                    inactiveTrackColor: const Color(0xFFE5E7EB),
+                                    inactiveThumbColor: Colors.white,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // Expiration Date
+                            Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 0.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(4.0, 0.0, 0.0, 6.0),
+                                    child: Text(
+                                      'Expiration Date (Optional)',
+                                      style: FlutterFlowTheme.of(context).bodySmall.override(
+                                            fontFamily: 'Feather',
+                                            color: const Color(0xFF9CA3AF),
+                                            fontSize: 12.0,
+                                            letterSpacing: 0.5,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () async {
+                                      final DateTime? picked = await showDatePicker(
+                                        context: context,
+                                        initialDate: _model.expirationDate ?? DateTime.now().add(const Duration(days: 7)),
+                                        firstDate: DateTime.now(),
+                                        lastDate: DateTime.now().add(const Duration(days: 365)),
+                                      );
+                                      if (picked != null) {
+                                        setState(() {
+                                          _model.expirationDate = picked;
+                                        });
+                                      }
+                                    },
+                                    child: Container(
+                                      width: double.infinity,
+                                      padding: const EdgeInsetsDirectional.fromSTEB(20.0, 16.0, 20.0, 16.0),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(12.0),
+                                        border: Border.all(
+                                          color: const Color(0xFFE5E7EB),
+                                          width: 2.0,
+                                        ),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          const Icon(
+                                            Icons.calendar_today,
+                                            color: Color(0xFF606A85),
+                                            size: 20.0,
+                                          ),
+                                          const SizedBox(width: 12.0),
+                                          Text(
+                                            _model.expirationDate != null
+                                                ? dateTimeFormat('MMMMdd, yyyy', _model.expirationDate!)
+                                                : (widget.quest?.expirationDate != null
+                                                    ? dateTimeFormat('MMMMdd, yyyy', widget.quest!.expirationDate!)
+                                                    : 'No expiration date'),
+                                            style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                  font: GoogleFonts.plusJakartaSans(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                                                  ),
+                                                  color: (_model.expirationDate != null || widget.quest?.expirationDate != null)
+                                                      ? const Color(0xFF15161E)
+                                                      : const Color(0xFF606A85),
+                                                  fontSize: 14.0,
+                                                  letterSpacing: 0.0,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                          ),
+                                          if (_model.expirationDate != null || widget.quest?.expirationDate != null)
+                                            const Spacer(),
+                                          if (_model.expirationDate != null || widget.quest?.expirationDate != null)
+                                            InkWell(
+                                              onTap: () {
+                                                setState(() {
+                                                  _model.expirationDate = DateTime(1900);
+                                                });
+                                              },
+                                              child: const Icon(
+                                                Icons.close,
+                                                color: Color(0xFF606A85),
+                                                size: 20.0,
+                                              ),
+                                            ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                         // Buttons
@@ -749,6 +889,10 @@ class _EditQuestWidgetState extends State<EditQuestWidget>
                                               ? _model.categoryTextController.text
                                               : null,
                                           'is_active': _model.isActiveValue,
+                                          'is_retired': _model.isRetiredValue ?? false,
+                                          'expiration_date': (_model.expirationDate != null && _model.expirationDate!.year > 1900)
+                                              ? _model.expirationDate!.toIso8601String()
+                                              : null,
                                         },
                                         matchingRows: (rows) => rows.eq('id', widget.questId!),
                                       );

@@ -30,6 +30,9 @@ class AddQuestModel extends FlutterFlowModel<AddQuestWidget> {
   TextEditingController? categoryTextController;
   String? Function(BuildContext, String?)? categoryTextControllerValidator;
 
+  // State field(s) for expiration date
+  DateTime? expirationDate;
+
   @override
   void initState(BuildContext context) {}
 
