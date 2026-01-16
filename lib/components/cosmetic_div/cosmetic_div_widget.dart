@@ -79,12 +79,19 @@ class _CosmeticDivWidgetState extends State<CosmeticDivWidget>
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          color: FlutterFlowTheme.of(context).secondaryBackground,
-          borderRadius: BorderRadius.circular(10.0),
+          color: const Color(0xFFFBF7F3),
+          borderRadius: BorderRadius.circular(16.0),
           border: Border.all(
-            color: FlutterFlowTheme.of(context).secondaryBackground,
-            width: 0.0,
+            color: const Color(0xFFF3EDE2),
+            width: 1.0,
           ),
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 10.0,
+              color: Colors.black.withOpacity(0.04),
+              offset: const Offset(0.0, 4.0),
+            ),
+          ],
         ),
         child: Padding(
           padding: const EdgeInsetsDirectional.fromSTEB(12.0, 8.0, 12.0, 8.0),
@@ -141,34 +148,55 @@ class _CosmeticDivWidgetState extends State<CosmeticDivWidget>
                       ),
                       Padding(
                         padding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Text(
-                              'XP  Cost: ',
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyMedium
-                                  .override(
-                                    fontFamily: 'Feather',
-                                    letterSpacing: 0.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                            const EdgeInsetsDirectional.fromSTEB(0.0, 6.0, 0.0, 0.0),
+                        child: Container(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              10.0, 6.0, 10.0, 6.0),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFFFFBF7),
+                            borderRadius: BorderRadius.circular(20.0),
+                            border: Border.all(
+                              color: const Color(0xFFF1CFA0),
+                              width: 1.0,
                             ),
-                            Text(
-                              formatNumber(
-                                widget.cosmetics!.xpCost,
-                                formatType: FormatType.compact,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.02),
+                                blurRadius: 4.0,
+                                offset: const Offset(0, 1),
                               ),
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyMedium
-                                  .override(
-                                    fontFamily: 'Feather',
-                                    letterSpacing: 0.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                            ),
-                          ],
+                            ],
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                'Unlocks at: ',
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      fontFamily: 'Feather',
+                                      color: const Color(0xFF6B6B6B),
+                                      letterSpacing: 0.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
+                              Text(
+                                '${formatNumber(
+                                  widget.cosmetics!.xpCost,
+                                  formatType: FormatType.compact,
+                                )} XP',
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      fontFamily: 'Feather',
+                                      color: const Color(0xFF2A2E3A),
+                                      letterSpacing: 0.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],

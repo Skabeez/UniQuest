@@ -1,3 +1,5 @@
+import 'dart:ui' as ui;
+
 import '/backend/supabase/supabase.dart';
 import '/components/edit_task/edit_task_widget.dart';
 import '/components/menu_task/menu_task_widget.dart';
@@ -69,31 +71,48 @@ class _TaskDivWidgetState extends State<TaskDivWidget> {
           },
         ).then((value) => safeSetState(() {}));
       },
-      child: Container(
-        decoration: BoxDecoration(
-          color: const Color(0xFF3B424F),
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 5.0,
-              color: FlutterFlowTheme.of(context).secondaryBackground,
-              offset: const Offset(
-                0.0,
-                2.0,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(24.0),
+        child: BackdropFilter(
+          filter: ui.ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color(0xFF525866),
+                  Color(0xFF3E4550),
+                ],
               ),
-            )
-          ],
-          borderRadius: BorderRadius.circular(24.0),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              SizedBox(
-                width: double.infinity,
-                height: 130.0,
-                child: Stack(
-                  children: [
+              border: Border.all(
+                color: Colors.white.withOpacity(0.2),
+                width: 1.0,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  blurRadius: 12.0,
+                  color: Colors.black.withOpacity(0.4),
+                  offset: const Offset(0.0, 4.0),
+                ),
+                BoxShadow(
+                  blurRadius: 24.0,
+                  color: Colors.black.withOpacity(0.25),
+                  offset: const Offset(0.0, 12.0),
+                ),
+              ],
+              borderRadius: BorderRadius.circular(24.0),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    height: 130.0,
+                    child: Stack(
+                      children: [
                     Align(
                       alignment: const AlignmentDirectional(-0.95, -0.97),
                       child: Padding(
@@ -320,10 +339,11 @@ class _TaskDivWidgetState extends State<TaskDivWidget> {
                   ),
                 ],
               ),
-            ],
+            ]),
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }

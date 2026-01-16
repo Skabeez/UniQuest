@@ -1513,38 +1513,39 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                                                                             style: FlutterFlowTheme.of(context).headlineSmall.override(
                                                                               fontFamily: 'Feather',
                                                                               color: const Color(0xFF0F1113),
-                                                                            fontSize: 18.0,
-                                                                            fontWeight: FontWeight.bold,
+                                                                              fontSize: 18.0,
+                                                                              fontWeight: FontWeight.bold,
+                                                                            ),
                                                                           ),
                                                                         ),
+                                                                        Container(
+                                                                          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                                                                          decoration: BoxDecoration(
+                                                                            color: const Color(0xFFFFBD59),
+                                                                            borderRadius: BorderRadius.circular(8.0),
+                                                                          ),
+                                                                          child: Text(
+                                                                            '+${quest.xpReward} XP',
+                                                                            style: FlutterFlowTheme.of(context).bodySmall.override(
+                                                                              fontFamily: 'Feather',
+                                                                              color: const Color(0xFF1E1E1E),
+                                                                              fontWeight: FontWeight.bold,
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                    const SizedBox(height: 8.0),
+                                                                    Text(
+                                                                      quest.description,
+                                                                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                        fontFamily: 'Feather',
+                                                                        color: const Color(0xFF57636C),
+                                                                        fontSize: 14.0,
                                                                       ),
-                                                                      Container(
-                                                                        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                                                                        decoration: BoxDecoration(
-                                                                          color: const Color(0xFFFFBD59),
-                                                                          borderRadius: BorderRadius.circular(8.0),
-                                                                        ),
-                                                                        child: Text(
-                                                                          '+${quest.xpReward} XP',
-                                                                          style: FlutterFlowTheme.of(context).bodySmall.override(
-                                                                            fontFamily: 'Feather',
-                                                                            color: Colors.white,
-                                                                            fontWeight: FontWeight.bold,
-                                                                          ),
                                                                     ),
-                                                                  ),
-                                                                  const SizedBox(height: 8.0),
-                                                                  Text(
-                                                                    quest.description,
-                                                                    style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                                                      fontFamily: 'Feather',
-                                                                      color: const Color(0xFF57636C),
-                                                                      fontSize: 14.0,
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                        ]),
+                                                                  ],
+                                                                ),
                                                           ),
                                                         ),
                                                         ));

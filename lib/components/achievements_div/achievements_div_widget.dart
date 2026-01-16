@@ -20,6 +20,14 @@ class AchievementsDivWidget extends StatefulWidget {
 class _AchievementsDivWidgetState extends State<AchievementsDivWidget> {
   late AchievementsDivModel _model;
 
+  String _formatReward(String? rewardType) {
+    final normalized = (rewardType ?? '').trim();
+    if (normalized.isEmpty) {
+      return 'XP';
+    }
+    return normalized.toUpperCase();
+  }
+
   @override
   void setState(VoidCallback callback) {
     super.setState(callback);
@@ -46,12 +54,19 @@ class _AchievementsDivWidgetState extends State<AchievementsDivWidget> {
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          color: FlutterFlowTheme.of(context).accent4,
-          borderRadius: BorderRadius.circular(12.0),
+          color: const Color(0xFFFAF3E8),
+          borderRadius: BorderRadius.circular(16.0),
           border: Border.all(
-            color: const Color(0xFFE0E3E7),
-            width: 2.0,
+            color: const Color(0xFFE8DAC8),
+            width: 1.0,
           ),
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 12.0,
+              color: Colors.black.withOpacity(0.06),
+              offset: const Offset(0.0, 6.0),
+            ),
+          ],
         ),
         child: Padding(
           padding: const EdgeInsets.all(12.0),
@@ -66,7 +81,7 @@ class _AchievementsDivWidgetState extends State<AchievementsDivWidget> {
                 ),
                 style: FlutterFlowTheme.of(context).headlineSmall.override(
                       fontFamily: 'Feather',
-                      color: FlutterFlowTheme.of(context).primaryText,
+                      color: const Color(0xFF2A2E3A),
                       fontSize: 20.0,
                       letterSpacing: 0.0,
                       fontWeight: FontWeight.bold,
@@ -81,49 +96,36 @@ class _AchievementsDivWidgetState extends State<AchievementsDivWidget> {
                   ),
                   style: FlutterFlowTheme.of(context).labelMedium.override(
                         fontFamily: 'Feather',
-                        color: FlutterFlowTheme.of(context).primaryText,
+                        color: const Color(0xFF6B6B6B),
                         fontSize: 14.0,
                         letterSpacing: 0.0,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w600,
                       ),
                 ),
               ),
               const Divider(
                 height: 24.0,
                 thickness: 1.0,
-                color: Color(0xFFE0E3E7),
+                color: Color(0xFFE6E6E6),
               ),
               Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text(
-                    'Rewards:',
-                    style: FlutterFlowTheme.of(context).bodyMedium.override(
-                          fontFamily: 'Feather',
-                          color: FlutterFlowTheme.of(context).primaryText,
-                          fontSize: 14.0,
-                          letterSpacing: 0.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 0.0, 0.0),
-                      child: Text(
-                        valueOrDefault<String>(
-                          widget.achievements?.rewardType,
-                          'none',
-                        ),
-                        style: FlutterFlowTheme.of(context).bodyMedium.override(
-                              fontFamily: 'Feather',
-                              color: const Color(0xFF827AE1),
-                              fontSize: 14.0,
-                              letterSpacing: 0.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
+                  Container(
+                    padding:
+                        const EdgeInsetsDirectional.fromSTEB(10.0, 6.0, 10.0, 6.0),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFFBD59),
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    child: Text(
+                      '+${_formatReward(widget.achievements?.rewardType)}',
+                      style: FlutterFlowTheme.of(context).labelMedium.override(
+                            fontFamily: 'Feather',
+                            color: const Color(0xFF1E1E1E),
+                            letterSpacing: 0.0,
+                            fontWeight: FontWeight.bold,
+                          ),
                     ),
                   ),
                 ],

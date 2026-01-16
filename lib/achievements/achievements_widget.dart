@@ -56,7 +56,7 @@ class _AchievementsWidgetState extends State<AchievementsWidget>
       },
       child: Scaffold(
         key: scaffoldKey,
-        backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+        backgroundColor: Colors.white,
         body: SafeArea(
           top: true,
           bottom: false,
@@ -68,8 +68,8 @@ class _AchievementsWidgetState extends State<AchievementsWidget>
                 Container(
                   width: 390.0,
                   height: 60.0,
-                  decoration: BoxDecoration(
-                    color: FlutterFlowTheme.of(context).secondaryBackground,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
                   ),
                   child: Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 1.0),
@@ -121,7 +121,7 @@ class _AchievementsWidgetState extends State<AchievementsWidget>
               padding: const EdgeInsetsDirectional.fromSTEB(0.0, 70.0, 0.0, 0.0),
               child: Column(
                 children: [
-                  Align(
+                    Align(
                     alignment: const Alignment(0.0, 0),
                     child: TabBar(
                       labelColor: FlutterFlowTheme.of(context).primaryText,
@@ -151,7 +151,7 @@ class _AchievementsWidgetState extends State<AchievementsWidget>
                                     .titleMedium
                                     .fontStyle,
                               ),
-                      indicatorColor: const Color(0xFFFFBD59),
+                      indicatorColor: FlutterFlowTheme.of(context).primary,
                       tabs: const [
                         Tab(
                           text: 'All',
@@ -175,20 +175,19 @@ class _AchievementsWidgetState extends State<AchievementsWidget>
                               10.0, 10.0, 10.0, 100.0),
                           child: Container(
                             decoration: BoxDecoration(
-                              color: FlutterFlowTheme.of(context)
-                                  .secondaryBackground,
+                              color: const Color(0xFFF5F5F5),
+                              border: Border.all(
+                                color: const Color(0xFFE0E0E0),
+                                width: 2.0,
+                              ),
                               boxShadow: const [
                                 BoxShadow(
-                                  blurRadius: 10.0,
-                                  color: Color(0x33000000),
-                                  offset: Offset(
-                                    0.0,
-                                    2.0,
-                                  ),
-                                  spreadRadius: 20.0,
+                                  blurRadius: 8.0,
+                                  color: Color(0x1A000000),
+                                  offset: Offset(0.0, 2.0),
                                 )
                               ],
-                              borderRadius: BorderRadius.circular(20.0),
+                              borderRadius: BorderRadius.circular(24.0),
                             ),
                             child: Padding(
                               padding: const EdgeInsets.all(5.0),
@@ -258,20 +257,19 @@ class _AchievementsWidgetState extends State<AchievementsWidget>
                               10.0, 10.0, 10.0, 100.0),
                           child: Container(
                             decoration: BoxDecoration(
-                              color: FlutterFlowTheme.of(context)
-                                  .secondaryBackground,
+                              color: const Color(0xFFF5F5F5),
+                              border: Border.all(
+                                color: const Color(0xFFE0E0E0),
+                                width: 2.0,
+                              ),
                               boxShadow: const [
                                 BoxShadow(
-                                  blurRadius: 10.0,
-                                  color: Color(0x33000000),
-                                  offset: Offset(
-                                    0.0,
-                                    2.0,
-                                  ),
-                                  spreadRadius: 20.0,
+                                  blurRadius: 8.0,
+                                  color: Color(0x1A000000),
+                                  offset: Offset(0.0, 2.0),
                                 )
                               ],
-                              borderRadius: BorderRadius.circular(20.0),
+                              borderRadius: BorderRadius.circular(24.0),
                             ),
                             child: Padding(
                               padding: const EdgeInsets.all(5.0),

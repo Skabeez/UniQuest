@@ -141,8 +141,7 @@ class _MailDivWidgetState extends State<MailDivWidget> {
                                     .bodyMedium
                                     .override(
                                       fontFamily: 'Feather',
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryText,
+                                      color: const Color(0xFFECEFF1),
                                       letterSpacing: 0.0,
                                       fontWeight: FontWeight.bold,
                                     ),

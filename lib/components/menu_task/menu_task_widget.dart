@@ -258,7 +258,7 @@ class _MenuTaskWidgetState extends State<MenuTaskWidget> {
 
                     // Get current user profile to check daily limit
                     final userRows = await ProfilesTable().queryRows(
-                      queryFn: (q) => q.eqOrNull('uid', currentUserUid),
+                      queryFn: (q) => q.eqOrNull('id', currentUserUid),
                     );
 
                     if (userRows.isEmpty) {
@@ -331,37 +331,57 @@ class _MenuTaskWidgetState extends State<MenuTaskWidget> {
                     final xpToAward = adjustedTaskXp > remainingXp ? remainingXp : adjustedTaskXp;
                     final limitReached = xpToAward < adjustedTaskXp;
 
-                    // Mark task as done
-                    await TasksTable().update(
-                      data: {
-                        'status': 'Completed',
-                        'isdone': true,
-                      },
-                      matchingRows: (rows) => rows.eqOrNull(
-                        'task_id',
-                        widget.tasksid,
-                      ),
-                    );
+                    // Perform DB updates in a guarded block so we can show errors
+                    try {
+                      // Mark task as done
+                      await TasksTable().update(
+                        data: {
+                          'status': 'Completed',
+                          'isdone': true,
+                        },
+                        matchingRows: (rows) => rows.eqOrNull(
+                          'task_id',
+                          widget.tasksid,
+                        ),
+                      );
 
-                    // Award XP if any is available
-                    if (xpToAward > 0) {
-                      await ProfilesTable().update(
-                        data: {
-                          'xp': userProfile.xp + xpToAward,
-                          'level': ((userProfile.xp + xpToAward) ~/ 100) + 1,
-                          'task_xp_earned_today': xpEarnedToday + xpToAward,
-                          'task_xp_reset_date': today.toIso8601String(),
-                        },
-                        matchingRows: (rows) => rows.eqOrNull('uid', currentUserUid),
-                      );
-                    } else {
-                      // Just update the reset date even if no XP awarded
-                      await ProfilesTable().update(
-                        data: {
-                          'task_xp_reset_date': today.toIso8601String(),
-                        },
-                        matchingRows: (rows) => rows.eqOrNull('uid', currentUserUid),
-                      );
+                      // Award XP if any is available
+                      if (xpToAward > 0) {
+                        await ProfilesTable().update(
+                          data: {
+                            'xp': userProfile.xp + xpToAward,
+                            'task_xp_earned_today': xpEarnedToday + xpToAward,
+                            'task_xp_reset_date': today.toIso8601String(),
+                          },
+                          matchingRows: (rows) => rows.eqOrNull('id', currentUserUid),
+                        );
+                      } else {
+                        // Just update the reset date even if no XP awarded
+                        await ProfilesTable().update(
+                          data: {
+                            'task_xp_reset_date': today.toIso8601String(),
+                          },
+                          matchingRows: (rows) => rows.eqOrNull('id', currentUserUid),
+                        );
+                      }
+                    } catch (e, st) {
+                      // Log and show a dialog with the error to help debugging
+                      print('Error during task completion: $e');
+                      print(st);
+                      if (context.mounted) {
+                        await showDialog(
+                          context: context,
+                          barrierColor: Colors.black87,
+                          builder: (alertDialogContext) {
+                            return ModernAlertDialog(
+                              title: 'Error',
+                              description: e.toString(),
+                              primaryButtonText: 'OK',
+                            );
+                          },
+                        );
+                      }
+                      return;
                     }
 
                     // 🎉 Trigger confetti burst!

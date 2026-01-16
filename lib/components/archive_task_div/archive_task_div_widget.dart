@@ -60,35 +60,42 @@ class _ArchiveTaskDivWidgetState extends State<ArchiveTaskDivWidget> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Divider(
+        const Divider(
           thickness: 1.0,
-          color: FlutterFlowTheme.of(context).alternate,
+          color: Color(0xFFE6E6E6),
         ),
         Container(
           decoration: BoxDecoration(
-            color: FlutterFlowTheme.of(context).secondaryBackground,
-            borderRadius: const BorderRadius.only(
-              bottomLeft: Radius.circular(0.0),
-              bottomRight: Radius.circular(0.0),
-              topLeft: Radius.circular(0.0),
-              topRight: Radius.circular(0.0),
+            color: const Color(0xFFFAF3E8),
+            borderRadius: BorderRadius.circular(12.0),
+            border: Border.all(
+              color: const Color(0xFFE8DAC8),
+              width: 1.0,
             ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.08),
+                blurRadius: 16.0,
+                offset: const Offset(0, 8),
+              ),
+            ],
           ),
           child: Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
                   valueOrDefault<String>(
                     widget.title,
                     'title',
                   ),
+                  textAlign: TextAlign.center,
                   style: FlutterFlowTheme.of(context).bodyMedium.override(
                         fontFamily: 'Feather',
-                        color: FlutterFlowTheme.of(context).info,
-                        fontSize: 24.0,
+                        color: FlutterFlowTheme.of(context).primaryText,
+                        fontSize: 18.0,
                         letterSpacing: 0.0,
                         fontWeight: FontWeight.bold,
                       ),
@@ -97,19 +104,19 @@ class _ArchiveTaskDivWidgetState extends State<ArchiveTaskDivWidget> {
                 ),
                 const SizedBox(height: 8.0),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(
-                      0.0, 0.0, 0.0, 8.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 8.0),
                   child: Text(
                     valueOrDefault<String>(
                       widget.description,
                       'details',
                     ),
+                    textAlign: TextAlign.center,
                     style: FlutterFlowTheme.of(context).bodyMedium.override(
                           fontFamily: 'Feather',
-                          color: FlutterFlowTheme.of(context).secondaryText,
-                          fontSize: 12.0,
+                          color: const Color(0xFF6B6B6B),
+                          fontSize: 13.0,
                           letterSpacing: 0.0,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w600,
                         ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -118,16 +125,23 @@ class _ArchiveTaskDivWidgetState extends State<ArchiveTaskDivWidget> {
                 if (widget.tag != null && widget.tag!.isNotEmpty)
                   Container(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 12.0,
-                      vertical: 4.0,
+                      horizontal: 14.0,
+                      vertical: 6.0,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFFBD59).withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(8.0),
+                      color: const Color(0xFFFFBD59).withOpacity(0.14),
+                      borderRadius: BorderRadius.circular(20.0),
                       border: Border.all(
-                        color: const Color(0xFFFFBD59),
+                        color: const Color(0xFFEDA34A),
                         width: 1.0,
                       ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.03),
+                          blurRadius: 6.0,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
                     child: Text(
                       valueOrDefault<String>(
@@ -137,9 +151,9 @@ class _ArchiveTaskDivWidgetState extends State<ArchiveTaskDivWidget> {
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                             fontFamily: 'Feather',
                             color: const Color(0xFFFFBD59),
-                            fontSize: 12.0,
+                            fontSize: 13.0,
                             letterSpacing: 0.0,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w700,
                           ),
                     ),
                   ),
