@@ -8,7 +8,6 @@ import '/backend/supabase/supabase.dart';
 /// Cache expiration: 5 minutes
 class CacheService {
   // Cache keys
-  static const String _questsKey = 'cache_quests';
   static const String _userProfileKey = 'cache_user_profile';
   static const String _achievementsKey = 'cache_achievements';
   static const String _missionsKey = 'cache_missions';
@@ -30,19 +29,6 @@ class CacheService {
       _instance = CacheService(prefs);
     }
     return _instance!;
-  }
-
-  // ============ QUESTS ============
-
-  /// Cache quests data locally
-  Future<void> cacheQuests(List<QuestsRow> quests) async {
-    // TODO: Implement - convert quests to JSON and store with timestamp
-  }
-
-  /// Retrieve cached quests if valid
-  Future<List<QuestsRow>?> getCachedQuests() async {
-    // TODO: Implement - check if cache is valid, then parse and return
-    return null;
   }
 
   // ============ USER PROFILE ============
@@ -109,8 +95,6 @@ class CacheService {
 
   /// Clear all cached data
   Future<void> clearCache() async {
-    await _prefs.remove(_questsKey);
-    await _prefs.remove(_questsKey + _timestampSuffix);
     await _prefs.remove(_userProfileKey);
     await _prefs.remove(_userProfileKey + _timestampSuffix);
     await _prefs.remove(_achievementsKey);

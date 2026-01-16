@@ -1,10 +1,11 @@
 import '/backend/supabase/supabase.dart';
+import '/components/modern_alert_dialog.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
-import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import '/flutter_flow/form_field_controller.dart';
+import '/services/audio_manager.dart';
+import '/services/sound_effects.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -35,29 +36,39 @@ class _AddQuestWidgetState extends State<AddQuestWidget>
     super.initState();
     _model = createModel(context, () => AddQuestModel());
 
+    // Play popup sound
+    AudioManager().playSfx(SoundEffects.popUp);
+
     _model.titleTextController ??= TextEditingController();
     _model.titleFocusNode ??= FocusNode();
 
     _model.descriptionTextController ??= TextEditingController();
     _model.descriptionFocusNode ??= FocusNode();
 
-    _model.xpTextController ??= TextEditingController();
-    _model.xpFocusNode ??= FocusNode();
+    _model.xpRewardTextController ??= TextEditingController(text: '100');
+    _model.xpRewardFocusNode ??= FocusNode();
 
-    _model.categoryTextController ??= TextEditingController();
-    _model.categoryFocusNode ??= FocusNode();
+    _model.verificationCodeTextController ??= TextEditingController();
+    _model.verificationCodeFocusNode ??= FocusNode();
 
     animationsMap.addAll({
-      'containerOnActionTriggerAnimation': AnimationInfo(
-        trigger: AnimationTrigger.onActionTrigger,
-        applyInitialState: true,
+      'containerOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
         effectsBuilder: () => [
+          VisibilityEffect(duration: 300.ms),
           MoveEffect(
+            curve: Curves.bounceOut,
+            delay: 300.0.ms,
+            duration: 400.0.ms,
+            begin: const Offset(0.0, 100.0),
+            end: const Offset(0.0, 0.0),
+          ),
+          FadeEffect(
             curve: Curves.easeInOut,
-            delay: 0.0.ms,
-            duration: 600.0.ms,
-            begin: const Offset(0.0, 0.0),
-            end: const Offset(115.0, 0.0),
+            delay: 300.0.ms,
+            duration: 400.0.ms,
+            begin: 0.0,
+            end: 1.0,
           ),
         ],
       ),
@@ -101,10 +112,7 @@ class _AddQuestWidgetState extends State<AddQuestWidget>
                   BoxShadow(
                     blurRadius: 12.0,
                     color: Color(0x1E000000),
-                    offset: Offset(
-                      0.0,
-                      5.0,
-                    ),
+                    offset: Offset(0.0, 5.0),
                   )
                 ],
                 borderRadius: BorderRadius.circular(16.0),
@@ -119,25 +127,25 @@ class _AddQuestWidgetState extends State<AddQuestWidget>
                       child: Text(
                         'Create New Quest',
                         style: FlutterFlowTheme.of(context).headlineMedium.override(
-                              fontFamily: 'Feather',
-                              color: const Color(0xFFFFBD59),
-                              fontSize: 24.0,
-                              letterSpacing: 0.0,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          fontFamily: 'Feather',
+                          color: const Color(0xFFFFBD59),
+                          fontSize: 24.0,
+                          letterSpacing: 0.0,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsetsDirectional.fromSTEB(24.0, 4.0, 0.0, 0.0),
                       child: Text(
-                        'Fill in quest details',
+                        'Enter quest details below',
                         style: FlutterFlowTheme.of(context).labelMedium.override(
-                              fontFamily: 'Feather',
-                              color: FlutterFlowTheme.of(context).primaryBackground,
-                              fontSize: 14.0,
-                              letterSpacing: 0.0,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          fontFamily: 'Feather',
+                          color: FlutterFlowTheme.of(context).primaryBackground,
+                          fontSize: 14.0,
+                          letterSpacing: 0.0,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     Column(
@@ -155,12 +163,12 @@ class _AddQuestWidgetState extends State<AddQuestWidget>
                                 child: Text(
                                   'Quest Title',
                                   style: FlutterFlowTheme.of(context).bodySmall.override(
-                                        fontFamily: 'Feather',
-                                        color: const Color(0xFF9CA3AF),
-                                        fontSize: 12.0,
-                                        letterSpacing: 0.5,
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                                    fontFamily: 'Feather',
+                                    color: const Color(0xFF9CA3AF),
+                                    fontSize: 12.0,
+                                    letterSpacing: 0.5,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ),
                               TextFormField(
@@ -172,16 +180,13 @@ class _AddQuestWidgetState extends State<AddQuestWidget>
                                   hintText: 'Quest Title',
                                   floatingLabelBehavior: FloatingLabelBehavior.never,
                                   hintStyle: FlutterFlowTheme.of(context).labelMedium.override(
-                                        font: GoogleFonts.plusJakartaSans(
-                                          fontWeight: FontWeight.w500,
-                                          fontStyle: FlutterFlowTheme.of(context).labelMedium.fontStyle,
-                                        ),
-                                        color: const Color(0xFF606A85),
-                                        fontSize: 14.0,
-                                        letterSpacing: 0.0,
-                                        fontWeight: FontWeight.w500,
-                                        fontStyle: FlutterFlowTheme.of(context).labelMedium.fontStyle,
-                                      ),
+                                    font: GoogleFonts.plusJakartaSans(
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    color: const Color(0xFF606A85),
+                                    fontSize: 14.0,
+                                    letterSpacing: 0.0,
+                                  ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: const BorderSide(
                                       color: Color(0xFFE5E7EB),
@@ -191,49 +196,45 @@ class _AddQuestWidgetState extends State<AddQuestWidget>
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: const BorderSide(
-                                      color: Color(0xFF6F61EF),
+                                      color: Color(0xFFFFBD59),
                                       width: 2.0,
                                     ),
                                     borderRadius: BorderRadius.circular(12.0),
                                   ),
                                   errorBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                      color: Color(0xFFFF5963),
+                                    borderSide: BorderSide(
+                                      color: FlutterFlowTheme.of(context).error,
                                       width: 2.0,
                                     ),
                                     borderRadius: BorderRadius.circular(12.0),
                                   ),
                                   focusedErrorBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                      color: Color(0xFFFF5963),
+                                    borderSide: BorderSide(
+                                      color: FlutterFlowTheme.of(context).error,
                                       width: 2.0,
                                     ),
                                     borderRadius: BorderRadius.circular(12.0),
                                   ),
                                   filled: true,
-                                  fillColor: Colors.white,
-                                  contentPadding: const EdgeInsetsDirectional.fromSTEB(20.0, 24.0, 20.0, 24.0),
+                                  fillColor: FlutterFlowTheme.of(context).info,
+                                  contentPadding: const EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
                                 ),
                                 style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                      font: GoogleFonts.plusJakartaSans(
-                                        fontWeight: FontWeight.w500,
-                                        fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
-                                      ),
-                                      color: const Color(0xFF15161E),
-                                      fontSize: 14.0,
-                                      letterSpacing: 0.0,
-                                      fontWeight: FontWeight.w500,
-                                      fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
-                                    ),
+                                  fontFamily: 'Feather',
+                                  color: const Color(0xFF15161E),
+                                  fontSize: 14.0,
+                                  letterSpacing: 0.0,
+                                  fontWeight: FontWeight.w500,
+                                ),
                                 cursorColor: const Color(0xFF6F61EF),
                                 validator: _model.titleTextControllerValidator.asValidator(context),
                               ),
                             ],
                           ),
                         ),
-                        // Description
+                        // Quest Description
                         Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 0.0),
+                          padding: const EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 0.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -242,33 +243,30 @@ class _AddQuestWidgetState extends State<AddQuestWidget>
                                 child: Text(
                                   'Description',
                                   style: FlutterFlowTheme.of(context).bodySmall.override(
-                                        fontFamily: 'Feather',
-                                        color: const Color(0xFF9CA3AF),
-                                        fontSize: 12.0,
-                                        letterSpacing: 0.5,
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                                    fontFamily: 'Feather',
+                                    color: const Color(0xFF9CA3AF),
+                                    fontSize: 12.0,
+                                    letterSpacing: 0.5,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ),
                               TextFormField(
                                 controller: _model.descriptionTextController,
                                 focusNode: _model.descriptionFocusNode,
-                                autofocus: false,
                                 obscureText: false,
+                                maxLines: 3,
                                 decoration: InputDecoration(
-                                  hintText: 'Quest Description',
+                                  hintText: 'Describe the quest...',
                                   floatingLabelBehavior: FloatingLabelBehavior.never,
                                   hintStyle: FlutterFlowTheme.of(context).labelMedium.override(
-                                        font: GoogleFonts.plusJakartaSans(
-                                          fontWeight: FontWeight.w500,
-                                          fontStyle: FlutterFlowTheme.of(context).labelMedium.fontStyle,
-                                        ),
-                                        color: const Color(0xFF606A85),
-                                        fontSize: 14.0,
-                                        letterSpacing: 0.0,
-                                        fontWeight: FontWeight.w500,
-                                        fontStyle: FlutterFlowTheme.of(context).labelMedium.fontStyle,
-                                      ),
+                                    font: GoogleFonts.plusJakartaSans(
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    color: const Color(0xFF606A85),
+                                    fontSize: 14.0,
+                                    letterSpacing: 0.0,
+                                  ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: const BorderSide(
                                       color: Color(0xFFE5E7EB),
@@ -278,364 +276,205 @@ class _AddQuestWidgetState extends State<AddQuestWidget>
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: const BorderSide(
-                                      color: Color(0xFF6F61EF),
+                                      color: Color(0xFFFFBD59),
                                       width: 2.0,
                                     ),
                                     borderRadius: BorderRadius.circular(12.0),
                                   ),
                                   errorBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                      color: Color(0xFFFF5963),
+                                    borderSide: BorderSide(
+                                      color: FlutterFlowTheme.of(context).error,
                                       width: 2.0,
                                     ),
                                     borderRadius: BorderRadius.circular(12.0),
                                   ),
                                   focusedErrorBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                      color: Color(0xFFFF5963),
+                                    borderSide: BorderSide(
+                                      color: FlutterFlowTheme.of(context).error,
                                       width: 2.0,
                                     ),
                                     borderRadius: BorderRadius.circular(12.0),
                                   ),
                                   filled: true,
-                                  fillColor: Colors.white,
-                                  contentPadding: const EdgeInsetsDirectional.fromSTEB(20.0, 24.0, 20.0, 24.0),
+                                  fillColor: FlutterFlowTheme.of(context).info,
+                                  contentPadding: const EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
                                 ),
                                 style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                      font: GoogleFonts.plusJakartaSans(
-                                        fontWeight: FontWeight.w500,
-                                        fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
-                                      ),
-                                      color: const Color(0xFF15161E),
-                                      fontSize: 14.0,
-                                      letterSpacing: 0.0,
-                                      fontWeight: FontWeight.w500,
-                                      fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
-                                    ),
-                                maxLines: 3,
+                                  fontFamily: 'Feather',
+                                  color: const Color(0xFF15161E),
+                                  fontSize: 14.0,
+                                  letterSpacing: 0.0,
+                                  fontWeight: FontWeight.w500,
+                                ),
                                 cursorColor: const Color(0xFF6F61EF),
                                 validator: _model.descriptionTextControllerValidator.asValidator(context),
                               ),
                             ],
                           ),
                         ),
-                        // XP Reward
+                        // XP Reward & Verification Code Row
                         Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 0.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          padding: const EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 0.0),
+                          child: Row(
                             children: [
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(4.0, 0.0, 0.0, 6.0),
-                                child: Text(
-                                  'XP Reward',
-                                  style: FlutterFlowTheme.of(context).bodySmall.override(
-                                        fontFamily: 'Feather',
-                                        color: const Color(0xFF9CA3AF),
-                                        fontSize: 12.0,
-                                        letterSpacing: 0.5,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                ),
-                              ),
-                              TextFormField(
-                                controller: _model.xpTextController,
-                                focusNode: _model.xpFocusNode,
-                                autofocus: false,
-                                obscureText: false,
-                                decoration: InputDecoration(
-                                  hintText: '100',
-                                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                                  hintStyle: FlutterFlowTheme.of(context).labelMedium.override(
-                                        font: GoogleFonts.plusJakartaSans(
-                                          fontWeight: FontWeight.w500,
-                                          fontStyle: FlutterFlowTheme.of(context).labelMedium.fontStyle,
+                              // XP Reward
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(4.0, 0.0, 0.0, 6.0),
+                                      child: Text(
+                                        'XP Reward',
+                                        style: FlutterFlowTheme.of(context).bodySmall.override(
+                                          fontFamily: 'Feather',
+                                          color: const Color(0xFF9CA3AF),
+                                          fontSize: 12.0,
+                                          letterSpacing: 0.5,
+                                          fontWeight: FontWeight.w600,
                                         ),
-                                        color: const Color(0xFF606A85),
-                                        fontSize: 14.0,
-                                        letterSpacing: 0.0,
-                                        fontWeight: FontWeight.w500,
-                                        fontStyle: FlutterFlowTheme.of(context).labelMedium.fontStyle,
                                       ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                      color: Color(0xFFE5E7EB),
-                                      width: 2.0,
                                     ),
-                                    borderRadius: BorderRadius.circular(12.0),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                      color: Color(0xFF6F61EF),
-                                      width: 2.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(12.0),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                      color: Color(0xFFFF5963),
-                                      width: 2.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(12.0),
-                                  ),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                      color: Color(0xFFFF5963),
-                                      width: 2.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(12.0),
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  contentPadding: const EdgeInsetsDirectional.fromSTEB(20.0, 24.0, 20.0, 24.0),
-                                ),
-                                style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                      font: GoogleFonts.plusJakartaSans(
-                                        fontWeight: FontWeight.w500,
-                                        fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
-                                      ),
-                                      color: const Color(0xFF15161E),
-                                      fontSize: 14.0,
-                                      letterSpacing: 0.0,
-                                      fontWeight: FontWeight.w500,
-                                      fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
-                                    ),
-                                keyboardType: TextInputType.number,
-                                cursorColor: const Color(0xFF6F61EF),
-                                validator: _model.xpTextControllerValidator.asValidator(context),
-                              ),
-                            ],
-                          ),
-                        ),
-                        // Difficulty Dropdown
-                        Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 0.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(4.0, 0.0, 0.0, 6.0),
-                                child: Text(
-                                  'Difficulty',
-                                  style: FlutterFlowTheme.of(context).bodySmall.override(
-                                        fontFamily: 'Feather',
-                                        color: const Color(0xFF9CA3AF),
-                                        fontSize: 12.0,
-                                        letterSpacing: 0.5,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                ),
-                              ),
-                              FlutterFlowDropDown<String>(
-                                controller: _model.difficultyValueController ??=
-                                    FormFieldController<String>(null),
-                                options: const ['easy', 'medium', 'hard', 'expert'],
-                                onChanged: (val) => safeSetState(() => _model.difficultyValue = val),
-                                width: double.infinity,
-                                height: 56.0,
-                                textStyle: FlutterFlowTheme.of(context).bodyMedium.override(
-                                      font: GoogleFonts.plusJakartaSans(
-                                        fontWeight: FontWeight.w500,
-                                        fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
-                                      ),
-                                      color: const Color(0xFF15161E),
-                                      fontSize: 14.0,
-                                      letterSpacing: 0.0,
-                                      fontWeight: FontWeight.w500,
-                                      fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
-                                    ),
-                                hintText: 'Select difficulty',
-                                icon: const Icon(
-                                  Icons.keyboard_arrow_down_rounded,
-                                  color: Color(0xFF606A85),
-                                  size: 24.0,
-                                ),
-                                fillColor: Colors.white,
-                                elevation: 2.0,
-                                borderColor: const Color(0xFFE5E7EB),
-                                borderWidth: 2.0,
-                                borderRadius: 12.0,
-                                margin: const EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 12.0, 0.0),
-                                hidesUnderline: true,
-                                isOverButton: false,
-                                isSearchable: false,
-                                isMultiSelect: false,
-                              ),
-                            ],
-                          ),
-                        ),                        // Expiration Date
-                        Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 0.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(4.0, 0.0, 0.0, 6.0),
-                                child: Text(
-                                  'Expiration Date (Optional)',
-                                  style: FlutterFlowTheme.of(context).bodySmall.override(
-                                        fontFamily: 'Feather',
-                                        color: const Color(0xFF9CA3AF),
-                                        fontSize: 12.0,
-                                        letterSpacing: 0.5,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () async {
-                                  final DateTime? picked = await showDatePicker(
-                                    context: context,
-                                    initialDate: DateTime.now().add(const Duration(days: 7)),
-                                    firstDate: DateTime.now(),
-                                    lastDate: DateTime.now().add(const Duration(days: 365)),
-                                  );
-                                  if (picked != null) {
-                                    setState(() {
-                                      _model.expirationDate = picked;
-                                    });
-                                  }
-                                },
-                                child: Container(
-                                  width: double.infinity,
-                                  padding: const EdgeInsetsDirectional.fromSTEB(20.0, 16.0, 20.0, 16.0),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(12.0),
-                                    border: Border.all(
-                                      color: const Color(0xFFE5E7EB),
-                                      width: 2.0,
-                                    ),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.calendar_today,
-                                        color: Color(0xFF606A85),
-                                        size: 20.0,
-                                      ),
-                                      const SizedBox(width: 12.0),
-                                      Text(
-                                        _model.expirationDate != null
-                                            ? dateTimeFormat('MMMMdd, yyyy', _model.expirationDate!)
-                                            : 'Select expiration date',
-                                        style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                              font: GoogleFonts.plusJakartaSans(
-                                                fontWeight: FontWeight.w500,
-                                                fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
-                                              ),
-                                              color: _model.expirationDate != null
-                                                  ? const Color(0xFF15161E)
-                                                  : const Color(0xFF606A85),
-                                              fontSize: 14.0,
-                                              letterSpacing: 0.0,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                      ),
-                                      if (_model.expirationDate != null)
-                                        const Spacer(),
-                                      if (_model.expirationDate != null)
-                                        InkWell(
-                                          onTap: () {
-                                            setState(() {
-                                              _model.expirationDate = null;
-                                            });
-                                          },
-                                          child: const Icon(
-                                            Icons.close,
-                                            color: Color(0xFF606A85),
-                                            size: 20.0,
+                                    TextFormField(
+                                      controller: _model.xpRewardTextController,
+                                      focusNode: _model.xpRewardFocusNode,
+                                      obscureText: false,
+                                      keyboardType: TextInputType.number,
+                                      decoration: InputDecoration(
+                                        hintText: '100',
+                                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                                        hintStyle: FlutterFlowTheme.of(context).labelMedium.override(
+                                          font: GoogleFonts.plusJakartaSans(
+                                            fontWeight: FontWeight.w500,
                                           ),
+                                          color: const Color(0xFF606A85),
+                                          fontSize: 14.0,
+                                          letterSpacing: 0.0,
                                         ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),                        // Category
-                        Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 0.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(4.0, 0.0, 0.0, 6.0),
-                                child: Text(
-                                  'Category (Optional)',
-                                  style: FlutterFlowTheme.of(context).bodySmall.override(
-                                        fontFamily: 'Feather',
-                                        color: const Color(0xFF9CA3AF),
-                                        fontSize: 12.0,
-                                        letterSpacing: 0.5,
-                                        fontWeight: FontWeight.w600,
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: const BorderSide(
+                                            color: Color(0xFFE5E7EB),
+                                            width: 2.0,
+                                          ),
+                                          borderRadius: BorderRadius.circular(12.0),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: const BorderSide(
+                                            color: Color(0xFFFFBD59),
+                                            width: 2.0,
+                                          ),
+                                          borderRadius: BorderRadius.circular(12.0),
+                                        ),
+                                        errorBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: FlutterFlowTheme.of(context).error,
+                                            width: 2.0,
+                                          ),
+                                          borderRadius: BorderRadius.circular(12.0),
+                                        ),
+                                        focusedErrorBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: FlutterFlowTheme.of(context).error,
+                                            width: 2.0,
+                                          ),
+                                          borderRadius: BorderRadius.circular(12.0),
+                                        ),
+                                        filled: true,
+                                        fillColor: FlutterFlowTheme.of(context).info,
+                                        contentPadding: const EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
                                       ),
-                                ),
-                              ),
-                              TextFormField(
-                                controller: _model.categoryTextController,
-                                focusNode: _model.categoryFocusNode,
-                                autofocus: false,
-                                obscureText: false,
-                                decoration: InputDecoration(
-                                  hintText: 'e.g., Academic, Library, Campus Tour',
-                                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                                  hintStyle: FlutterFlowTheme.of(context).labelMedium.override(
-                                        font: GoogleFonts.plusJakartaSans(
-                                          fontWeight: FontWeight.w500,
-                                          fontStyle: FlutterFlowTheme.of(context).labelMedium.fontStyle,
-                                        ),
-                                        color: const Color(0xFF606A85),
+                                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                        fontFamily: 'Feather',
+                                        color: const Color(0xFF15161E),
                                         fontSize: 14.0,
                                         letterSpacing: 0.0,
                                         fontWeight: FontWeight.w500,
-                                        fontStyle: FlutterFlowTheme.of(context).labelMedium.fontStyle,
                                       ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                      color: Color(0xFFE5E7EB),
-                                      width: 2.0,
+                                      cursorColor: const Color(0xFF6F61EF),
+                                      validator: _model.xpRewardTextControllerValidator.asValidator(context),
                                     ),
-                                    borderRadius: BorderRadius.circular(12.0),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                      color: Color(0xFF6F61EF),
-                                      width: 2.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(12.0),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                      color: Color(0xFFFF5963),
-                                      width: 2.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(12.0),
-                                  ),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                      color: Color(0xFFFF5963),
-                                      width: 2.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(12.0),
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  contentPadding: const EdgeInsetsDirectional.fromSTEB(20.0, 24.0, 20.0, 24.0),
+                                  ],
                                 ),
-                                style: FlutterFlowTheme.of(context).bodyMedium.override(
-                                      font: GoogleFonts.plusJakartaSans(
-                                        fontWeight: FontWeight.w500,
-                                        fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
+                              ),
+                              const SizedBox(width: 12.0),
+                              // Verification Code
+                              Expanded(
+                                flex: 2,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(4.0, 0.0, 0.0, 6.0),
+                                      child: Text(
+                                        'Verification Code',
+                                        style: FlutterFlowTheme.of(context).bodySmall.override(
+                                          fontFamily: 'Feather',
+                                          color: const Color(0xFF9CA3AF),
+                                          fontSize: 12.0,
+                                          letterSpacing: 0.5,
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
-                                      color: const Color(0xFF15161E),
-                                      fontSize: 14.0,
-                                      letterSpacing: 0.0,
-                                      fontWeight: FontWeight.w500,
-                                      fontStyle: FlutterFlowTheme.of(context).bodyMedium.fontStyle,
                                     ),
-                                cursorColor: const Color(0xFF6F61EF),
-                                validator: _model.categoryTextControllerValidator.asValidator(context),
+                                    TextFormField(
+                                      controller: _model.verificationCodeTextController,
+                                      focusNode: _model.verificationCodeFocusNode,
+                                      obscureText: false,
+                                      decoration: InputDecoration(
+                                        hintText: 'e.g. libstick2004',
+                                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                                        hintStyle: FlutterFlowTheme.of(context).labelMedium.override(
+                                          font: GoogleFonts.plusJakartaSans(
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                          color: const Color(0xFF606A85),
+                                          fontSize: 14.0,
+                                          letterSpacing: 0.0,
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: const BorderSide(
+                                            color: Color(0xFFE5E7EB),
+                                            width: 2.0,
+                                          ),
+                                          borderRadius: BorderRadius.circular(12.0),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: const BorderSide(
+                                            color: Color(0xFFFFBD59),
+                                            width: 2.0,
+                                          ),
+                                          borderRadius: BorderRadius.circular(12.0),
+                                        ),
+                                        errorBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: FlutterFlowTheme.of(context).error,
+                                            width: 2.0,
+                                          ),
+                                          borderRadius: BorderRadius.circular(12.0),
+                                        ),
+                                        focusedErrorBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: FlutterFlowTheme.of(context).error,
+                                            width: 2.0,
+                                          ),
+                                          borderRadius: BorderRadius.circular(12.0),
+                                        ),
+                                        filled: true,
+                                        fillColor: FlutterFlowTheme.of(context).info,
+                                        contentPadding: const EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
+                                      ),
+                                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                        fontFamily: 'Feather',
+                                        color: const Color(0xFF15161E),
+                                        fontSize: 14.0,
+                                        letterSpacing: 0.0,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      cursorColor: const Color(0xFF6F61EF),
+                                      validator: _model.verificationCodeTextControllerValidator.asValidator(context),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
@@ -647,7 +486,7 @@ class _AddQuestWidgetState extends State<AddQuestWidget>
                       padding: const EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 24.0, 24.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Align(
                             alignment: const AlignmentDirectional(0.0, 0.05),
@@ -661,13 +500,13 @@ class _AddQuestWidgetState extends State<AddQuestWidget>
                                 padding: const EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
                                 iconPadding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                                 color: Colors.white,
-                                textStyle: FlutterFlowTheme.of(context).bodyLarge.override(
-                                      fontFamily: 'Feather',
-                                      color: const Color(0xFF15161E),
-                                      fontSize: 14.0,
-                                      letterSpacing: 0.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                textStyle: FlutterFlowTheme.of(context).bodyMedium.override(
+                                  fontFamily: 'Feather',
+                                  color: const Color(0xFF15161E),
+                                  fontSize: 14.0,
+                                  letterSpacing: 0.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
                                 elevation: 0.0,
                                 borderSide: const BorderSide(
                                   color: Color(0xFFE5E7EB),
@@ -684,66 +523,43 @@ class _AddQuestWidgetState extends State<AddQuestWidget>
                               ),
                             ),
                           ),
-                          const SizedBox(width: 12.0),
                           Align(
                             alignment: const AlignmentDirectional(0.0, 0.05),
                             child: FFButtonWidget(
                               onPressed: () async {
-                                // Validate required fields
-                                if (_model.titleTextController.text.isEmpty ||
-                                    _model.xpTextController.text.isEmpty) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('Please fill in all required fields'),
-                                      duration: Duration(milliseconds: 2000),
-                                    ),
+                                // Validate fields
+                                if (_model.titleTextController!.text.isEmpty ||
+                                    _model.descriptionTextController!.text.isEmpty ||
+                                    _model.verificationCodeTextController!.text.isEmpty) {
+                                  await showDialog(
+                                    context: context,
+                                    barrierColor: Colors.black87,
+                                    builder: (alertDialogContext) {
+                                      return const ModernAlertDialog(
+                                        title: 'Missing Fields',
+                                        description: 'Please fill in all required fields before creating the quest.',
+                                        primaryButtonText: 'OK',
+                                      );
+                                    },
                                   );
                                   return;
                                 }
 
-                                // Insert quest
                                 await QuestsTable().insert({
-                                  'title': _model.titleTextController.text,
-                                  'description': _model.descriptionTextController.text,
-                                  'xp_reward': int.tryParse(_model.xpTextController.text),
-                                  'difficulty': _model.difficultyValue,
-                                  'category': _model.categoryTextController.text.isNotEmpty
-                                      ? _model.categoryTextController.text
-                                      : null,
-                                  'requires_code': false,
-                                  'is_active': true,
-                                  'expiration_date': _model.expirationDate?.toIso8601String(),
-                                  'is_retired': false,
+                                  'title': _model.titleTextController!.text,
+                                  'description': _model.descriptionTextController!.text,
+                                  'xp_reward': int.tryParse(_model.xpRewardTextController!.text) ?? 100,
+                                  'verification_code': _model.verificationCodeTextController!.text,
                                 });
-
+                                
                                 await showDialog(
                                   context: context,
+                                  barrierColor: Colors.black87,
                                   builder: (alertDialogContext) {
-                                    return AlertDialog(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(16.0),
-                                      ),
-                                      title: const Text(
-                                        'Success!',
-                                        style: TextStyle(
-                                          fontSize: 18.0,
-                                          fontWeight: FontWeight.w600,
-                                          color: Color(0xFF1E1E1E),
-                                        ),
-                                      ),
-                                      content: const Text(
-                                        'Quest has been created successfully.',
-                                        style: TextStyle(
-                                          fontSize: 14.0,
-                                          color: Color(0xFF6B7280),
-                                        ),
-                                      ),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () => Navigator.pop(alertDialogContext),
-                                          child: const Text('Ok'),
-                                        ),
-                                      ],
+                                    return const ModernAlertDialog(
+                                      title: 'Quest Created!',
+                                      description: 'Quest has been created and broadcast to all users.',
+                                      primaryButtonText: 'Done',
                                     );
                                   },
                                 );
@@ -756,12 +572,12 @@ class _AddQuestWidgetState extends State<AddQuestWidget>
                                 iconPadding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                                 color: const Color(0xFFFFBD59),
                                 textStyle: FlutterFlowTheme.of(context).titleSmall.override(
-                                      fontFamily: 'Feather',
-                                      color: Colors.white,
-                                      fontSize: 16.0,
-                                      letterSpacing: 0.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                  fontFamily: 'Feather',
+                                  color: Colors.white,
+                                  fontSize: 16.0,
+                                  letterSpacing: 0.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
                                 elevation: 3.0,
                                 borderSide: const BorderSide(
                                   color: Colors.transparent,
@@ -773,7 +589,7 @@ class _AddQuestWidgetState extends State<AddQuestWidget>
                                   color: Color(0xFF6F61EF),
                                   width: 1.0,
                                 ),
-                                hoverTextColor: Colors.white,
+                                hoverTextColor: const Color(0xFF15161E),
                                 hoverElevation: 0.0,
                               ),
                             ),
@@ -784,7 +600,7 @@ class _AddQuestWidgetState extends State<AddQuestWidget>
                   ],
                 ),
               ),
-            ),
+            ).animateOnPageLoad(animationsMap['containerOnPageLoadAnimation']!),
           ),
         ],
       ),

@@ -1,5 +1,4 @@
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/form_field_controller.dart';
 import 'add_quest_widget.dart' show AddQuestWidget;
 import 'package:flutter/material.dart';
 
@@ -10,28 +9,21 @@ class AddQuestModel extends FlutterFlowModel<AddQuestWidget> {
   FocusNode? titleFocusNode;
   TextEditingController? titleTextController;
   String? Function(BuildContext, String?)? titleTextControllerValidator;
-
+  
   // State field(s) for description widget.
   FocusNode? descriptionFocusNode;
   TextEditingController? descriptionTextController;
   String? Function(BuildContext, String?)? descriptionTextControllerValidator;
-
-  // State field(s) for xp widget.
-  FocusNode? xpFocusNode;
-  TextEditingController? xpTextController;
-  String? Function(BuildContext, String?)? xpTextControllerValidator;
-
-  // State field(s) for difficulty widget.
-  String? difficultyValue;
-  FormFieldController<String>? difficultyValueController;
-
-  // State field(s) for category widget.
-  FocusNode? categoryFocusNode;
-  TextEditingController? categoryTextController;
-  String? Function(BuildContext, String?)? categoryTextControllerValidator;
-
-  // State field(s) for expiration date
-  DateTime? expirationDate;
+  
+  // State field(s) for xpReward widget.
+  FocusNode? xpRewardFocusNode;
+  TextEditingController? xpRewardTextController;
+  String? Function(BuildContext, String?)? xpRewardTextControllerValidator;
+  
+  // State field(s) for verificationCode widget.
+  FocusNode? verificationCodeFocusNode;
+  TextEditingController? verificationCodeTextController;
+  String? Function(BuildContext, String?)? verificationCodeTextControllerValidator;
 
   @override
   void initState(BuildContext context) {}
@@ -44,10 +36,10 @@ class AddQuestModel extends FlutterFlowModel<AddQuestWidget> {
     descriptionFocusNode?.dispose();
     descriptionTextController?.dispose();
 
-    xpFocusNode?.dispose();
-    xpTextController?.dispose();
+    xpRewardFocusNode?.dispose();
+    xpRewardTextController?.dispose();
 
-    categoryFocusNode?.dispose();
-    categoryTextController?.dispose();
+    verificationCodeFocusNode?.dispose();
+    verificationCodeTextController?.dispose();
   }
 }

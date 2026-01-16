@@ -62,7 +62,7 @@ class _ArchiveTaskDivWidgetState extends State<ArchiveTaskDivWidget> {
       children: [
         Divider(
           thickness: 1.0,
-          color: FlutterFlowTheme.of(context).primaryText,
+          color: FlutterFlowTheme.of(context).alternate,
         ),
         Container(
           decoration: BoxDecoration(
@@ -87,7 +87,7 @@ class _ArchiveTaskDivWidgetState extends State<ArchiveTaskDivWidget> {
                   ),
                   style: FlutterFlowTheme.of(context).bodyMedium.override(
                         fontFamily: 'Feather',
-                        color: FlutterFlowTheme.of(context).primaryText,
+                        color: FlutterFlowTheme.of(context).info,
                         fontSize: 24.0,
                         letterSpacing: 0.0,
                         fontWeight: FontWeight.bold,
@@ -106,7 +106,7 @@ class _ArchiveTaskDivWidgetState extends State<ArchiveTaskDivWidget> {
                     ),
                     style: FlutterFlowTheme.of(context).bodyMedium.override(
                           fontFamily: 'Feather',
-                          color: FlutterFlowTheme.of(context).primaryText,
+                          color: FlutterFlowTheme.of(context).secondaryText,
                           fontSize: 12.0,
                           letterSpacing: 0.0,
                           fontWeight: FontWeight.w500,

@@ -385,17 +385,17 @@ class _MenuTaskWidgetState extends State<MenuTaskWidget> {
                             'Task completed!$lateMessage\n\nBase XP: $baseTaskXp → Adjusted: +$xpToAward XP (-${((xpReduction * 100) / baseTaskXp).round()}% penalty)\nDaily task XP: ${xpEarnedToday + xpToAward}/$dailyLimit';
                       } else {
                         completionMessage =
-                            'Task completed!$lateMessage\n\nBase XP: $baseTaskXp but daily limit reached.\n\nQuests still earn unlimited XP!';
+                            'Task completed!$lateMessage\n\nBase XP: $baseTaskXp but daily limit reached.';
                       }
                     } else if (limitReached) {
                       completionMessage =
-                          'Task completed! You\'ve reached your daily XP limit from tasks ($dailyLimit XP/day).\n\nXP awarded: +$xpToAward XP\nQuests still earn unlimited XP!';
+                          'Task completed! You\'ve reached your daily XP limit from tasks ($dailyLimit XP/day).\n\nXP awarded: +$xpToAward XP';
                     } else if (xpToAward > 0) {
                       completionMessage =
                           'Task completed! You earned +$xpToAward XP!\n\nDaily task XP: ${xpEarnedToday + xpToAward}/$dailyLimit';
                     } else {
                       completionMessage =
-                          'Task completed!\n\nYou\'ve reached your daily XP limit from tasks ($dailyLimit XP/day).\n\nQuests still earn unlimited XP!';
+                          'Task completed!\n\nYou\'ve reached your daily XP limit from tasks ($dailyLimit XP/day).';
                     }
 
                     await showDialog(

@@ -1,8 +1,8 @@
 import '/flutter_flow/flutter_flow_util.dart';
-import 'quest_card_widget.dart' show QuestCardWidget;
+import 'view_mission_widget.dart' show ViewMissionWidget;
 import 'package:flutter/material.dart';
 
-class QuestCardModel extends FlutterFlowModel<QuestCardWidget> {
+class ViewMissionModel extends FlutterFlowModel<ViewMissionWidget> {
   @override
   void initState(BuildContext context) {}
 

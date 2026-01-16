@@ -170,183 +170,173 @@ class _AchievementsWidgetState extends State<AchievementsWidget>
                     child: TabBarView(
                       controller: _model.tabBarController,
                       children: [
-                        Align(
-                          alignment: const AlignmentDirectional(0.0, 0.7),
-                          child: Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                10.0, 10.0, 10.0, 190.0),
-                            child: Container(
-                              height: 579.4,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                                boxShadow: const [
-                                  BoxShadow(
-                                    blurRadius: 10.0,
-                                    color: Color(0x33000000),
-                                    offset: Offset(
-                                      0.0,
-                                      2.0,
-                                    ),
-                                    spreadRadius: 20.0,
-                                  )
-                                ],
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: FutureBuilder<List<UserAchievementsRow>>(
-                                  future: UserAchievementsTable().queryRows(
-                                    queryFn: (q) => q.eqOrNull(
-                                      'user_id',
-                                      currentUserUid,
-                                    ),
+                        Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              10.0, 10.0, 10.0, 100.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: FlutterFlowTheme.of(context)
+                                  .secondaryBackground,
+                              boxShadow: const [
+                                BoxShadow(
+                                  blurRadius: 10.0,
+                                  color: Color(0x33000000),
+                                  offset: Offset(
+                                    0.0,
+                                    2.0,
                                   ),
-                                  builder: (context, snapshot) {
-                                    // Customize what your widget looks like when it's loading.
-                                    if (!snapshot.hasData) {
-                                      return Center(
-                                        child: SizedBox(
-                                          width: 50.0,
-                                          height: 50.0,
-                                          child: CircularProgressIndicator(
-                                            valueColor:
-                                                AlwaysStoppedAnimation<Color>(
-                                              FlutterFlowTheme.of(context)
-                                                  .primary,
-                                            ),
+                                  spreadRadius: 20.0,
+                                )
+                              ],
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: FutureBuilder<List<UserAchievementsRow>>(
+                                future: UserAchievementsTable().queryRows(
+                                  queryFn: (q) => q.eqOrNull(
+                                    'user_id',
+                                    currentUserUid,
+                                  ),
+                                ),
+                                builder: (context, snapshot) {
+                                  // Customize what your widget looks like when it's loading.
+                                  if (!snapshot.hasData) {
+                                    return Center(
+                                      child: SizedBox(
+                                        width: 50.0,
+                                        height: 50.0,
+                                        child: CircularProgressIndicator(
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                            FlutterFlowTheme.of(context)
+                                                .primary,
                                           ),
                                         ),
-                                      );
-                                    }
-                                    List<UserAchievementsRow>
-                                        listViewUserAchievementsRowList =
-                                        snapshot.data!;
-
-                                    return ListView.builder(
-                                      padding: EdgeInsets.zero,
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.vertical,
-                                      itemCount: listViewUserAchievementsRowList
-                                          .length,
-                                      itemBuilder: (context, listViewIndex) {
-                                        final listViewUserAchievementsRow =
-                                            listViewUserAchievementsRowList[
-                                                listViewIndex];
-                                        return wrapWithModel(
-                                          model: _model.achievementsDivModels1
-                                              .getModel(
-                                            listViewUserAchievementsRow
-                                                .achievementId,
-                                            listViewIndex,
-                                          ),
-                                          updateCallback: () =>
-                                              safeSetState(() {}),
-                                          child: AchievementsDivWidget(
-                                            key: Key(
-                                              'Keymct_${listViewUserAchievementsRow.achievementId}',
-                                            ),
-                                            achievements:
-                                                listViewUserAchievementsRow,
-                                          ),
-                                        );
-                                      },
+                                      ),
                                     );
-                                  },
-                                ),
+                                  }
+                                  List<UserAchievementsRow>
+                                      listViewUserAchievementsRowList =
+                                      snapshot.data!;
+
+                                  return ListView.builder(
+                                    padding: EdgeInsets.zero,
+                                    scrollDirection: Axis.vertical,
+                                    itemCount: listViewUserAchievementsRowList
+                                        .length,
+                                    itemBuilder: (context, listViewIndex) {
+                                      final listViewUserAchievementsRow =
+                                          listViewUserAchievementsRowList[
+                                              listViewIndex];
+                                      return wrapWithModel(
+                                        model: _model.achievementsDivModels1
+                                            .getModel(
+                                          listViewUserAchievementsRow
+                                              .achievementId,
+                                          listViewIndex,
+                                        ),
+                                        updateCallback: () =>
+                                            safeSetState(() {}),
+                                        child: AchievementsDivWidget(
+                                          key: Key(
+                                            'Keymct_${listViewUserAchievementsRow.achievementId}',
+                                          ),
+                                          achievements:
+                                              listViewUserAchievementsRow,
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
                               ),
                             ),
                           ),
                         ),
-                        Align(
-                          alignment: const AlignmentDirectional(0.0, 0.7),
-                          child: Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                10.0, 10.0, 10.0, 190.0),
-                            child: Container(
-                              height: 579.4,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                                boxShadow: const [
-                                  BoxShadow(
-                                    blurRadius: 10.0,
-                                    color: Color(0x33000000),
-                                    offset: Offset(
-                                      0.0,
-                                      2.0,
-                                    ),
-                                    spreadRadius: 20.0,
-                                  )
-                                ],
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: FutureBuilder<List<UserAchievementsRow>>(
-                                  future: UserAchievementsTable().queryRows(
-                                    queryFn: (q) => q
-                                        .eqOrNull(
-                                          'user_id',
-                                          currentUserUid,
-                                        )
-                                        .eqOrNull(
-                                          'is_done',
-                                          true,
-                                        ),
+                        Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              10.0, 10.0, 10.0, 100.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: FlutterFlowTheme.of(context)
+                                  .secondaryBackground,
+                              boxShadow: const [
+                                BoxShadow(
+                                  blurRadius: 10.0,
+                                  color: Color(0x33000000),
+                                  offset: Offset(
+                                    0.0,
+                                    2.0,
                                   ),
-                                  builder: (context, snapshot) {
-                                    // Customize what your widget looks like when it's loading.
-                                    if (!snapshot.hasData) {
-                                      return Center(
-                                        child: SizedBox(
-                                          width: 50.0,
-                                          height: 50.0,
-                                          child: CircularProgressIndicator(
-                                            valueColor:
-                                                AlwaysStoppedAnimation<Color>(
-                                              FlutterFlowTheme.of(context)
-                                                  .primary,
-                                            ),
+                                  spreadRadius: 20.0,
+                                )
+                              ],
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: FutureBuilder<List<UserAchievementsRow>>(
+                                future: UserAchievementsTable().queryRows(
+                                  queryFn: (q) => q
+                                      .eqOrNull(
+                                        'user_id',
+                                        currentUserUid,
+                                      )
+                                      .eqOrNull(
+                                        'is_done',
+                                        true,
+                                      ),
+                                ),
+                                builder: (context, snapshot) {
+                                  // Customize what your widget looks like when it's loading.
+                                  if (!snapshot.hasData) {
+                                    return Center(
+                                      child: SizedBox(
+                                        width: 50.0,
+                                        height: 50.0,
+                                        child: CircularProgressIndicator(
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                            FlutterFlowTheme.of(context)
+                                                .primary,
                                           ),
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                  List<UserAchievementsRow>
+                                      listViewUserAchievementsRowList =
+                                      snapshot.data!;
+
+                                  return ListView.builder(
+                                    padding: EdgeInsets.zero,
+                                    scrollDirection: Axis.vertical,
+                                    itemCount: listViewUserAchievementsRowList
+                                        .length,
+                                    itemBuilder: (context, listViewIndex) {
+                                      final listViewUserAchievementsRow =
+                                          listViewUserAchievementsRowList[
+                                              listViewIndex];
+                                      return wrapWithModel(
+                                        model: _model.achievementsDivModels2
+                                            .getModel(
+                                          listViewUserAchievementsRow
+                                              .achievementId,
+                                          listViewIndex,
+                                        ),
+                                        updateCallback: () =>
+                                            safeSetState(() {}),
+                                        child: AchievementsDivWidget(
+                                          key: Key(
+                                            'Key45x_${listViewUserAchievementsRow.achievementId}',
+                                          ),
+                                          achievements:
+                                              listViewUserAchievementsRow,
                                         ),
                                       );
-                                    }
-                                    List<UserAchievementsRow>
-                                        listViewUserAchievementsRowList =
-                                        snapshot.data!;
-
-                                    return ListView.builder(
-                                      padding: EdgeInsets.zero,
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.vertical,
-                                      itemCount: listViewUserAchievementsRowList
-                                          .length,
-                                      itemBuilder: (context, listViewIndex) {
-                                        final listViewUserAchievementsRow =
-                                            listViewUserAchievementsRowList[
-                                                listViewIndex];
-                                        return wrapWithModel(
-                                          model: _model.achievementsDivModels2
-                                              .getModel(
-                                            listViewUserAchievementsRow
-                                                .achievementId,
-                                            listViewIndex,
-                                          ),
-                                          updateCallback: () =>
-                                              safeSetState(() {}),
-                                          child: AchievementsDivWidget(
-                                            key: Key(
-                                              'Key45x_${listViewUserAchievementsRow.achievementId}',
-                                            ),
-                                            achievements:
-                                                listViewUserAchievementsRow,
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  },
-                                ),
+                                    },
+                                  );
+                                },
                               ),
                             ),
                           ),

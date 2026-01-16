@@ -1,7 +1,8 @@
 import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
 import '/components/mission/mission_widget.dart';
-import '/components/quest/quest_widget.dart';
+import '/components/redeem_quest/redeem_quest_widget.dart';
+import '/components/view_mission/view_mission_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -38,7 +39,7 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
 
     _model.tabBarController = TabController(
       vsync: this,
-      length: 1,
+      length: 2,
       initialIndex: 0,
     )..addListener(() => safeSetState(() {}));
 
@@ -1325,28 +1326,46 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                                                     final listViewUserMissionsRow =
                                                         listViewUserMissionsRowList[
                                                             listViewIndex];
-                                                    return wrapWithModel(
-                                                      model: _model
-                                                          .missionModels
-                                                          .getModel(
-                                                        listViewUserMissionsRow
-                                                            .missionId!,
-                                                        listViewIndex,
-                                                      ),
-                                                      updateCallback: () =>
-                                                          safeSetState(() {}),
-                                                      child: MissionWidget(
-                                                        key: Key(
-                                                          'Keywr2_${listViewUserMissionsRow.missionId!}',
+                                                    return InkWell(
+                                                      onTap: () async {
+                                                        await showModalBottomSheet(
+                                                          isScrollControlled: true,
+                                                          backgroundColor: Colors.transparent,
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return Padding(
+                                                              padding: MediaQuery.viewInsetsOf(context),
+                                                              child: ViewMissionWidget(
+                                                                userMission: listViewUserMissionsRow,
+                                                              ),
+                                                            );
+                                                          },
+                                                        );
+                                                      },
+                                                      borderRadius: BorderRadius.circular(12.0),
+                                                      child: wrapWithModel(
+                                                        model: _model
+                                                            .missionModels
+                                                            .getModel(
+                                                          listViewUserMissionsRow
+                                                              .missionId!,
+                                                          listViewIndex,
                                                         ),
-                                                        missionName:
-                                                            listViewUserMissionsRow
-                                                                .missionTitle,
-                                                        description:
-                                                            listViewUserMissionsRow
-                                                                .missionDescription,
-                                                        status: '',
-                                                        deadline: '',
+                                                        updateCallback: () =>
+                                                            safeSetState(() {}),
+                                                        child: MissionWidget(
+                                                          key: Key(
+                                                            'Keywr2_${listViewUserMissionsRow.missionId!}',
+                                                          ),
+                                                          missionName:
+                                                              listViewUserMissionsRow
+                                                                  .missionTitle,
+                                                          description:
+                                                              listViewUserMissionsRow
+                                                                  .missionDescription,
+                                                          status: '',
+                                                          deadline: '',
+                                                        ),
                                                       ),
                                                     );
                                                   },
@@ -1354,28 +1373,26 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                                               },
                                             ),
                                           ),
-                                          // Quests Tab
+                                          // Quests Tab Content
                                           Padding(
                                             padding: const EdgeInsetsDirectional
                                                 .fromSTEB(
                                                 16.0, 12.0, 16.0, 12.0),
                                             child: FutureBuilder<
-                                                List<QuestsRow>>(
+                                                List<UserQuestsRow>>(
                                               future:
-                                                  QuestsTable().queryRows(
+                                                  UserQuestsTable().queryRows(
                                                 queryFn: (q) => q
                                                     .eqOrNull(
-                                                      'is_active',
-                                                      true,
+                                                      'user_id',
+                                                      currentUserUid,
                                                     )
                                                     .eqOrNull(
-                                                      'is_retired',
+                                                      'is_redeemed',
                                                       false,
-                                                    )
-                                                    .or('expiration_date.is.null,expiration_date.gt.${DateTime.now().toIso8601String()}'),
+                                                    ),
                                               ),
                                               builder: (context, snapshot) {
-                                                // Customize what your widget looks like when it's loading.
                                                 if (!snapshot.hasData) {
                                                   return Center(
                                                     child: SizedBox(
@@ -1394,36 +1411,144 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                                                     ),
                                                   );
                                                 }
-                                                List<QuestsRow>
-                                                    listViewQuestsRowList =
+                                                List<UserQuestsRow>
+                                                    listViewUserQuestsRowList =
                                                     snapshot.data!;
+
+                                                if (listViewUserQuestsRowList.isEmpty) {
+                                                  return Center(
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.all(32.0),
+                                                      child: Column(
+                                                        mainAxisSize: MainAxisSize.min,
+                                                        children: [
+                                                          Icon(
+                                                            Icons.explore_outlined,
+                                                            size: 48.0,
+                                                            color: FlutterFlowTheme.of(context).secondaryText,
+                                                          ),
+                                                          const SizedBox(height: 12.0),
+                                                          Text(
+                                                            'No quests available',
+                                                            style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                              fontFamily: 'Feather',
+                                                              color: FlutterFlowTheme.of(context).secondaryText,
+                                                              fontWeight: FontWeight.w500,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  );
+                                                }
 
                                                 return ListView.builder(
                                                   padding: EdgeInsets.zero,
                                                   primary: false,
                                                   shrinkWrap: true,
-                                                  physics: const NeverScrollableScrollPhysics(),
                                                   scrollDirection:
                                                       Axis.vertical,
                                                   itemCount:
-                                                      listViewQuestsRowList
+                                                      listViewUserQuestsRowList
                                                           .length,
                                                   itemBuilder:
                                                       (context, listViewIndex) {
-                                                    final listViewQuestsRow =
-                                                        listViewQuestsRowList[
+                                                    final listViewUserQuestsRow =
+                                                        listViewUserQuestsRowList[
                                                             listViewIndex];
-                                                    
-                                                    return QuestWidget(
-                                                      key: Key(
-                                                        'Quest_${listViewQuestsRow.id}',
+                                                    return FutureBuilder<List<QuestsRow>>(
+                                                      future: QuestsTable().queryRows(
+                                                        queryFn: (q) => q.eqOrNull('id', listViewUserQuestsRow.questId),
                                                       ),
-                                                      questId: listViewQuestsRow.id,
-                                                      questTitle: listViewQuestsRow.title,
-                                                      description: listViewQuestsRow.description,
-                                                      xpReward: listViewQuestsRow.xpReward,
-                                                      difficulty: listViewQuestsRow.difficulty,
-                                                      requiresCode: listViewQuestsRow.requiresCode,
+                                                      builder: (context, questSnapshot) {
+                                                        if (!questSnapshot.hasData || questSnapshot.data!.isEmpty) {
+                                                          return const SizedBox.shrink();
+                                                        }
+                                                        final quest = questSnapshot.data!.first;
+                                                        return Padding(
+                                                          padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
+                                                          child: InkWell(
+                                                            onTap: () async {
+                                                              await showModalBottomSheet(
+                                                                isScrollControlled: true,
+                                                                backgroundColor: Colors.transparent,
+                                                                context: context,
+                                                                builder: (context) {
+                                                                  return Padding(
+                                                                    padding: MediaQuery.viewInsetsOf(context),
+                                                                    child: RedeemQuestWidget(
+                                                                      quest: quest,
+                                                                      userQuest: listViewUserQuestsRow,
+                                                                      onRedeemed: () {
+                                                                        safeSetState(() {});
+                                                                      },
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              );
+                                                            },
+                                                            borderRadius: BorderRadius.circular(12.0),
+                                                            child: Container(
+                                                              width: double.infinity,
+                                                              decoration: BoxDecoration(
+                                                                color: Colors.white,
+                                                                borderRadius: BorderRadius.circular(12.0),
+                                                                border: Border.all(
+                                                                  color: const Color(0xFFE0E3E7),
+                                                                  width: 2.0,
+                                                                ),
+                                                              ),
+                                                              child: Padding(
+                                                                padding: const EdgeInsets.all(12.0),
+                                                                child: Column(
+                                                                  mainAxisSize: MainAxisSize.max,
+                                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                                  children: [
+                                                                    Row(
+                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                      children: [
+                                                                        Expanded(
+                                                                          child: Text(
+                                                                            quest.title,
+                                                                            style: FlutterFlowTheme.of(context).headlineSmall.override(
+                                                                              fontFamily: 'Feather',
+                                                                              color: const Color(0xFF0F1113),
+                                                                            fontSize: 18.0,
+                                                                            fontWeight: FontWeight.bold,
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      Container(
+                                                                        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                                                                        decoration: BoxDecoration(
+                                                                          color: const Color(0xFFFFBD59),
+                                                                          borderRadius: BorderRadius.circular(8.0),
+                                                                        ),
+                                                                        child: Text(
+                                                                          '+${quest.xpReward} XP',
+                                                                          style: FlutterFlowTheme.of(context).bodySmall.override(
+                                                                            fontFamily: 'Feather',
+                                                                            color: Colors.white,
+                                                                            fontWeight: FontWeight.bold,
+                                                                          ),
+                                                                    ),
+                                                                  ),
+                                                                  const SizedBox(height: 8.0),
+                                                                  Text(
+                                                                    quest.description,
+                                                                    style: FlutterFlowTheme.of(context).bodyMedium.override(
+                                                                      fontFamily: 'Feather',
+                                                                      color: const Color(0xFF57636C),
+                                                                      fontSize: 14.0,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                        ]),
+                                                          ),
+                                                        ),
+                                                        ));
+                                                      },
                                                     );
                                                   },
                                                 );

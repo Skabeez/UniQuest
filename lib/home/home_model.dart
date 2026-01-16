@@ -29,9 +29,7 @@ class HomeModel extends FlutterFlowModel<HomeWidget> {
 
   // Data state
   List<MissionsRow>? cachedMissions;
-  List<QuestsRow>? cachedQuests;
   bool isLoadingMissions = false;
-  bool isLoadingQuests = false;
   bool showOfflineWarning = false;
 
   @override
@@ -87,45 +85,6 @@ class HomeModel extends FlutterFlowModel<HomeWidget> {
     }
   }
 
-  /// Load quests with cache fallback when offline
-  Future<List<QuestsRow>?> loadQuests() async {
-    isLoadingQuests = true;
-
-    try {
-      // Try to fetch from server if connected
-      if (await _connectivityService.isConnected()) {
-        final quests = await QuestsTable().queryRows(
-          queryFn: (q) => q.eq('is_active', true).order('xp_reward'),
-        );
-        
-        // Cache the fresh data
-        if (_cacheService != null) {
-          await _cacheService!.cacheQuests(quests);
-        }
-        
-        cachedQuests = quests;
-        isLoadingQuests = false;
-        showOfflineWarning = false;
-        return quests;
-      } else {
-        // Load from cache if offline
-        final cached = await _cacheService?.getCachedQuests();
-        if (cached != null && cached.isNotEmpty) {
-          cachedQuests = cached;
-          isLoadingQuests = false;
-          showOfflineWarning = true;
-          return cached;
-        } else {
-          throw Exception('No cached quests available offline');
-        }
-      }
-    } catch (e) {
-      isLoadingQuests = false;
-      debugPrint('Error loading quests: $e');
-      rethrow;
-    }
-  }
-
   // ============ WRITE OPERATIONS (REQUIRE CONNECTIVITY) ============
 
   /// Accept a mission (requires internet connection)
@@ -146,36 +105,12 @@ class HomeModel extends FlutterFlowModel<HomeWidget> {
     }
   }
 
-  /// Start a quest (requires internet connection for code verification)
-  Future<bool> startQuest(String questId) async {
-    if (!await _connectivityService.isConnected()) {
-      // Cannot start quest offline (needs verification)
-      debugPrint('Cannot start quest while offline');
-      return false;
-    }
-
-    try {
-      // Perform quest start logic
-      // TODO: Implement quest start
-      return true;
-    } catch (e) {
-      debugPrint('Error starting quest: $e');
-      return false;
-    }
-  }
-
   // ============ CACHE MANAGEMENT ============
 
   /// Check if cache is valid
   Future<bool> isMissionsCacheValid() async {
     if (_cacheService == null) return false;
     return await _cacheService!.isCacheValid('cache_missions');
-  }
-
-  /// Check if cache is valid
-  Future<bool> isQuestsCacheValid() async {
-    if (_cacheService == null) return false;
-    return await _cacheService!.isCacheValid('cache_quests');
   }
 
   /// Manually refresh data (force network fetch)
@@ -186,9 +121,7 @@ class HomeModel extends FlutterFlowModel<HomeWidget> {
     
     // Clear cache and reload
     await _cacheService?.clearCacheKey('cache_missions');
-    await _cacheService?.clearCacheKey('cache_quests');
     await loadMissions();
-    await loadQuests();
   }
 
   @override
