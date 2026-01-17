@@ -4,6 +4,7 @@ import '/components/lottie_burst_overlay/lottie_burst_overlay_widget.dart';
 import '/components/modern_alert_dialog.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'background_model.dart';
 export 'background_model.dart';
 
@@ -47,7 +48,7 @@ class _BackgroundWidgetState extends State<BackgroundWidget> {
   Widget build(BuildContext context) {
     return FutureBuilder<List<ProfilesRow>>(
       future: ProfilesTable().queryRows(
-        queryFn: (q) => q.eqOrNull('id', currentUserUid),
+        queryFn: (q) => q.eq('id', currentUserUid),
       ),
       builder: (context, snapshot) {
         final isEquipped = snapshot.hasData &&
@@ -81,9 +82,30 @@ class _BackgroundWidgetState extends State<BackgroundWidget> {
                     ) ??
                     false;
                 if (confirmDialogResponse) {
+                  if (kDebugMode) {
+                    print('Equip background: uid="$currentUserUid", bg="${widget.url}"');
+                  }
+                  if (currentUserUid.isEmpty) {
+                    if (context.mounted) {
+                      await showDialog(
+                        context: context,
+                        barrierColor: Colors.black87,
+                        builder: (alertDialogContext) {
+                          return const ModernAlertDialog(
+                            title: 'Not signed in',
+                            description:
+                                'Please sign in to equip a background to your profile.',
+                            primaryButtonText: 'OK',
+                          );
+                        },
+                      );
+                    }
+                    return;
+                  }
+
                   // Check if already equipped
                   final currentProfile = await ProfilesTable().queryRows(
-                    queryFn: (q) => q.eqOrNull('id', currentUserUid),
+                    queryFn: (q) => q.eq('id', currentUserUid),
                   );
 
                   if (currentProfile.isNotEmpty &&
@@ -109,7 +131,7 @@ class _BackgroundWidgetState extends State<BackgroundWidget> {
                     data: {
                       'equipped_namecard': widget.url,
                     },
-                    matchingRows: (rows) => rows.eqOrNull(
+                    matchingRows: (rows) => rows.eq(
                       'id',
                       currentUserUid,
                     ),

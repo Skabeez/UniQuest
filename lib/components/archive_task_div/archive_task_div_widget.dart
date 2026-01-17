@@ -60,42 +60,45 @@ class _ArchiveTaskDivWidgetState extends State<ArchiveTaskDivWidget> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Divider(
+        Divider(
           thickness: 1.0,
-          color: Color(0xFFE6E6E6),
+          color: FlutterFlowTheme.of(context).alternate,
         ),
         Container(
+          width: double.infinity,
+          constraints: const BoxConstraints(minHeight: 110.0),
           decoration: BoxDecoration(
-            color: const Color(0xFFFAF3E8),
-            borderRadius: BorderRadius.circular(12.0),
+            // Keep cards cream while page remains dark
+            color: const Color(0xFFFBF7F3),
+            borderRadius: BorderRadius.circular(16.0),
             border: Border.all(
-              color: const Color(0xFFE8DAC8),
+              color: const Color(0xFFF3EDE2),
               width: 1.0,
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.08),
-                blurRadius: 16.0,
-                offset: const Offset(0, 8),
+                color: Colors.black.withOpacity(0.04),
+                blurRadius: 10.0,
+                offset: const Offset(0.0, 4.0),
               ),
             ],
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Normalize title casing for consistent display
                 Text(
-                  valueOrDefault<String>(
-                    widget.title,
-                    'title',
-                  ),
-                  textAlign: TextAlign.center,
+                  (widget.title.trim().isNotEmpty
+                    ? '${widget.title.trim()[0].toUpperCase()}${widget.title.trim().substring(1)}'
+                    : 'Title'),
+                  textAlign: TextAlign.start,
                   style: FlutterFlowTheme.of(context).bodyMedium.override(
                         fontFamily: 'Feather',
-                        color: FlutterFlowTheme.of(context).primaryText,
-                        fontSize: 18.0,
+                        color: const Color(0xFFFFBD59),
+                        fontSize: 22.0,
                         letterSpacing: 0.0,
                         fontWeight: FontWeight.bold,
                       ),
@@ -106,24 +109,26 @@ class _ArchiveTaskDivWidgetState extends State<ArchiveTaskDivWidget> {
                 Padding(
                   padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 8.0),
                   child: Text(
-                    valueOrDefault<String>(
-                      widget.description,
-                      'details',
-                    ),
-                    textAlign: TextAlign.center,
-                    style: FlutterFlowTheme.of(context).bodyMedium.override(
-                          fontFamily: 'Feather',
-                          color: const Color(0xFF6B6B6B),
-                          fontSize: 13.0,
-                          letterSpacing: 0.0,
-                          fontWeight: FontWeight.w600,
-                        ),
+                    // Capitalize description sentence start
+                    (widget.description.trim().isNotEmpty
+                        ? '${widget.description.trim()[0].toUpperCase()}${widget.description.trim().substring(1)}'
+                        : 'Details'),
+                      textAlign: TextAlign.start,
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily: 'Feather',
+                            color: const Color(0xFF6B6B6B),
+                            fontSize: 13.0,
+                            letterSpacing: 0.0,
+                            fontWeight: FontWeight.w600,
+                          ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 if (widget.tag != null && widget.tag!.isNotEmpty)
-                  Container(
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 14.0,
                       vertical: 6.0,
@@ -157,7 +162,7 @@ class _ArchiveTaskDivWidgetState extends State<ArchiveTaskDivWidget> {
                           ),
                     ),
                   ),
-              ],
+            )],
             ),
           ),
         ),

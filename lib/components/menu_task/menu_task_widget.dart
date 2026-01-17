@@ -303,7 +303,7 @@ class _MenuTaskWidgetState extends State<MenuTaskWidget> {
                         xpReduction = ((baseTaskXp * reductionPercent) / 100).round();
                         
                         if (xpReduction > 0) {
-                          lateMessage = ' (-${reductionPercent}% for $daysLate day${daysLate == 1 ? '' : 's'} late)';
+                          lateMessage = ' (-$reductionPercent% for $daysLate day${daysLate == 1 ? '' : 's'} late)';
                         }
                       }
                     }
@@ -346,6 +346,24 @@ class _MenuTaskWidgetState extends State<MenuTaskWidget> {
                       );
 
                       // Award XP if any is available
+                      if (currentUserUid.isEmpty) {
+                        if (context.mounted) {
+                          await showDialog(
+                            context: context,
+                            barrierColor: Colors.black87,
+                            builder: (alertDialogContext) {
+                              return const ModernAlertDialog(
+                                title: 'Not signed in',
+                                description:
+                                    'Please sign in to complete this task.',
+                                primaryButtonText: 'OK',
+                              );
+                            },
+                          );
+                        }
+                        return;
+                      }
+
                       if (xpToAward > 0) {
                         await ProfilesTable().update(
                           data: {
@@ -353,7 +371,7 @@ class _MenuTaskWidgetState extends State<MenuTaskWidget> {
                             'task_xp_earned_today': xpEarnedToday + xpToAward,
                             'task_xp_reset_date': today.toIso8601String(),
                           },
-                          matchingRows: (rows) => rows.eqOrNull('id', currentUserUid),
+                          matchingRows: (rows) => rows.eq('id', currentUserUid),
                         );
                       } else {
                         // Just update the reset date even if no XP awarded
@@ -361,7 +379,7 @@ class _MenuTaskWidgetState extends State<MenuTaskWidget> {
                           data: {
                             'task_xp_reset_date': today.toIso8601String(),
                           },
-                          matchingRows: (rows) => rows.eqOrNull('id', currentUserUid),
+                          matchingRows: (rows) => rows.eq('id', currentUserUid),
                         );
                       }
                     } catch (e, st) {

@@ -174,12 +174,12 @@ class _AchievementsWidgetState extends State<AchievementsWidget>
                           padding: const EdgeInsetsDirectional.fromSTEB(
                               10.0, 10.0, 10.0, 100.0),
                           child: Container(
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFF5F5F5),
-                              border: Border.all(
-                                color: const Color(0xFFE0E0E0),
-                                width: 2.0,
-                              ),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFF5F5F5),
+                                border: Border.all(
+                                  color: const Color(0xFFE0E0E0),
+                                  width: 2.0,
+                                ),
                               boxShadow: const [
                                 BoxShadow(
                                   blurRadius: 8.0,
@@ -256,12 +256,12 @@ class _AchievementsWidgetState extends State<AchievementsWidget>
                           padding: const EdgeInsetsDirectional.fromSTEB(
                               10.0, 10.0, 10.0, 100.0),
                           child: Container(
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFF5F5F5),
-                              border: Border.all(
-                                color: const Color(0xFFE0E0E0),
-                                width: 2.0,
-                              ),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFF5F5F5),
+                                border: Border.all(
+                                  color: const Color(0xFFE0E0E0),
+                                  width: 2.0,
+                                ),
                               boxShadow: const [
                                 BoxShadow(
                                   blurRadius: 8.0,

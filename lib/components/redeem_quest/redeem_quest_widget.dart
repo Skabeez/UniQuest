@@ -2,6 +2,7 @@ import '/backend/supabase/supabase.dart';
 import '/components/lottie_burst_overlay/lottie_burst_overlay_widget.dart';
 import '/components/modern_alert_dialog.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
+import 'package:flutter/foundation.dart' show kDebugMode;
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
@@ -52,6 +53,7 @@ class _RedeemQuestWidgetState extends State<RedeemQuestWidget> {
     if (_model.codeFieldTextController?.text.isEmpty ?? true) {
       await showDialog(
         context: context,
+        useRootNavigator: true,
         barrierColor: Colors.black87,
         builder: (alertDialogContext) {
           return const ModernAlertDialog(
@@ -80,10 +82,34 @@ class _RedeemQuestWidgetState extends State<RedeemQuestWidget> {
 
       if (!mounted) return;
 
-      if (result == true) {
-        Navigator.of(context).pop();
-        widget.onRedeemed();
-        
+      // Normalize RPC result to determine success. Supabase RPCs may return
+      // a bare boolean, a list with a map (e.g. [{"success": true, "message": "redeemed"}])
+      // or a map with a `success` field. Handle common shapes so we don't
+      // incorrectly treat a successful redemption as invalid.
+      bool success = false;
+      dynamic parsedResult = result;
+      try {
+        if (result is bool) {
+          success = result == true;
+        } else if (result is List && result.isNotEmpty) {
+          final first = result.first;
+          if (first is Map && first.containsKey('success')) {
+            final val = first['success'];
+            success = val == true || val == 'true' || val == 1;
+          } else if (first is bool) {
+            success = first == true;
+          }
+        } else if (result is Map && result.containsKey('success')) {
+          final val = result['success'];
+          success = val == true || val == 'true' || val == 1;
+        } else if (result is String) {
+          success = result.toLowerCase() == 'true';
+        }
+      } catch (e) {
+        success = false;
+      }
+
+      if (success) {
         if (mounted) {
           // Show success animation
           LottieBurstOverlay.showCentered(
@@ -93,31 +119,46 @@ class _RedeemQuestWidgetState extends State<RedeemQuestWidget> {
             repeat: false,
             duration: const Duration(milliseconds: 2000),
           );
-          
+
           await Future.delayed(const Duration(milliseconds: 500));
-          
+
           if (mounted) {
+            // Show the success dialog while still in this route, then close.
             await showDialog(
               context: context,
+              useRootNavigator: true,
               barrierColor: Colors.black87,
               builder: (alertDialogContext) {
                 return ModernAlertDialog(
                   title: 'Quest Completed!',
-                  description: 'You earned +${widget.quest.xpReward} XP for completing "${widget.quest.title}"!',
+                  description:
+                      'You earned +${widget.quest.xpReward} XP for completing "${widget.quest.title}"!',
                   primaryButtonText: 'Awesome!',
                 );
               },
             );
           }
+
+          // Close the redeem sheet and notify parent after dialog dismissed
+          if (mounted) Navigator.of(context).pop();
+          widget.onRedeemed();
         }
       } else {
+        // Provide extra debug information when running in debug mode to help
+        // diagnose why redemption failed (shows entered code and server response).
+        final enteredCode = _model.codeFieldTextController?.text.trim() ?? '';
+        final resultText = parsedResult?.toString() ?? result?.toString() ?? 'null';
+
         await showDialog(
           context: context,
+          useRootNavigator: true,
           barrierColor: Colors.black87,
           builder: (alertDialogContext) {
-            return const ModernAlertDialog(
+            return ModernAlertDialog(
               title: 'Invalid Code',
-              description: 'The verification code you entered is incorrect. Please try again.',
+              description: kDebugMode
+                  ? 'The verification code you entered is incorrect.\n\nDetails:\ncode="$enteredCode"\nserver_response=$resultText'
+                  : 'The verification code you entered is incorrect. Please try again.',
               primaryButtonText: 'OK',
             );
           },
@@ -127,6 +168,7 @@ class _RedeemQuestWidgetState extends State<RedeemQuestWidget> {
       if (!mounted) return;
       await showDialog(
         context: context,
+        useRootNavigator: true,
         barrierColor: Colors.black87,
         builder: (alertDialogContext) {
           return ModernAlertDialog(

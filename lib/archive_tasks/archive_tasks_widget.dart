@@ -104,7 +104,8 @@ class _ArchiveTasksWidgetState extends State<ArchiveTasksWidget>
       },
       child: Scaffold(
         key: scaffoldKey,
-        backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+        // Force a dark page background to match Home
+        backgroundColor: const Color(0xFF1E1E1E),
         body: SafeArea(
           top: true,
           child: Padding(
@@ -378,10 +379,13 @@ class _ArchiveTasksWidgetState extends State<ArchiveTasksWidget>
                             0.0, 170.0, 0.0, 0.0),
                         child: Container(
                           width: double.infinity,
-                          height: 600.0,
+                          // Let the container size to its content to avoid clipping
+                          // and add bottom padding so last items aren't hidden.
+                          padding: const EdgeInsets.only(bottom: 80.0),
                           decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
+                            // Use the darker inner background to match Home
+                            // Match Home's page background tone
+                            color: const Color(0xFF1E1E1E),
                             boxShadow: const [
                               BoxShadow(
                                 blurRadius: 6.0,

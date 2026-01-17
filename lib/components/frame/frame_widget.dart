@@ -4,6 +4,7 @@ import '/components/lottie_burst_overlay/lottie_burst_overlay_widget.dart';
 import '/components/modern_alert_dialog.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'frame_model.dart';
 export 'frame_model.dart';
@@ -48,7 +49,7 @@ class _FrameWidgetState extends State<FrameWidget> {
   Widget build(BuildContext context) {
     return FutureBuilder<List<ProfilesRow>>(
       future: ProfilesTable().queryRows(
-        queryFn: (q) => q.eqOrNull('id', currentUserUid),
+        queryFn: (q) => q.eq('id', currentUserUid),
       ),
       builder: (context, snapshot) {
         final isEquipped = snapshot.hasData &&
@@ -60,7 +61,7 @@ class _FrameWidgetState extends State<FrameWidget> {
           focusColor: Colors.transparent,
           hoverColor: Colors.transparent,
           highlightColor: Colors.transparent,
-          onTap: () async {
+            onTap: () async {
             var confirmDialogResponse = await showDialog<bool>(
                   context: context,
                   barrierColor: Colors.black87,
@@ -80,9 +81,30 @@ class _FrameWidgetState extends State<FrameWidget> {
                 ) ??
                 false;
             if (confirmDialogResponse) {
+              if (kDebugMode) {
+                print('Equip frame: uid="$currentUserUid", frame="${widget.url}"');
+              }
+              if (currentUserUid.isEmpty) {
+                if (context.mounted) {
+                  await showDialog(
+                    context: context,
+                    barrierColor: Colors.black87,
+                    builder: (alertDialogContext) {
+                      return const ModernAlertDialog(
+                        title: 'Not signed in',
+                        description:
+                            'Please sign in to equip a frame to your profile.',
+                        primaryButtonText: 'OK',
+                      );
+                    },
+                  );
+                }
+                return;
+              }
+
               // Check if already equipped
               final currentProfile = await ProfilesTable().queryRows(
-                queryFn: (q) => q.eqOrNull('id', currentUserUid),
+                queryFn: (q) => q.eq('id', currentUserUid),
               );
 
               if (currentProfile.isNotEmpty &&
@@ -108,7 +130,7 @@ class _FrameWidgetState extends State<FrameWidget> {
                 data: {
                   'equipped_border': widget.url,
                 },
-                matchingRows: (rows) => rows.eqOrNull(
+                matchingRows: (rows) => rows.eq(
                   'id',
                   currentUserUid,
                 ),
