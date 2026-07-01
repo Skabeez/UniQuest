@@ -1,38 +1,63 @@
 # UniQuest
 
-Mobile‑first campus companion built with Flutter. Includes onboarding, a rich campus map with tappable pins, missions, tasks, achievements, and a modern dark UI.
+Mobile-first campus companion with interactive maps, missions, tasks, and achievements built with Flutter.
 
-## Getting Started
+## ✨ Features
 
-FlutterFlow projects are built to run on the Flutter _stable_ release.
+- **Interactive campus map** with tappable pins, photos, and information cards
+- **Missions and tasks** to guide exploration and engagement
+- **Achievements system** to reward participation
+- **Onboarding and walkthrough flows** for first-time users
+- **Modern dark-first UI** for a polished mobile experience
+- **Supabase email authentication** for secure sign-in
 
-### Highlights
-- Email auth via Supabase
-- Campus map with photos and info cards
-- Smooth page transitions and walkthroughs
-- Dark backgrounds to prevent white flashes
+## 🛠️ Tech Stack
 
-### Docs
-- User Guide: docs/user-guide.md
-- Admin Guide: docs/admin-guide.md
-- Contributing: docs/contributing.md
+- **Flutter / Dart** (primary app framework)
+- **Supabase** (authentication and backend services)
+- Minor tooling/assets in TypeScript, JavaScript, HTML, PowerShell, and Ruby
 
-### Setup
+## 🚀 Getting Started
+
+### Prerequisites
+
+- [Flutter SDK](https://docs.flutter.dev/get-started/install) (stable channel)
+- Android Studio / Xcode / Chrome (depending on target platform)
+- A configured emulator/simulator or physical device
+
+### Installation
+
 ```bash
 flutter clean
 flutter pub get
 flutter analyze
 ```
 
-### Run
+### Run the App
+
 ```bash
 flutter run -d android
-flutter run -d ios     # macOS/Xcode required
+flutter run -d ios     # macOS + Xcode required
 flutter run -d chrome
 ```
 
 ### Build
+
 ```bash
 flutter build web
 flutter build apk --release
 ```
+
+## 📚 Project Documentation
+
+- User Guide: `docs/user-guide.md`
+- Admin Guide: `docs/admin-guide.md`
+- Contributing: `docs/contributing.md`
+
+## 🤝 Contributing
+
+Contributions are welcome. Please review `docs/contributing.md` before opening a pull request.
+
+## 📄 License
+
+Add your project license details here (for example: MIT, Apache-2.0, or proprietary).
